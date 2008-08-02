@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load generic_markup %}
+
+
+{% block content %}
+
+<h1>Package builds</h1>
+
+<dl>
+{% for build in builds %}
+<dt><a href="{{build.get_absolute_url}}">{{build.build_date|date:"Y-m-d"}}</a></dt>
+<dd>{{build.changes_html|safe}}</dd>
+{% endfor %}
+</dl>
+
+Years
+
+<ul>
+{% for year in date_list %}
+<li>{{year|date:"Y"}}</li>
+{% endfor %}
+</ul>
+
+{% endblock %}

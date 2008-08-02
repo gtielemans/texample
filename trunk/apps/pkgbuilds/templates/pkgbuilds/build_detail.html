@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load generic_markup %}
+
+{% block content %}
+
+<h1>Build detail</h1>
+
+Built on {{build.build_date|date:"Y-m-d"}}.
+<h2>Changelog</h2>
+
+
+
+<pre>{{build.changelog}}</pre>
+
+
+{% endblock %}
