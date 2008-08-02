@@ -1,0 +1,48 @@
+
+
+p, table, hr, .box { margin-bottom:25px; }
+
+.box p { margin-bottom:10px; }
+
+#header-wrapper {
+	border-bottom : 1px solid gray;
+	background-color:silver;
+}
+
+#header-wrapper h2{
+	font-size:2.25em;
+	margin:0 0.5em 0 0;
+	padding:0 0.5em 0.25em 0;
+	border-right:1px solid #808080;
+	float:left;
+}
+#header-wrapper p{
+	padding:1em 0;
+	margin:0;
+	line-height:1em;
+}
+
+
+#content-wrapper {
+	background-color: white;
+	
+}
+
+#footer-wrapper {
+	border-top : 1px solid silver;
+}
+
+/* Navigation */
+#navigation-main, #navigation-sub {
+  list-style: none; 
+}
+
+#navigation-main li, #navigation-sub li{display: inline;padding: 3px;}
+
+.tikz #nav-tikz a {
+background-color:silver;
+}
+
+#tikz-builds #nav-tikz-builds a, #tikz-resources #nav-tikz-resources a {
+color:red;
+}
