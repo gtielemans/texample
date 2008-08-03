@@ -6,7 +6,7 @@ p, table, hr, .box { margin-bottom:25px; }
 
 #header-wrapper {
 	border-bottom : 1px solid gray;
-	background-color:silver;
+	/*background-color:silver;*/
 }
 
 #header-wrapper h2{
@@ -46,3 +46,9 @@ background-color:silver;
 #tikz-builds #nav-tikz-builds a, #tikz-resources #nav-tikz-resources a {
 color:red;
 }
+
+/* Sections */
+
+/* PGF Builds */
+
+.builds-latest {background-color:silver; padding:5px;}
