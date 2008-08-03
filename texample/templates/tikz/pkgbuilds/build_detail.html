@@ -1,0 +1,32 @@
+{% extends "base_tikz.html" %}
+{% load generic_markup %}
+
+{% block pageid %}pgfbuild-details{% endblock%}
+{% block title %}PGF {{build.build_date|date:"Y-m-d"}} CVS build details{% endblock %}
+
+{% block content-main %}
+
+<h1>PGF {{build.build_date|date:"Y-m-d"}} CVS build details</h1>
+
+<p>A snapshot of the <a href="http://sourceforge.net/cvs/?group_id=142562">CVS version of PGF</a>. Build date: {{build.build_date|date:"Y-m-d"}}.</p>
+
+<p class="build-downloads">
+<a class="zip" href="{{MEDIA_URL}}{{build.zip_path}}">Download zip archive</a>
+{% if build.doc_path %}
+    | <a class="pdf" href="{{MEDIA_URL}}{{build.doc_path}}">Download documentation</a>
+{% endif %}
+</p>
+<h2>Changelog</h2>
+
+<p>Changes since the PGF 2.0 release:</p>
+
+<pre>{{build.changelog}}</pre>
+
+
+{% endblock %}
+
+{% block sidebar %}
+<div class="feedblock">
+<p><a class="feedlink" href="{% url tikz_feeds "builds" %}">Subscribe to the PGF builds RSS feed</a></p>
+</div>
+{% endblock %}

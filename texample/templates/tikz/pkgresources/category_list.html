@@ -1,0 +1,39 @@
+{% extends "base_tikz.html" %}
+{% block pageid %}tikz-resources{% endblock%}
+{% block title %}TikZ resources{% endblock %}
+
+{% block content-main %}
+<h1>Resources</h1>
+
+{% for category in category_list %}
+<h2 id="{{category.title|slugify}}">{{category.title}}</h2>
+{{category.description_html|safe}}
+<ul>
+<dl>
+{% for resource in category.resource_set.all %}
+
+<dt id="{{resource.title|slugify}}"><a href="{{resource.url}}">{{resource.title}}</a></dt>
+<dd>{{resource.description_html|safe}}</dd>
+{% endfor %}
+</dl>
+</ul>
+{% endfor %}
+{% endblock %}
+{% block sidebar %}
+Categories
+<ul>
+{% for category in category_list %}
+<li><a href="#{{category.title|slugify}}">{{category.title}}</a></li>
+{% endfor %}
+</ul>
+Recently added:
+
+<ul>
+{% for resource in resources|slice:":5" %}
+<li><a href="#{{resource.title|slugify}}">{{resource.title}}</a></li>
+{% endfor %}
+</ul>
+
+<p><a href="{% url tikz_feeds "resources" %}">Subscribe</a></p>
+
+{% endblock %}
