@@ -1,0 +1,53 @@
+{% extends "base_tikz.html" %}
+{% load generic_markup %}
+
+{% block pageid %}tikz-builds{% endblock%}
+{% block title %}TikZ and PGF builds{% endblock %}
+
+{% block content-main %}
+
+<h1>TikZ and PGF builds</h1>
+
+<p>PGF has a relatively long release cycle.
+To get all the latest features and bug-fixes you should use the development version of PGF.
+If you don't want to <a href="http://sourceforge.net/cvs/?group_id=142562">check out PGF from CVS</a> yourself
+you can find builds here, conveniently packed in a <a href="http://www.tex.ac.uk/cgi-bin/texfaq2html?label=tds">TeX Directory Structure (TDS)</a>
+compliant structure.
+
+</p>
+
+<h2>Builds</h2>
+
+<dl class="build-list">
+{% for build in builds %}
+<dt><a href="{{build.get_absolute_url}}">Build date {{build.build_date|date:"Y-m-d"}}</a></dt>
+<dd class="build-downloads">
+<a class="zip" href="{{MEDIA_URL}}{{build.zip_path}}">Download zip</a>
+{% if build.doc_path %}
+    | <a class="pdf" href="{{MEDIA_URL}}{{build.doc_path}}">Download documentation</a>
+{% endif %}
+
+</dd>
+<dd>{{build.changes_html|safe}}</dd>
+{% endfor %}
+</dl>
+
+{% endblock %}
+
+{% block sidebar %}
+
+<div class="builds-latest">
+<p><a href="{{MEDIA_URL}}{{builds.0.zip_path}}">Download latest build<br/>
+Build date {{builds.0.build_date|date:"Y-m-d"}}</a></p>
+<p><a href="{{builds.0.get_absolute_url}}">Build details</a> 
+{% if builds.0.doc_path %}
+    | <a class="pdf" href="{{MEDIA_URL}}{{builds.0.doc_path}}">Documentation</a>
+{% endif %} </p>
+</div>
+
+<p></p>
+
+<div class="feedblock">
+<p><a class="feedlink" href="{% url tikz_feeds "builds" %}">Subscribe to the PGF builds RSS feed</a></p>
+</div>
+{% endblock %}
