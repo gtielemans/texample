@@ -1,0 +1,13 @@
+{% extends "base_tikz.html" %}
+{% block pageid %}tikz-resources{% endblock%}
+{% block title %}TikZ and PGF resource: {{resource.title}}{% endblock %}
+
+{% block content-main %}
+<h1>Resource: {{resource.title}}</h1>
+
+<p>Category: {{resource.category.title}}</p>
+<dt id="{{resource.title|slugify}}"></dt>
+{{resource.description_html|safe}}
+
+<p><a href="{{resource.url}}">Visit resource</a></p>
+{% endblock %}
