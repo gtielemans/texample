@@ -33,8 +33,9 @@ class Build(models.Model):
         return str(self.build_date)
 
     def save(self):
-        self.changes_html = formatter(self.changes)
+        self.changes_html = formatter(self.changes or ' ')
         super(Build, self).save()
+        
         
     @permalink
     def get_absolute_url(self):
