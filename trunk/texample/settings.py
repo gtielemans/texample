@@ -22,14 +22,6 @@ DATABASE_PORT = ''             # Set to empty string for default. Not used with 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'your secret key'
 
-try:
-    # Load database and secret key and debug settings
-    from texample.current_settings import *
-except:
-    pass
-
-TEMPLATE_DEBUG = DEBUG
-MANAGERS = ADMINS
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -107,6 +99,14 @@ INSTALLED_APPS = (
     'texample.tikz',
     'pkgbuilds',
     'pkgresources',
-    
-    
+        
 )
+
+try:
+    # Load database and secret key and debug settings
+    from texample.current_settings import *
+except:
+    pass
+
+TEMPLATE_DEBUG = DEBUG
+MANAGERS = ADMINS
