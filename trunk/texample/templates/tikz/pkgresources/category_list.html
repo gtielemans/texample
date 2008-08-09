@@ -6,14 +6,15 @@
 <h1>TikZ and PGF Resources</h1>
 
 <p>
-A growing collection of links to various TikZ and PGF resources. 
-
-<p>
+A growing collection of links to various TikZ and PGF resources.
+</p>
 
 {% for category in category_list %}
 <h2 id="{{category.title|slugify}}">{{category.title}}</h2>
+
 {{category.description_html|safe}}
-<ul>
+
+
 <dl>
 {% for resource in category.resource_set.all %}
 
@@ -21,7 +22,7 @@ A growing collection of links to various TikZ and PGF resources.
 <dd>{{resource.description_html|safe}}</dd>
 {% endfor %}
 </dl>
-</ul>
+
 {% endfor %}
 {% endblock %}
 {% block sidebar %}
