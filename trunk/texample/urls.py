@@ -13,7 +13,7 @@ urlpatterns = patterns('',
     (r'^$', 'django.views.generic.simple.direct_to_template', {'template': 'index.html'}),
     (r'^tikz/', include('texample.tikz.urls')),
     (r'^contact/', include('contact_form.urls')),
-    (r'^builds/', include('pkgbuilds.urls')),
+    (r'^community/', include('texample.aggregator.urls')),
     (r'^admin/(.*)', admin.site.root),    
 )
 
@@ -22,11 +22,19 @@ urlpatterns = patterns('',
 # TikZ section
 from pkgbuilds.feeds import LatestBuilds
 from pkgresources.feeds import LatestResources
+
 tikz_feed_dict = {'feed_dict' : {
     'builds' : LatestBuilds,
-    'resources' : LatestResources,
+    'resources' : LatestResources,    
     'examples' : None}
 }
+
+from texample.aggregator.feeds import CommunityAggregatorFeed
+feed_dict = {'feed_dict' : {
+    'community' : CommunityAggregatorFeed,
+    }
+}
+
 
 # TODO:
 # weblog section
@@ -35,6 +43,8 @@ tikz_feed_dict = {'feed_dict' : {
 urlpatterns += patterns('',
     url(r'^feeds/tikz/(?P<url>.*)/$', 'django.contrib.syndication.views.feed',
         tikz_feed_dict, name = 'tikz_feeds'),
+    url(r'^feeds/(?P<url>.*)/$', 'django.contrib.syndication.views.feed',
+        feed_dict, name = 'top_feeds'),
     )
 
 if settings.DEBUG:

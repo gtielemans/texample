@@ -99,6 +99,7 @@ INSTALLED_APPS = (
     'texample.tikz',
     'pkgbuilds',
     'pkgresources',
+    'texample.aggregator',
         
 )
 
