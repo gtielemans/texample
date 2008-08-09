@@ -1,0 +1,26 @@
+%% Create graphics for texample.net
+\documentclass{article}
+\usepackage{tikz}
+\usepackage{palatino}
+\usepackage[osf,sc]{mathpazo}
+
+%%%<
+\usepackage{verbatim}
+\usepackage[active,tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+\setlength\PreviewBorder{0pt}%
+%%%>
+
+
+%  \RequirePackage[T1]{fontenc}
+%  \RequirePackage[scaled=0.85]{beramono}
+
+\begin{document}
+
+% Logo
+\begin{tikzpicture}
+\node[scale=10] {\textbf{\TeX {\textcolor{red!50!black}{ample}}.net}};
+\end{tikzpicture}
+\end{document}
+
+
