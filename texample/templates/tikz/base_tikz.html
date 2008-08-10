@@ -2,7 +2,7 @@
 {% block pageclass %}tikz{% endblock %}
 {% block navigation-sub %}
 <ul id="navigation-sub">
-<!--    <li id="nav-tikz-gallery"><a href="{% url tikz-gallery %}">gallery</a></li> -->
+<!--    <li id="nav-tikz-gallery"><a href="">gallery</a></li> -->
     <li id="nav-tikz-builds"><a href="{% url pkgbuilds_index %}">builds</a></li>
     <li id="nav-tikz-resources"><a href="{% url pkgresources_index %}">resources</a></li>
 </ul>
@@ -11,12 +11,12 @@
 
 {% block content %}
 <div class="container">
-<div class="span-16 prepend-1 colborder">
+<div class="span-16 colborder">
 {% block content-main %}
 {% endblock %}
 </div>
 
-<div class="span-6 last">
+<div class="span-7 last">
 {% block sidebar %}
 {% endblock %}
 </div>
