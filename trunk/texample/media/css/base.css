@@ -4,33 +4,48 @@ p, table, hr, .box { margin-bottom:25px; }
 
 .box p { margin-bottom:10px; }
 
+body {padding-top:0; margin-top:0; background-color: black;}
+
+/* Header */
+
 #header-wrapper {
 	border-bottom : 1px solid gray;
-	/*background-color:silver;*/
+        padding-top: 1em;
+        position: relative;
+	background-color:white;
 }
 
 #header-wrapper h2{
-	font-size:2.25em;
 	margin:0 0.5em 0 0;
-	padding:0 0.5em 0.25em 0;
+	padding:0 10px 0 0;
 	border-right:1px solid #808080;
 	float:left;
 }
-#header-wrapper p{
-	padding:1em 0;
-	margin:0;
-	line-height:1em;
+
+#header-wrapper p{margin:0;line-height:45px;}
+
+
+/* Footer styles */
+
+#footer-wrapper {
+        background-color: black;
+        color: white;
+        padding: 1em 0;
+        /*border-top : 1px solid silver;*/
 }
 
+#footer-wrapper a {background-color: black; color: white;}
+
+
+/* Main content */
 
 #content-wrapper {
 	background-color: white;
+        padding-top: 1em;
+        padding-bottom: 1em;
 	
 }
 
-#footer-wrapper {
-	border-top : 1px solid silver;
-}
 
 /* Navigation */
 #navigation-main, #navigation-sub {
@@ -39,7 +54,7 @@ p, table, hr, .box { margin-bottom:25px; }
 
 #navigation-main li, #navigation-sub li{display: inline;padding: 3px;}
 
-.tikz #nav-tikz a {
+.tikz #nav-tikz a, .community #nav-community a {
 background-color:silver;
 }
 
@@ -49,6 +64,9 @@ color:red;
 
 /* Sections */
 
+.feedlink, .rss {background: url(img/feed-icon-12x12.png) no-repeat 2px 0.25em;
+	padding-left: 18px;
+}
 /* PGF Builds */
 
 .builds-latest {background-color:silver; padding:5px;}
