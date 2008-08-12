@@ -9,8 +9,14 @@ class FeedAdmin(admin.ModelAdmin):
     ordering = ["title"]
     search_fields = ["title", "public_url"]
     list_per_page = 500
+
+class FeedItemAdmin(admin.ModelAdmin):
+    list_display = ["title", "feed", "date_modified"]
+    list_filter = ["feed"]
+    ordering = ["date_modified"]
+    list_per_page = 500
     
-admin.site.register(FeedItem)
+admin.site.register(FeedItem,FeedItemAdmin)
 admin.site.register(Feed,FeedAdmin)
 
 
