@@ -4,6 +4,7 @@
 \usepackage{palatino}
 \usepackage[osf,sc]{mathpazo}
 
+\usetikzlibrary{decorations.pathreplacing,calc}
 %%%<
 \usepackage{verbatim}
 \usepackage[active,tightpage]{preview}
@@ -21,6 +22,18 @@
 \begin{tikzpicture}
 \node[scale=10,inner sep=0pt] {\textbf{\TeX {\textcolor{red!50!black}{ample}}.net}};
 \end{tikzpicture}
+
+\begin{tikzpicture}[decoration=brace]
+\node[inner sep=0pt, inner ysep=2pt] (l) {\textbf{\TeX {\textcolor{red!50!black}{ample}}.net}};
+\begin{scope}[font=\tiny,draw=black!70,color=black!70]
+
+\draw[decorate]  (l.north west)+(1.75em,0) -- ($(l.north east)-(1.75em,0)$) node[above,pos=0.5] {$b$};
+\draw[decorate]  (l.north west) -- ($(l.north west)+(1.7em,0)$) node[above,pos=0.5] {$a$};
+\draw[decorate]  (l.south east)+(-1.75em,0) -- ($(l.south west)+(0.5em,0)$) node[below,pos=0.5] {$c$};
+\draw[decorate]  (l.south east) -- ($(l.south west)+(4.8em,0)$) node[below,pos=0.5] {$d$};
+\end{scope}
+\end{tikzpicture}
+
 \end{document}
 
 

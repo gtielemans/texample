@@ -1,0 +1,33 @@
+{% extends "base_main.html" %}
+{% block pageid %}about{% endblock%}
+{% block title %}About TeXample.net{% endblock %}
+
+{% block content-main %}
+
+<h1>About</h1>
+
+<p>TeXample.net is a web site dedicated to the wonderful world of TeX and friends. The site
+is still under heavily construction, so sorry for all the mess. Content, features and design will
+be added gradually. </p>
+
+<h2>Why the silly name?</h2>
+<p>Mainly because the best names <a href="http://latex-community.org/viewtopic.php?f=5&t=1631">were already taken</a>, but the web site's name can be interpreted in multiple ways:
+<div style="text-align:center;" >
+<img src="{{MEDIA_URL}}/img/logobreakdown.png" />
+</div>
+<p>The TeX part (<em>a</em>) should be obvious. <a href="http://www.answers.com/ample">Ample</a> (<em>b</em>) means <em>of large or great size, amount, extent, or capacity</em>. TeX is all that and more.  The example part (<em>c</em>) is important because learning by example is very effective and the original intention of this
+site was to host the TikZ and PGF examples gallery. The final .net (<em>d</em>) part is there because it sounds good.</p>
+
+<h2>Who is behind this site</h2>
+
+<p>The site has been built and designed by <a href="http://www.fauskes.net/">Kjell Magne Fauske</a>.</p>
+
+<h2>What is the technology behind this site?</h2>
+
+<p>This site is powered by the fantastic <a href="http://www.djangoproject.com/">Django web framework</a>.
+If you are interested in the implementation, all of the <a href="http://code.google.com/p/texample/">site's source code is freely available</a>.</p>
+
+<p>Hosting is provided by <a href="http://www.webfaction.com/?affiliate=fauske">Webfaction</a>.</p>
+
+<p></p>
+{% endblock %} 
