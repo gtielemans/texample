@@ -14,6 +14,7 @@ urlpatterns = patterns('',
     (r'^tikz/', include('texample.tikz.urls')),
     (r'^contact/', include('contact_form.urls')),
     (r'^community/', include('texample.aggregator.urls')),
+    (r'^about/$', 'django.views.generic.simple.direct_to_template', {'template': 'about.html'}),
     (r'^admin/(.*)', admin.site.root),    
 )
 
