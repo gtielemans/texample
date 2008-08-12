@@ -18,7 +18,21 @@ def update_feeds(verbose=False):
         if verbose:
             print feed
         parsed_feed = feedparser.parse(feed.feed_url)
+        if feed.filter_tags:
+            tags = set([i.lower().strip() for i in feed.filter_tags.split(',') if i.strip()])
+            if len(tags)==0:
+                tags = None
+        else:
+            tags = None
+            
+        
         for entry in parsed_feed.entries:
+            entry_tags = set([i.term for i in getattr(entry,'tags',[])])
+            if tags:
+                if len(tags & entry_tags) == 0:
+                    if verbose:
+                        print "Skipped %s " % entry.title
+                    continue
             title = entry.title.encode(parsed_feed.encoding, "xmlcharrefreplace")
             guid = entry.get("id", entry.link).encode(parsed_feed.encoding, "xmlcharrefreplace")
             link = entry.link.encode(parsed_feed.encoding, "xmlcharrefreplace")

@@ -5,6 +5,10 @@ class Feed(models.Model):
     feed_url = models.URLField(unique=True, max_length=500)
     public_url = models.URLField(max_length=500)
     is_defunct = models.BooleanField()
+    filter_tags = models.CharField(max_length=500,blank=True,
+        help_text="Include only items with these tags. Comma separated list. "\
+                  "If blank all items are included."
+        )
 
     class Meta:
         db_table = 'aggregator_feeds'
