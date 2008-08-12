@@ -1,24 +1,16 @@
 {% extends "base.html" %}
 
-{% block navigation-subsections %}
-    <a href="{% url tikz-examples %}">gallery</a> |
-    <a href="{% url tikz-resources %}">resources</a> |
-    <a href="{% url tikz-builds %}">builds</a>
-{% endblock %}
-
 {% block content %}
-
 <div class="container">
-<div class="span-16 prepend-1 colborder">
+<div class="span-16 prepend colborder">
 {% block content-main %}
 {% endblock %}
 </div>
 
-<div class="span-6 last">
+<div class="span-7 last">
 {% block sidebar %}
 {% endblock %}
 </div>
-
+</div>
 {% endblock %}
-</body>
-</html>
+
