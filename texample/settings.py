@@ -93,7 +93,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Third party apps
     'template_utils',
-    'extensions',
+    'django_extensions',
     'contact_form',
     # Texample apps
     'texample.tikz',
