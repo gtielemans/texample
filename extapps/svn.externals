@@ -3,4 +3,5 @@ template_utils http://django-template-utils.googlecode.com/svn/trunk/template_ut
 contact_form http://django-contact-form.googlecode.com/svn/trunk/contact_form
 tagging http://django-tagging.googlecode.com/svn/branches/newforms-admin/tagging/
 django_evolution http://django-evolution.googlecode.com/svn/trunk/django_evolution
+typogrify http://typogrify.googlecode.com/svn/trunk/typogrify
 
