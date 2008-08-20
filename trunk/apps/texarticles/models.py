@@ -10,11 +10,15 @@ from django.db import models
 from django.contrib.auth.models import User
 from tagging.fields import TagField
 from django.conf import settings
+from django.db.models import permalink
 
 import fnetrest
 
 from template_utils.markup import formatter
-# Create your models here.
+
+class LiveEntryManager(models.Manager):
+    def get_query_set(self):
+        return super(LiveEntryManager,self).get_query_set().filter(status=self.model.LIVE_STATUS)
 
 class Category(models.Model):
     description = models.TextField()
@@ -74,6 +78,10 @@ class Article(models.Model):
     body_html = models.TextField(blank=True)
     abstract_html = models.TextField(blank=True)
     
+    
+    # Managers
+    live = LiveEntryManager()
+    objects = models.Manager()
     class Meta:
         ordering = ['title']
         verbose_name_plural = "Articles"
@@ -81,8 +89,9 @@ class Article(models.Model):
     def __unicode__(self):
         return self.title
     
+    @permalink
     def get_absolute_url(self):
-        return ('texarticles_category',(),{'slug':self.slug})
+        return ('texarticles_detail',(),{'slug':self.slug})
                 
     def save(self):
         # convert body to html
@@ -93,7 +102,13 @@ class Article(models.Model):
                 markup_formatter = None
             else:
                 markup_formatter = self.markup
-            self.body_html = formatter(self.body,filter_name=markup_formatter,
+            
+            html = formatter(self.body,filter_name=markup_formatter,
+                                **settings.MARKUP_SETTINGS[markup_formatter])
+            from typogrify.templatetags.typogrify import typogrify
+            self.body_html = typogrify(html)
+            if self.abstract:
+                self.abstract_html = formatter(self.abstract,filter_name=markup_formatter,
                                 **settings.MARKUP_SETTINGS[markup_formatter])
                 
         super(Article,self).save()
