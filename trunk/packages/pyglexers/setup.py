@@ -12,7 +12,7 @@ from setuptools import setup
 __author__ = 'Kjell Magne Fauske'
 
 setup(
-    name='My pygment lexers',
+    name='pyglexers',
     version='1.0',
     description=__doc__,
     author=__author__,
@@ -20,6 +20,6 @@ setup(
     entry_points='''
     [pygments.lexers]
     mysketchlexer = pyglexers:SketchLexer
-    mydotlexer = pyglexers:DotLexer
+    mydotlexer = pyglexers:DOTLexer
     '''
 )
