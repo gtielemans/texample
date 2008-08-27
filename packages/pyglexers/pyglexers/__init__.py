@@ -1,2 +1,2 @@
 from sketchlexer import SketchLexer
-from dotlexer import DotLexer
+from dotlexer import DOTLexer
