@@ -20,6 +20,6 @@ setup(
     entry_points='''
     [pygments.lexers]
     mysketchlexer = pyglexers:SketchLexer
-    mydotlexer = pyglexers.DotLexer
+    mydotlexer = pyglexers:DotLexer
     '''
 )
