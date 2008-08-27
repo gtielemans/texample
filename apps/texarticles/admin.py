@@ -12,16 +12,20 @@ class ArticleAdmin(admin.ModelAdmin):
         css = {
             "all": ("css/admin_styles.css",)
         }
+    prepopulated_fields = {"slug": ("title",)}
 
     fieldsets = (
         ('Meta',{'fields': ('title','slug','pub_date','updated_date',
                             'author','status','featured','enable_comments',
-                            'categories','tags'),
+                            ),
             }
         ),
+        ('Categorization',{'fields': ('categories','tags')}),
+        # Add a fixedwidth style class to the following fieldsets. Gives
+        # us a hook for styling the textarea form elements
         ('Content',{'fields': ('markup','abstract','body'),
             'classes' :('fixedwidth',)}),
-        ('Advanced',{'fields':('abstract_html','body_html'),
+        ('Advanced',{'fields':('abstract_html','body_html','toc'),
             'classes': ('collapse','fixedwidth')})
     )
 
