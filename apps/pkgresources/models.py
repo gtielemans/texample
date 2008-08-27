@@ -11,7 +11,7 @@ class Category(models.Model):
     A category that a Resource can belong to.
 
     """
-    title = models.CharField(max_length=250,core=True)
+    title = models.CharField(max_length=250)
     description = models.TextField(help_text=u'A short description of the category, to be used in list pages.',blank=True)
     description_html = models.TextField(editable=False, blank=True)
 
@@ -32,7 +32,7 @@ class Resource(models.Model):
     A resource
     """
 
-    title = models.CharField(max_length=250,core=True)
+    title = models.CharField(max_length=250)
     url = models.URLField(verify_exists=False)
     pub_date = models.DateTimeField(u'Date posted', default=datetime.datetime.today)
 
