@@ -107,9 +107,14 @@ class Article(models.Model):
             html = formatter(self.body,filter_name=markup_formatter,
                                 **settings.MARKUP_SETTINGS[markup_formatter])
             from typogrify.templatetags.typogrify import typogrify
+            self.toc,soup = build_toc(html)
+            # The headerid extension in Markdown 2beta does not work at the moment. Use
+            # the build_toc output to ensure that the headings have ids
+            html = str(soup)
+            
             self.body_html = typogrify(html)
             if self.abstract:
                 self.abstract_html = formatter(self.abstract,filter_name=markup_formatter,
                                 **settings.MARKUP_SETTINGS[markup_formatter])
-            self.toc = build_toc(self.body_html)    
+            
         super(Article,self).save()

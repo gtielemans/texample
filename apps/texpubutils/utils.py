@@ -4,12 +4,18 @@ Various utilities for publishing
 
 from BeautifulSoup import BeautifulSoup
 import re
+import os, datetime
 
-def build_toc(text):
+from django.template.defaultfilters import slugify,striptags
+
+def build_toc(text_or_tagsoup, toc_css_class="toc"):
     """Build a table of contents and return it as an unordred nested list"""
-    soup = BeautifulSoup(text)
+    if isinstance(text_or_tagsoup,BeautifulSoup):
+        soup = text_or_tagsoup
+    else:
+        soup = BeautifulSoup(text_or_tagsoup)
     headings = soup.findAll(re.compile(r'h\d'))
-    toc = u'<ul class="toc">\n'
+    toc = u'<ul class="%s">\n' % toc_css_class
     current_level = 2
     first = True
     for heading in headings:
@@ -37,4 +43,45 @@ def build_toc(text):
         current_level = level
     toc += u'</li></ul>\n'
     
-    return toc
+    return toc, soup
+
+def copy_if_newer(source, dest):
+    """Copy source to dest if dest is older than source or doesn't exists
+    
+    If the dest directory does not exist it will be created. 
+    """
+    copy = False
+    # Check that dest exists. Create dir if necessary
+    if os.path.exists(dest):
+        # get source's and dest's timpestamps
+        source_ts = os.path.getmtime(source)
+        dest_ts = os.path.getmtime(dest)
+        # compare timestamps
+        if source_ts > dest_ts: copy = True
+    else:
+        copy = True
+        dir = os.path.dirname(dest)
+        if dir != '' and not os.path.exists(dir):
+            os.makedirs(dir)
+    # copy source to dest
+    if copy:
+        shutil.copy2(source, dest)
+
+
+def iso_to_datetime(isodate):
+    """Convert an isodate formatted string to a datetime object"""
+    try:
+        year,month, day = map(int,isodate.split('-'))
+        return datetime(year, month, day)
+    except:
+        return None
+
+# Read text
+# Convert to html
+# Extract title, toc, related links, metadata
+# Should return
+# 'title'
+# 'Author'
+# 'slug'
+# '
+
