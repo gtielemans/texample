@@ -93,7 +93,7 @@ def markdown(text, extensions = [], safe_mode = False):
     return html,md
 
 
-def publish_parts(text, markup_formatter='markdown'):
+def publish_parts(text, markup_formatter='markdown',media_url=''):
     parts = {}
     if markup_formatter == 'markdown':
         html,md = markdown(text,['meta','codehilite(css_class=highlight)'])#markdown(text,**settings.MARKUP_SETTINGS[markup_formatter])
@@ -108,11 +108,6 @@ def publish_parts(text, markup_formatter='markdown'):
     # fix links
     local_src = soup.findAll(src=re.compile(r'^[^http]'))
     local_href = soup.findAll(href=re.compile(r'^[^http]'))
-    
-    try:
-        media_url = settings.MEDIA_URL
-    except:
-        media_url = ''
     
     if media_url:
         for src in local_src:
@@ -133,7 +128,8 @@ def publish_parts(text, markup_formatter='markdown'):
     else:
         parts['summary'] = ''
         
-    html = str(soup)
+    #html = str(soup)
+    html = soup.prettify()
     
     parts['body'] = typogrify(html)
     parts['soup'] = soup

@@ -103,7 +103,11 @@ class Article(models.Model):
                 markup_formatter = None
             else:
                 markup_formatter = self.markup
-            parts = publish_parts(self.body,markup_formatter)
+           
+            media_url = settings.MEDIA_URL + self.get_absolute_url()[1:]
+           
+        
+            parts = publish_parts(self.body,markup_formatter,media_url=media_url)
             #html = formatter(self.body,filter_name=markup_formatter,
             #                    **settings.MARKUP_SETTINGS[markup_formatter])
             #from typogrify.templatetags.typogrify import typogrify
