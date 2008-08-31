@@ -5,8 +5,12 @@ Various utilities for publishing
 from BeautifulSoup import BeautifulSoup
 import re
 import os, datetime
+from typogrify.templatetags.typogrify import typogrify
 
 from django.template.defaultfilters import slugify,striptags
+from template_utils.markup import formatter
+
+from django.conf import settings
 
 def build_toc(text_or_tagsoup, toc_css_class="toc"):
     """Build a table of contents and return it as an unordred nested list"""
@@ -75,6 +79,66 @@ def iso_to_datetime(isodate):
         return datetime(year, month, day)
     except:
         return None
+
+def markdown(text, extensions = [], safe_mode = False):
+    """
+    Applies Markdown conversion to a string, and returns the HTML.
+    
+    """
+    import markdown
+    extensions = [markdown.load_extension(e) for e in extensions]
+    md = markdown.Markdown(extensions = extensions, safe_mode = safe_mode)
+    html = md.convert(text)
+    
+    return html,md
+
+
+def publish_parts(text, markup_formatter='markdown'):
+    parts = {}
+    if markup_formatter == 'markdown':
+        html,md = markdown(text,['meta','codehilite(css_class=highlight)'])#markdown(text,**settings.MARKUP_SETTINGS[markup_formatter])
+        if getattr(md,'Meta'):
+            parts['meta']=md.Meta
+        
+    soup = BeautifulSoup(text)
+    parts['toc'],soup = build_toc(html)
+    # The headerid extension in Markdown 2beta does not work at the moment. Use
+    # the build_toc output to ensure that the headings have ids
+    h1 = soup.h1
+    # fix links
+    local_src = soup.findAll(src=re.compile(r'^[^http]'))
+    local_href = soup.findAll(href=re.compile(r'^[^http]'))
+    
+    try:
+        media_url = settings.MEDIA_URL
+    except:
+        media_url = ''
+    
+    if media_url:
+        for src in local_src:
+            src['src'] = media_url + src['src']
+            
+        for href in local_href:
+            href['href'] = media_url + href['href']
+    if h1:
+        parts['title'] = h1.renderContents()
+        soup.h1.extract()
+    else:
+        parts['title'] = ''
+    # look for abstract
+    summary = soup.find('div',id='summary')
+    if summary:
+        parts['summary'] = summary.renderContents()
+        summary.extract()
+    else:
+        parts['summary'] = ''
+        
+    html = str(soup)
+    
+    parts['body'] = typogrify(html)
+    parts['soup'] = soup
+    return parts
+    
 
 # Read text
 # Convert to html

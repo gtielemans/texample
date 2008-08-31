@@ -13,7 +13,7 @@ from django.conf import settings
 from django.db.models import permalink
 
 
-from texpubutils.utils import build_toc
+from texpubutils.utils import build_toc,publish_parts
 from template_utils.markup import formatter
 import re
 
@@ -103,18 +103,22 @@ class Article(models.Model):
                 markup_formatter = None
             else:
                 markup_formatter = self.markup
-            
-            html = formatter(self.body,filter_name=markup_formatter,
-                                **settings.MARKUP_SETTINGS[markup_formatter])
-            from typogrify.templatetags.typogrify import typogrify
-            self.toc,soup = build_toc(html)
-            # The headerid extension in Markdown 2beta does not work at the moment. Use
-            # the build_toc output to ensure that the headings have ids
-            html = str(soup)
-            
-            self.body_html = typogrify(html)
+            parts = publish_parts(self.body,markup_formatter)
+            #html = formatter(self.body,filter_name=markup_formatter,
+            #                    **settings.MARKUP_SETTINGS[markup_formatter])
+            #from typogrify.templatetags.typogrify import typogrify
+            #self.toc,soup = build_toc(html)
+            ## The headerid extension in Markdown 2beta does not work at the moment. Use
+            ## the build_toc output to ensure that the headings have ids
+            #html = str(soup)
+            #
+            #self.body_html = typogrify(html)
             if self.abstract:
                 self.abstract_html = formatter(self.abstract,filter_name=markup_formatter,
                                 **settings.MARKUP_SETTINGS[markup_formatter])
-            
+            else:
+                if parts['summary']:
+                    self.abstract_html = parts['summary']
+            self.body_html = parts['body']
+            #if self.abstract
         super(Article,self).save()
