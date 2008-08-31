@@ -128,8 +128,8 @@ def publish_parts(text, markup_formatter='markdown',media_url=''):
     else:
         parts['summary'] = ''
         
-    #html = str(soup)
-    html = soup.prettify()
+    html = str(soup)
+    #html = soup.renderContents()
     
     parts['body'] = typogrify(html)
     parts['soup'] = soup
