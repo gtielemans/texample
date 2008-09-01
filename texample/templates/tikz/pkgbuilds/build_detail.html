@@ -16,6 +16,14 @@
     | <a class="pdf" href="{{MEDIA_URL}}{{build.doc_path}}">Download documentation</a>
 {% endif %}
 </p>
+
+<p>Changes since the previous build:</p>
+
+{{build.changes_html|safe}}
+
+<p><strong>Warning:</strong> The development version is not always stable. If the latest build causes problems,
+download and install an earlier build and wait for a bug fix. </p>
+
 <h2>Changelog</h2>
 
 <p>Changes since the PGF 2.0 release:</p>
@@ -29,4 +37,4 @@
 <div class="feedblock">
 <p><a class="feedlink" href="{% url tikz_feeds "builds" %}">Subscribe to the PGF builds RSS feed</a></p>
 </div>
-{% endblock %}
+{% endblock %} 

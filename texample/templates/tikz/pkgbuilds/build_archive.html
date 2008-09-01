@@ -16,6 +16,10 @@ compliant structure.
 
 </p>
 
+<p><strong>Warning:</strong> The development versions are not always stable. If the latest build causes problems,
+download and install an earlier build and wait for a bug fix. </p>
+
+
 <h2>Builds</h2>
 
 <dl class="build-list">
@@ -39,7 +43,7 @@ compliant structure.
 <div class="builds-latest">
 <p><a href="{{MEDIA_URL}}{{builds.0.zip_path}}">Download latest build<br/>
 Build date {{builds.0.build_date|date:"Y-m-d"}}</a></p>
-<p><a href="{{builds.0.get_absolute_url}}">Build details</a> 
+<p><a href="{{builds.0.get_absolute_url}}">Build details</a>
 {% if builds.0.doc_path %}
     | <a class="pdf" href="{{MEDIA_URL}}{{builds.0.doc_path}}">Documentation</a>
 {% endif %} </p>
