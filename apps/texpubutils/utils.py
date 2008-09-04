@@ -82,7 +82,7 @@ def iso_to_datetime(isodate):
 
 def markdown(text, extensions = [], safe_mode = False):
     """
-    Applies Markdown conversion to a string, and returns the HTML.
+    Applies Markdown conversion to a string, and returns the HTML and the markdown instance
     
     """
     import markdown
@@ -135,13 +135,3 @@ def publish_parts(text, markup_formatter='markdown',media_url=''):
     parts['soup'] = soup
     return parts
     
-
-# Read text
-# Convert to html
-# Extract title, toc, related links, metadata
-# Should return
-# 'title'
-# 'Author'
-# 'slug'
-# '
-
