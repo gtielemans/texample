@@ -25,7 +25,7 @@ class ArticleAdmin(admin.ModelAdmin):
         # us a hook for styling the textarea form elements
         ('Content',{'fields': ('markup','abstract','body'),
             'classes' :('fixedwidth',)}),
-        ('Advanced',{'fields':('abstract_html','body_html','toc'),
+        ('Advanced',{'fields':('abstract_html','body_html','toc','extra_content'),
             'classes': ('collapse','fixedwidth')})
     )
 
