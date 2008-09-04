@@ -32,7 +32,7 @@ class Build(models.Model):
     def __unicode__(self):
         return str(self.build_date)
 
-    def save(self):
+    def save(self,force_insert=False, force_update=False):
         self.changes_html = formatter(self.changes or ' ')
         super(Build, self).save()
         

@@ -94,7 +94,7 @@ class Article(models.Model):
     def get_absolute_url(self):
         return ('texarticles_detail',(),{'slug':self.slug})
                 
-    def save(self):
+    def save(self, force_insert=False, force_update=False):
         # convert body to html
         # extract toc
         # convert links
