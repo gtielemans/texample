@@ -1,0 +1,18 @@
+{% extends "base_main.html" %}
+{% block pageclass %}articles{% endblock %}
+{% block pageid %}articles{% endblock%}
+{% block title %}{{article.title}}{% endblock %}
+
+{% load typogrify %}
+{% block content-main %}
+
+<h1>{{article.title|widont|smartypants|safe}}</h1>
+
+{{article.body_html|safe}}
+
+{% endblock %}
+
+{% block sidebar %}
+<h3>Contents</h3>
+{{article.toc|safe}}
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base_main.html" %}
+{% block pageclass %}articles{% endblock %}
+{% block pageid %}articles{% endblock%}
+{% block title %}Articles{% endblock %}
+
+
+{% load typogrify %}
+{% block content-main %}
+
+<h1>Articles</h1>
+
+{% for article in object_list %}
+<div class="articleinfo">
+<h3><a href="{{article.get_absolute_url}}">{{article.title|widont|smartypants|safe}}</a></h3>
+{% if article.abstract_html %}
+{{article.abstract_html|safe}}
+{% else %}
+{{article.body_html|truncatewords_html:30|safe}}
+{% endif %}
+{% endfor %}
+</div>
+{% endblock %}
