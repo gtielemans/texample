@@ -22,7 +22,7 @@ class Category(models.Model):
     def __unicode__(self):
         return self.title
 
-    def save(self):
+    def save(self, force_insert=False, force_update=False):
         self.description_html = formatter(self.description)
         super(Category, self).save()
 
@@ -50,7 +50,7 @@ class Resource(models.Model):
     def __unicode__(self):
         return self.title
 
-    def save(self):
+    def save(self, force_insert=False, force_update=False):
         self.description_html = formatter(self.description)
         super(Resource, self).save()
     
