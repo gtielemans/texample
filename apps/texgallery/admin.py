@@ -1,7 +1,7 @@
 
 # Admin stuff
 from django.contrib import admin
-from models import ExampleEntry,Tag,Feature
+from models import ExampleEntry,Tag,Feature,Author
 
 #try:
 #    appname = __name__.split('.')[-2]
@@ -13,7 +13,7 @@ from models import ExampleEntry,Tag,Feature
 
 class ExampleAdmin(admin.ModelAdmin):
     list_display = ('title','created')
-    list_filter = ('features','tags')
+    list_filter = ('features','author','tags',)
 
 class FeatureAdmin(admin.ModelAdmin):
     list_display = ('title',)
@@ -25,6 +25,7 @@ class FeatureAdmin(admin.ModelAdmin):
 #    list_filter = ['category']
 
 admin.site.register(Tag)
+admin.site.register(Author)
 admin.site.register(ExampleEntry,ExampleAdmin)
 admin.site.register(Feature,FeatureAdmin)
 #admin.site.register(Resource,ResourceAdmin)
