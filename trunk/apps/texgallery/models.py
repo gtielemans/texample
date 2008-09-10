@@ -2,7 +2,6 @@
 from django.db import models
 import datetime
 
-
 class CommonTagInfo(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField()
@@ -22,10 +21,17 @@ class Tag(CommonTagInfo):
         return u"/pgftikzexamples/tag/%s/" % (self.slug)
 
 class Feature(CommonTagInfo):
-    """A PGF feature used by an example"""
+    """A specific feature used by an example"""
     
     def get_absolute_url(self):
         return u"/pgftikzexamples/tag/%s/" % (self.slug)
+
+
+class TechnicalArea(CommonTagInfo):
+    """A technical area that an example belongs to"""
+    
+    def get_absolute_url(self):
+        return u"/area/tag/%s/" % (self.slug)
 
 
 class Author(models.Model):
@@ -39,8 +45,6 @@ class Author(models.Model):
     
     
     
-
-
 class ExampleEntry(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField()
@@ -53,15 +57,16 @@ class ExampleEntry(models.Model):
     epilog = models.TextField(blank=True,
         help_text="Use raw HTML")
     
-    tags = models.ManyToManyField(Tag, blank=True)
     enable_comments = models.BooleanField(default=True,null=True)
-    #author = models.ForeignKey(User,null=True)
-    features = models.ManyToManyField(Feature, blank=True)
     author = models.ManyToManyField(Author, blank=True)
+    # Categorization
+    features = models.ManyToManyField(Feature, blank=True)
+    tags = models.ManyToManyField(Tag, blank=True)
+    technical_areas = models.ManyToManyField(TechnicalArea, blank=True)
     
     class Meta:
         ordering = ("title",)
-    #application = models.ManyToManyField(ExampleFeature, blank=True)
+        verbose_name_plural = "Example entries"
     
     #def save(self, force_insert=False, force_update=False):
     #    if not self.id:
