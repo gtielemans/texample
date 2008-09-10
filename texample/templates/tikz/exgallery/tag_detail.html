@@ -1,0 +1,33 @@
+{% extends "exgallery/base.html" %}
+{% block title %}
+PGF/TikZ examples - {{tag.name}}{% endblock %}
+{% block feedtitle %}Latest additions to the PGF/TikZ example gallery{% endblock %}
+{% block feedurl %}/feeds/pgftikzexamples/{% endblock %}
+
+{% block content %}
+<h1>{{tag.name}} example entries</h1>
+
+{{tag.description}}
+
+<div class="gallery">
+{% for entry in tag.exampleentry_set.all %}
+<dl>
+	<dt><a href="/pgftikzexamples/{{entry.slug}}/"><img src="{{entry.url}}thumbs/{{entry.slug}}.jpg" alt="{{entry.name}}" /></a></dt>
+	<dd><a href="/pgftikzexamples/{{entry.slug}}/">{{entry.name}}</a><br />[<a href="{{entry.url}}PDF/{{entry.slug}}.pdf">PDF</a>]
+[<a href="{{entry.url}}TEX/{{entry.slug}}.tex">TEX</a>]</dd>
+</dl>
+{% endfor %}
+</div>
+
+
+
+{% endblock %}
+
+{% block sidebar %}
+{% include "exgallery/menu.html" %}
+{% include "exgallery/taglist.html" %}
+
+
+
+
+{% endblock %}

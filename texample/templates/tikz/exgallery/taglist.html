@@ -1,0 +1,7 @@
+<div class='colentry' id='categorylist'>
+<h5>Tags</h5>
+
+<ul>
+{% for tag in tags %}<li><a href="{{tag.get_absolute_url}}">{{tag.title}}<span class="count">{{tag.exampleentry_set.count}}</span></a></li>{% endfor %}
+</ul>
+</div>
