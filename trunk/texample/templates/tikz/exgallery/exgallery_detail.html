@@ -1,0 +1,41 @@
+{% extends "exgallery/base.html" %}
+{% block pageid %}code{% endblock%}
+{% block title %}PGF/TikZ example: {{entry.name}}{% endblock %}
+{% block extrahead %}<link rel="stylesheet" type="text/css" media="screen" href="/media/css/pygments_style.css" />{% endblock %}
+{% block feedtitle %}Latest additions to the PGF/TikZ example gallery{% endblock %}
+{% block feedurl %}/feeds/pgftikzexamples/{% endblock %}
+{% block content %}
+
+<h1>Example: {{entry.name}}</h1>
+<ul class="pubinfo">
+<li class="published">Created {{entry.created|date:"Y-m-d"}}</li>
+</ul>
+{{entry.description|safe}}
+<p>Download as: [<a href="{{entry.url}}PDF/{{entry.slug}}.pdf">PDF</a>]
+[<a href="{{entry.url}}TEX/{{entry.slug}}.tex">TEX</a>]
+</p>
+<div class="galleryimage">
+<a href="{{entry.url}}PDF/{{entry.slug}}.pdf"><img src="{{entry.url}}PNG/{{entry.slug}}.png" alt="{{entry.name}}" /></a>
+</div>
+{{entry.content|safe}}
+{% endblock %}
+{% block sidebar %}
+{% include "exgallery/menu.html" %}
+<div class='colentry' id='categorylist'>
+<h5>Entry tags</h5>
+<ul>
+{% for category in entry.tags.all %}<li><a href="{{category.get_absolute_url}}">{{category.name}}<span class="count">{{category.exampleentry_set.count}}</span></a></li>{% endfor %}
+</ul>
+
+</div>
+
+<p></p>
+<!--Creative Commons License--><a rel="license" href="http://creativecommons.org/licenses/by/2.5/"><img alt="Creative Commons License" style="border-width: 0" src="http://creativecommons.org/images/public/somerights20.png"/></a><!--/Creative Commons License--><!-- <rdf:RDF xmlns="http://web.resource.org/cc/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <Work rdf:about="">
+        <license rdf:resource="http://creativecommons.org/licenses/by/2.5/" />
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+    </Work>
+    <License rdf:about="http://creativecommons.org/licenses/by/2.5/"><permits rdf:resource="http://web.resource.org/cc/Reproduction"/><permits rdf:resource="http://web.resource.org/cc/Distribution"/><requires rdf:resource="http://web.resource.org/cc/Notice"/><requires rdf:resource="http://web.resource.org/cc/Attribution"/><permits rdf:resource="http://web.resource.org/cc/DerivativeWorks"/></License></rdf:RDF> -->
+
+
+{% endblock %}
