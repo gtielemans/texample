@@ -1,6 +1,7 @@
 """Models for the TikZ and PGF examples gallery"""
 from django.db import models
 import datetime
+from django.db.models import permalink
 
 class CommonTagInfo(models.Model):
     title = models.CharField(max_length=200)
@@ -17,21 +18,24 @@ class CommonTagInfo(models.Model):
 
 class Tag(CommonTagInfo):
     
+    @permalink    
     def get_absolute_url(self):
-        return u"/pgftikzexamples/tag/%s/" % (self.slug)
-
+        return ('texgallery_tag_detail',(),{'slug':self.slug})
+    
 class Feature(CommonTagInfo):
     """A specific feature used by an example"""
     
+    @permalink    
     def get_absolute_url(self):
-        return u"/pgftikzexamples/tag/%s/" % (self.slug)
+        return ('texgallery_feature_detail',(),{'slug':self.slug})
 
 
 class TechnicalArea(CommonTagInfo):
     """A technical area that an example belongs to"""
     
+    @permalink    
     def get_absolute_url(self):
-        return u"/area/tag/%s/" % (self.slug)
+        return ('texgallery_area_detail',(),{'slug':self.slug})
 
 
 class Author(models.Model):
@@ -39,6 +43,14 @@ class Author(models.Model):
     last_name = models.CharField(max_length=60,blank=True)
     url = models.URLField(verify_exists=False,blank=True)
     email = models.EmailField(blank=True)
+    class Meta:
+        ordering = ('last_name',)
+    
+    def _get_full_name(self):
+        return "%s %s" % (self.first_name, self.last_name)
+
+    full_name = property(_get_full_name)
+
     
     def __unicode__(self):
         return "%s %s" % (self.first_name, self.last_name)
@@ -74,8 +86,9 @@ class ExampleEntry(models.Model):
     #    self.updated = datetime.datetime.now()
     #    super(ExampleEntry, self).save()
         
+    @permalink    
     def get_absolute_url(self):
-        return u"/pgftikzexamples/%s/" % (self.slug)
+        return ('texgallery_detail',(),{'slug':self.slug})
 
 
     def __unicode__(self):
