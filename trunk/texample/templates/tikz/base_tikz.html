@@ -5,21 +5,23 @@
 <!--    <li id="nav-tikz-gallery"><a href="">gallery</a></li> -->
     <li id="nav-tikz-builds"><a href="{% url pkgbuilds_index %}">builds</a></li>
     <li id="nav-tikz-resources"><a href="{% url pkgresources_index %}">resources</a></li>
+    <li id="nav-tikz-examples"><a href="{% url texgallery_index %}">examples</a></li>
 </ul>
 {% endblock %}
 
 
 {% block content %}
-<div class="container">
-<div class="span-16 colborder">
+<div class="container_12">
+<div class="grid_8">
 {% block content-main %}
 {% endblock %}
 </div>
 
-<div class="span-7 last">
+<div class="grid_4">
 {% block sidebar %}
 {% endblock %}
 </div>
+<div class="clear">&nbsp;</div>
 </div><!-- container -->
 
 {% endblock %}
