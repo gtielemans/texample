@@ -1,0 +1,35 @@
+{% extends "base_tikz_examples.html" %}
+
+{% block content-main %}
+{% block description %}
+<h1>{{tag.title}} examples</h1>
+{% endblock %}
+<div class="gallery">
+{% for entry in tag.exampleentry_set.all %}
+<dl{% if forloop.counter|divisibleby:"3" %} class="omega"{%endif%}>
+	<dt><a href="{{entry.get_absolute_url}}/"><img src="{{gallery_url}}thumbs/{{entry.slug}}.jpg" alt="{{entry.title}}" /></a></dt>
+	<dd><a href="{{entry.get_absolute_url}}">{{entry.title}}</a><!--<br />[<a href="{{gallery_url}}PDF/{{entry.slug}}.pdf">PDF</a>]
+[<a href="{{gallery_url}}TEX/{{entry.slug}}.tex">TEX</a>]--></dd>
+</dl>
+{% endfor %}
+</div>
+{% endblock %}
+
+
+{% block sidebar %}
+{% include "texgallery/menu.html" %}
+<div class="tag-list"
+<h5>Features</h5>
+<ul>
+{% for tag in features %}
+<li><a href="{{tag.get_absolute_url}}">{{tag.title}}<span>{{tag.exampleentry_set.count}}</span></a></li>
+{% endfor %}
+</ul>
+<h5>Tags</h5>
+<ul>
+{% for tag in tags %}
+<li><a href="{{tag.get_absolute_url}}">{{tag.title}}<span>{{tag.exampleentry_set.count}}</span></a></li>
+{% endfor %}
+</ul>
+</div>
+{% endblock %}

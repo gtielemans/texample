@@ -1,30 +1,31 @@
-{% extends "exgallery/base.html" %}
+{% extends "base_tikz_examples.html" %}
 {% block pageid %}code{% endblock%}
-{% block title %}PGF/TikZ example: {{entry.name}}{% endblock %}
+{% block title %}{{entry.title}} | TikZ example{% endblock %}
 {% block extrahead %}<link rel="stylesheet" type="text/css" media="screen" href="/media/css/pygments_style.css" />{% endblock %}
 {% block feedtitle %}Latest additions to the PGF/TikZ example gallery{% endblock %}
 {% block feedurl %}/feeds/pgftikzexamples/{% endblock %}
-{% block content %}
+{% block content-main %}
 
-<h1>Example: {{entry.name}}</h1>
+<h1>Example: {{entry.title}}</h1>
 <ul class="pubinfo">
 <li class="published">Created {{entry.created|date:"Y-m-d"}}</li>
+<li>Author {{entry.author.all.0.full_name}}</li>
 </ul>
 {{entry.description|safe}}
 <p>Download as: [<a href="{{entry.url}}PDF/{{entry.slug}}.pdf">PDF</a>]
 [<a href="{{entry.url}}TEX/{{entry.slug}}.tex">TEX</a>]
 </p>
 <div class="galleryimage">
-<a href="{{entry.url}}PDF/{{entry.slug}}.pdf"><img src="{{entry.url}}PNG/{{entry.slug}}.png" alt="{{entry.name}}" /></a>
+<a href="{{gallery_url}}PDF/{{entry.slug}}.pdf"><img src="{{gallery_url}}PNG/{{entry.slug}}.png" alt="{{entry.title}}" /></a>
 </div>
 {{entry.content|safe}}
 {% endblock %}
 {% block sidebar %}
-{% include "exgallery/menu.html" %}
+{% include "texgallery/menu.html" %}
 <div class='colentry' id='categorylist'>
 <h5>Entry tags</h5>
 <ul>
-{% for category in entry.tags.all %}<li><a href="{{category.get_absolute_url}}">{{category.name}}<span class="count">{{category.exampleentry_set.count}}</span></a></li>{% endfor %}
+{% for category in entry.tags.all %}<li><a href="{{category.get_absolute_url}}">{{category.title}}<span class="count">{{category.exampleentry_set.count}}</span></a></li>{% endfor %}
 </ul>
 
 </div>
