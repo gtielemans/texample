@@ -1,15 +1,21 @@
 """Models for the TikZ and PGF examples gallery"""
 from django.db import models
 import datetime
+from template_utils.markup import formatter
 from django.db.models import permalink
 
 class CommonTagInfo(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField()
     description = models.TextField(blank=True,help_text="Optional")
+    description_html = models.TextField(blank=True)
 
     def __unicode__(self):
         return self.title
+    
+    def save(self, force_insert=False, force_update=False):
+        self.description_html = formatter(self.description)
+        super(CommonTagInfo, self).save()
     
     class Meta:
         ordering = ("title",)
@@ -43,6 +49,7 @@ class Author(models.Model):
     last_name = models.CharField(max_length=60,blank=True)
     url = models.URLField(verify_exists=False,blank=True)
     email = models.EmailField(blank=True)
+    slug = models.SlugField()
     class Meta:
         ordering = ('last_name',)
     
@@ -51,6 +58,9 @@ class Author(models.Model):
 
     full_name = property(_get_full_name)
 
+    @permalink    
+    def get_absolute_url(self):
+        return ('texgallery_author_detail',(),{'slug':self.slug})
     
     def __unicode__(self):
         return "%s %s" % (self.first_name, self.last_name)
