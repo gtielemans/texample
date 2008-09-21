@@ -1,72 +1,191 @@
+/*****************************************************************************
 
+        CSS for TeXample.net
+        Author: Kjell Magne Fauske
+ 
+******************************************************************************/
 
 p, table, hr, .box { margin-bottom:25px; }
 
 .box p { margin-bottom:10px; }
-
 body {padding-top:0; margin-top:0; background-color: black;}
 
 /* Header */
 
-#header-wrapper {
-	border-bottom : 1px solid gray;
-        padding-top: 1em;
-        position: relative;
-	background-color:white;
-}
-
-#header-wrapper h2{
-	margin:0 0.5em 0 0;
-	padding:0 10px 0 0;
-	border-right:1px solid #808080;
-	float:left;
-}
-
-#header-wrapper p{margin:0;line-height:45px;}
+#header{border-bottom : 1px solid gray; padding-top: 1em; position: relative; background-color:white;}
+#header h2{margin:0 0.5em 0 0; padding:0 10px 0 0; border-right:1px solid #808080; float:left;}
+#header p{margin:0;line-height:45px;}
 
 
 /* Footer styles */
 
-#footer-wrapper {
-        background-color: black;
-        color: white;
-        padding: 1em 0;
-        /*border-top : 1px solid silver;*/
-}
-
-#footer-wrapper a {background-color: black; color: white;}
+#footer {background-color: black; color: white; padding: 1em 0;}
+#footer a {background-color: black; color: white;}
 
 
 /* Main content */
 
-#content-wrapper {
-	background-color: white;
-        padding-top: 1em;
-        padding-bottom: 1em;
-	
-}
+#content-wrapper {background-color: white; padding-top: 1em; padding-bottom: 1em;}
+
+
+#navigation-sec {background-color: #DDDDDD;}
 
 
 /* Navigation */
-#navigation-main, #navigation-sub {
-  list-style: none; 
-}
+
+#navigation-main, #navigation-sub {list-style: none;}
 
 #navigation-main li, #navigation-sub li{display: inline;padding: 3px;}
 
-.tikz #nav-tikz a, .community #nav-community a {
-background-color:silver;
-}
+.tikz #nav-tikz a, .community #nav-community a,.articles #nav-articles a{font-weight:bold;}
 
-#tikz-builds #nav-tikz-builds a, #tikz-resources #nav-tikz-resources a {
-color:red;
-}
+#tikz-builds #nav-tikz-builds a, #tikz-resources #nav-tikz-resources a, .tikz-examples #nav-tikz-examples a{color:red;}
+
+.nav-sec #navigation-main a {color:gray;}
 
 /* Sections */
 
 .feedlink, .rss {background: url(img/feed-icon-12x12.png) no-repeat 2px 0.25em;
 	padding-left: 18px;
 }
-/* PGF Builds */
+/****
+ PGF Builds
+****/
 
 .builds-latest {background-color:silver; padding:5px;}
+
+input.text, input.title,
+textarea, select {
+  margin:0.5em 0;
+  border:1px solid #bbb;
+}
+
+input.text:focus, input.title:focus,
+textarea:focus, select:focus {
+  border:1px solid #666;
+}
+
+input.text, 
+input.title   { width: 300px; padding:5px; }
+input.title   { font-size:1.5em; }
+textarea      { width: 390px; height: 250px; padding:5px; }
+
+
+ul{list-style:disc}
+ul {
+       list-style-position: outside;
+       margin-left: 0px;
+     }
+
+.content-main li{margin-left:0px}
+.content-main li li {margin-left:30px}
+
+h1, h2, h3, h4, h5, h6 {font-weight: bold;}
+h1 {font-size: 218%;}
+h2 {font-size: 164%;}
+h3 {font-size: 120%;}
+h4 {font-size: 100%;}
+
+p {margin-bottom: 1em;}
+
+
+h1, h2, h3, h4, h5, h6 {font-weight:normal;}
+h1 {font-size:2.6em;line-height:1;margin-bottom:0.5em;}
+h2 {font-size:2em;margin-bottom:0.75em;}
+h3 {font-size:1.5em;line-height:1;margin-bottom:1em;}
+h4 {font-size:1.2em;line-height:1.25;margin-bottom:1.25em;}
+h5 {font-size:1em;font-weight:bold;margin-bottom:1.5em;}
+h6 {font-size:1em;font-weight:bold;}
+p {margin:0 0 1.5em;}
+
+pre, tt, code, kbd{
+
+	/*font-family: "Courier New",Courier,Monospace;*/
+
+	font-size:0.96em;
+
+}
+
+
+pre {overflow:auto;}
+
+.cont_16
+{
+	background: #fff url(img/16_col.gif) repeat-y;
+}
+
+/*
+.container_12
+{
+	background: #fff url(img/16_col.gif) repeat-y;
+}
+*/
+
+/******
+
+ TeXGallery section
+
+******/
+
+/* Gallery index */
+
+/*
+.tag-table ul {
+	list-style:none;
+	padding: 0 0 0 0;
+	margin: 0 0 0 0;
+}
+*/
+
+.tag-table table tr{
+        padding: 0 0;
+        margin : 0 0;
+}
+
+.tag-table table td
+{
+        /*text-align: right;*/
+        vertical-align: top;
+        width: 220px;
+        margin : 0 0px 0 0;
+        padding: 0px 20px 0px 0px;
+}
+
+.tag-table table td.omega {padding-right:0;}
+/*
+.tag-table table td span
+{
+	float:left;
+	text-align: right;
+}
+
+.tag-table table li:hover {background-color:red; margin-left:-5px; padding-left:5px;margin-right:-5px; padding-right:5px;}
+.tag-table ul li{padding: 0 0;margin:0 0;}
+*/
+
+/* Thumbnails */
+.gallery dl {margin:0; border: 1px solid silver;width: 218px; height:280px; padding:0;}
+.gallery dl:hover{border-color:black;}
+.gallery dl {float:left; margin-top:0; margin-left:0; margin-bottom: 10px; margin-right:20px;}
+.gallery dl.omega {margin-right:0;}
+.gallery dt {padding:9px; width: 200px; height: 200px;}
+.gallery dt img {margin:0; padding:0;  }
+.gallery dd {margin-left:0; padding:9px;}
+.gallery dt a {border-bottom:none ! important;}
+
+.galleryimage a {border-bottom:none ! important;}
+
+/* Taglists */
+.tag-list ul{ list-style:none; margin:0; padding:0;}
+.tag-list li{ position:relative; margin:0; padding:0;}
+.tag-list a{
+	display:block;
+	padding:1px 0 1px 10px;
+	margin:0;
+}
+.tag-list a:hover{ background-color: #DFDFC8; border-bottom:none;}
+.tag-list span{ position:absolute;right:10px;color: #ACACAC;}
+
+
+
+
