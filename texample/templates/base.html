@@ -5,53 +5,70 @@
     <meta http-equiv="Content-Language" content="en" />
     <title>{% block title %}{% endblock %}</title>
     <!-- Framework CSS -->
-    <link rel="stylesheet" href="{{MEDIA_URL}}css/blueprint/screen.css" type="text/css" media="screen, projection" />
-    <link rel="stylesheet" href="{{MEDIA_URL}}css/blueprint/print.css" type="text/css" media="print" />
-    <!--[if IE]><link rel="stylesheet" href="blueprint/ie.css" type="text/css" media="screen, projection" /><![endif]-->
-
+    <link rel="stylesheet" type="text/css" media="all" href="{{MEDIA_URL}}css/reset.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="{{MEDIA_URL}}css/text.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="{{MEDIA_URL}}css/960.css" />
+	<link rel="stylesheet" type="text/css" media="all" href="{{MEDIA_URL}}css/pygments_style.css" />
     <!-- Site-specific CSS -->
     <link rel="stylesheet" href="{{MEDIA_URL}}css/base.css" type="text/css" media="screen" />
     {% block extrahead %}{% endblock %}
 </head>
 
-<body id="{% block pageid %}generic{% endblock %}" class="{% block pageclass %}generic{% endblock %}">
+<body id="{% block pageid %}generic{% endblock %}" class="{% block nav-level %}{% endblock%} {% block pageclass %}generic{% endblock %}">
 <!-- Start of #header -->
-<div id="header-wrapper"><div class="container">
-        <div class="column span-24 last">
+<div id="header">
+    <div class="container_12">
+        <div class="grid_12">
             <h2><a href="/"><img src="{{MEDIA_URL}}img/logo.png" alt="TeXample.net" /></a></h2>
             <p>ample resources for TeX users (soon)</p>
-            <br class="clear"/>
-            {% block navigation-main %}
-            <ul id="navigation-main">
-                <li id="nav-home"><a  href="/">home</a></li>
-                <li id="nav-tikz"><a href="/tikz/">TikZ</a></li>
-                <li id="nav-community"><a href="/community/">community</a></li>
-
-                <!--<li id="nav-beamer"><a href="/beamer/">Beamer</a></li>
-                <li><a href="/about/">about</a></li>
-                <li><a href="/contact/">contact</a></li> -->
-            </ul>
-            {% endblock %}
         </div>
-
+        <div class="clear">&nbsp;</div>    
+        {% block navigation-main %}
+        <!-- Start of #navigation-main -->
+        <div id="navigation-main" class="grid_12">
+            <ul>
+                <li id="nav-home"><a href="/">home</a></li>
+                <li id="nav-weblog"><a href="/">weblog</a></li>
+                <li id="nav-articles"><a href="/articles/">articles</a></li>
+                <li id="nav-tikz"><a href="/tikz/">TikZ</a></li>
+                <li id="nav-beamer"><a href="/tikz/">Beamer</a></li>
+                <li id="nav-community"><a href="/community/">community</a></li>
+                <li id="nav-tools"><a href="/tools/">tools</a></li>
+            </ul>
+        </div>
+        <!-- End of #navigation-main -->
+        <div class="clear">&nbsp;</div>
+        {% endblock %}
     </div>
+    <!-- End of #header -->
 </div>
-
 <!-- END of #header-wrapper -->
+{% block sec-navigation %}{% endblock %}
 <div id="content-wrapper">
-<div class="container">
-<div class="column span-24 last">
-{% block navigation-sub %}
+{% block content %}
+    <div class="container_12">
+    <div class="grid_8 content-main">
+            {% block content-main %}
+            {% endblock %}
+    </div>
+    <div class="grid_4">
+        {% block sidebar %}
+        {% endblock %}
+    </div>
+    <div class="clear">&nbsp;</div>
+</div>
 {% endblock %}
 </div>
+
+<!-- footer -->
+<div id="footer" class="container_12">
+    <div class="grid_12">
+        <a href="/about/">about</a> | <a href="/contact/">contact</a> |
+        Hosted by <a href="http://www.webfaction.com/?affiliate=fauske">Webfaction</a>
+    </div>
+    <div class="clear">&nbsp;</div>
 </div>
-{% block content %}{% endblock %}
-</div>
-<div id="footer-wrapper">
-<div id="footer" class="container">
-<a href="/about/">about</a> | <a href="/contact/">contact</a> |
-Hosted by <a href="http://www.webfaction.com/?affiliate=fauske">Webfaction</a>
-</div>
-</div>
+<!-- end of footer -->
+
 </body>
 </html>

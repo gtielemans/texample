@@ -1,1 +1,1 @@
-Contact from {{name}}
+[TeXample] Contact from {{name}}
