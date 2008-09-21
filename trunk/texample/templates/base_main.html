@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
-<div class="span-16 prepend colborder">
-{% block content-main %}
-{% endblock %}
+<div class="container_12">
+<div class="grid_8 content-main">
+        {% block content-main %}
+        {% endblock %}
 </div>
-
-<div class="span-7 last">
+<div class="grid_4">
 {% block sidebar %}
 {% endblock %}
 </div>
+<div class="clear">&nbsp;</div>
 </div>
 {% endblock %}
 

@@ -9,7 +9,7 @@
 <h1>Example: {{entry.title}}</h1>
 <ul class="pubinfo">
 <li class="published">Created {{entry.created|date:"Y-m-d"}}</li>
-<li>Author {{entry.author.all.0.full_name}}</li>
+<li>Author <a href="{{entry.author.all.0.get_absolute_url}}">{{entry.author.all.0.full_name}}</a></li>
 </ul>
 {{entry.description|safe}}
 <p>Download as: [<a href="{{entry.url}}PDF/{{entry.slug}}.pdf">PDF</a>]

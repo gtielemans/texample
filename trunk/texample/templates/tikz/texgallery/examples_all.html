@@ -1,0 +1,15 @@
+{% extends "texgallery/tag_detail_base.html" %}
+{% block title %}
+PGF/TikZ examples{% endblock %}
+
+{% block gallery %}
+<div class="gallery">
+{% for entry in object_list %}
+<dl{% if forloop.counter|divisibleby:"3" %} class="omega"{%endif%}>
+	<dt><a href="{{entry.get_absolute_url}}"><img src="{{gallery_url}}thumbs/{{entry.slug}}.jpg" alt="{{entry.title}}" /></a></dt>
+	<dd><a href="{{entry.get_absolute_url}}">{{entry.title}}</a><br />[<a href="{{gallery_url}}PDF/{{entry.slug}}.pdf">PDF</a>]
+[<a href="{{gallery_url}}TEX/{{entry.slug}}.tex">TEX</a>]</dd>
+</dl>
+{% endfor %}
+</div>
+{% endblock %}

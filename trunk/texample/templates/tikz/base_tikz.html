@@ -1,5 +1,5 @@
-{% extends "base.html" %}
-{% block pageclass %}tikz{% endblock %}
+{% extends "base_section.html" %}
+{% block pageclass %}{{ block.super }} tikz{% endblock %}
 {% block navigation-sub %}
 <ul id="navigation-sub">
 <!--    <li id="nav-tikz-gallery"><a href="">gallery</a></li> -->
@@ -8,21 +8,3 @@
     <li id="nav-tikz-examples"><a href="{% url texgallery_index %}">examples</a></li>
 </ul>
 {% endblock %}
-
-
-{% block content %}
-<div class="container_12">
-<div class="grid_8">
-{% block content-main %}
-{% endblock %}
-</div>
-
-<div class="grid_4">
-{% block sidebar %}
-{% endblock %}
-</div>
-<div class="clear">&nbsp;</div>
-</div><!-- container -->
-
-{% endblock %}
-

@@ -4,13 +4,12 @@
 
 
 {% block content %}
-<div class="container">
-<div class="span-16 colborder">
+<div class="container_12">
+<div class="grid_8">
 {% block content-main %}
 {% endblock %}
 </div>
-
-<div class="span-7 last">
+<div class="grid_4">
 {% block sidebar %}
 
 <p class="feedlink"><a href="{% url top_feeds "community" %}">Subscribe to the TeX community RSS feed</a></p>
@@ -27,6 +26,7 @@
 we will add your feed to this page.</p>
 {% endblock %}
 </div>
+<div class="clear">&nbsp;</div>
 </div><!-- container -->
 
 {% endblock %}
