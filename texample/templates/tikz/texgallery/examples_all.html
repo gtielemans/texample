@@ -1,8 +1,15 @@
 {% extends "texgallery/tag_detail_base.html" %}
-{% block title %}
-PGF/TikZ examples{% endblock %}
+{% block title %}TikZ and PGF examples{% endblock %}
+
+{% block description %}
+<h1>TikZ and PGF examples</h1>
+
+<p>Sort: <a href="{% url texgallery_all_alpha %}">Alphabetical</a> | <a href="{% url texgallery_all_date %}">Chronological</a></p>
+{% endblock %}
 
 {% block gallery %}
+{% include "utils/paginator.html" %}
+<div class="clear">&nbsp;</div>
 <div class="gallery">
 {% for entry in object_list %}
 <dl{% if forloop.counter|divisibleby:"3" %} class="omega"{%endif%}>
@@ -12,4 +19,6 @@ PGF/TikZ examples{% endblock %}
 </dl>
 {% endfor %}
 </div>
+<div class="clear">&nbsp;</div>
+{% include "utils/paginator.html" %}
 {% endblock %}

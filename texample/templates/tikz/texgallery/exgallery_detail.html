@@ -2,16 +2,20 @@
 {% block pageid %}code{% endblock%}
 {% block title %}{{entry.title}} | TikZ example{% endblock %}
 {% block extrahead %}<link rel="stylesheet" type="text/css" media="screen" href="/media/css/pygments_style.css" />{% endblock %}
-{% block feedtitle %}Latest additions to the PGF/TikZ example gallery{% endblock %}
-{% block feedurl %}/feeds/pgftikzexamples/{% endblock %}
-{% block content-main %}
 
-<h1>Example: {{entry.title}}</h1>
+{% block content-main %}
+{% load typogrify %}
+<h1>Example: {{entry.title|widont|smartypants|safe}}</h1>
 <ul class="pubinfo">
 <li class="published">Created {{entry.created|date:"Y-m-d"}}</li>
-<li>Author <a href="{{entry.author.all.0.get_absolute_url}}">{{entry.author.all.0.full_name}}</a></li>
+<li>Author{{ entry.author.all|pluralize }}:
+{% for author in entry.author.all %}<a href="{{author.get_absolute_url}}">{{author.full_name}}</a>{% if forloop.last %}{%else%}, {%endif%}{% endfor %}
+</li>
 </ul>
+
+<div class="example-description">
 {{entry.description|safe}}
+</div>
 <p>Download as: [<a href="{{entry.url}}PDF/{{entry.slug}}.pdf">PDF</a>]
 [<a href="{{entry.url}}TEX/{{entry.slug}}.tex">TEX</a>]
 </p>
