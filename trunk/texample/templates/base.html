@@ -18,22 +18,28 @@
 <!-- Start of #header -->
 <div id="header">
     <div class="container_12">
-        <div class="grid_12">
+        <div class="grid_7">
             <h2><a href="/"><img src="{{MEDIA_URL}}img/logo.png" alt="TeXample.net" /></a></h2>
-            <p>ample resources for TeX users (soon)</p>
+            <p>ample resources for TeX users</p>
+        </div>
+        <div id="navigation-mini" class="grid_5">
+            <ul>
+                <li><a href="/about/">About</a></li>
+                <li><a href="/contact/">Contact</a></li>
+            </ul>
         </div>
         <div class="clear">&nbsp;</div>    
         {% block navigation-main %}
         <!-- Start of #navigation-main -->
         <div id="navigation-main" class="grid_12">
             <ul>
-                <li id="nav-home"><a href="/">home</a></li>
-                <li id="nav-weblog"><a href="/">weblog</a></li>
-                <li id="nav-articles"><a href="/articles/">articles</a></li>
+                <!--<li id="nav-home"><a href="/">home</a></li>-->
                 <li id="nav-tikz"><a href="/tikz/">TikZ</a></li>
-                <li id="nav-beamer"><a href="/tikz/">Beamer</a></li>
-                <li id="nav-community"><a href="/community/">community</a></li>
-                <li id="nav-tools"><a href="/tools/">tools</a></li>
+                <!--<li id="nav-beamer"><a href="/tikz/">Beamer</a></li>-->
+                <li id="nav-community"><a href="/community/">Community</a></li>
+                <li id="nav-articles"><a href="/articles/">Articles</a></li>
+                <li id="nav-weblog"><a href="/">Weblog</a></li>
+                <!--li id="nav-tools"><a href="/tools/">Tools</a></li>-->
             </ul>
         </div>
         <!-- End of #navigation-main -->
