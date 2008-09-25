@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import *
-from texgallery.models import ExampleEntry, Tag, Feature, Author
+from texgallery.models import ExampleEntry, Tag, Feature, Author,TechnicalArea
 
 from django.conf import settings
 
@@ -9,21 +9,38 @@ latest_dict = {
         'tags' : Tag.objects.all,
         'features' : Feature.objects.all,
         'authors' : Author.objects.all,
+        'technical_areas' : TechnicalArea.objects.all,
         'gallery_url' : settings.MEDIA_URL + 'tikz/examples/',
     },
     #'template_object_name' : 'category',
 }
 
-all_dict = {
-    'queryset': ExampleEntry.objects.order_by('-created'),
+all_dict_alpha = {
+    'queryset': ExampleEntry.objects.order_by('title'),
+    'paginate_by': 18,
     'extra_context' : {
         'tags' : Tag.objects.all,
         'features' : Feature.objects.all,
         'authors' : Author.objects.all,
+        'technical_areas' : TechnicalArea.objects.all,
         'gallery_url' : settings.MEDIA_URL + 'tikz/examples/',
     },
     #'template_object_name' : 'category',
 }
+
+all_dict_date = {
+    'queryset': ExampleEntry.objects.order_by('-created'),
+    'paginate_by': 18,
+    'extra_context' : {
+        'tags' : Tag.objects.all,
+        'features' : Feature.objects.all,
+        'authors' : Author.objects.all,
+        'technical_areas' : TechnicalArea.objects.all,
+        'gallery_url' : settings.MEDIA_URL + 'tikz/examples/',
+    },
+    #'template_object_name' : 'category',
+}
+
 
 entry_dict = {
     'queryset' : ExampleEntry.objects.all(),
@@ -37,6 +54,8 @@ tag_dict_base = {
         'gallery_url' : settings.MEDIA_URL + 'tikz/examples/',
         'tags' : Tag.objects.all,
         'features' : Feature.objects.all,
+        'technical_areas' : TechnicalArea.objects.all,
+        
     }
 }
 
@@ -59,12 +78,19 @@ urlpatterns = patterns('',
         template_name="texgallery/tag_detail.html"), name='texgallery_tag_detail'),
     
     url(r'^all/$','django.views.generic.list_detail.object_list',
-        dict(all_dict, 
-        template_name="texgallery/examples_all.html"), name='texgallery_all'),
+        dict(all_dict_alpha, 
+        template_name="texgallery/examples_all.html"), name='texgallery_all_alpha'),
+    url(r'^all/date/$','django.views.generic.list_detail.object_list',
+        dict(all_dict_date, 
+        template_name="texgallery/examples_all.html"), name='texgallery_all_date'),
+    
     
     url(r'^author/(?P<slug>\w[-\w]+)/','django.views.generic.list_detail.object_detail',
         dict(author_dict, slug_field="slug", template_object_name="tag",
         template_name="texgallery/author_detail.html"), name='texgallery_author_detail'),
+    
+    url(r'^about/$','django.views.generic.simple.direct_to_template',
+        {'template': 'texgallery/about.html'},name='texgallery_about'),
 
     url(r'(?P<slug>\w[-\w]+)/',
         'django.views.generic.list_detail.object_detail',
