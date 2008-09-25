@@ -10,6 +10,26 @@ p, table, hr, .box { margin-bottom:25px; }
 .box p { margin-bottom:10px; }
 body {padding-top:0; margin-top:0; background-color: black;}
 
+/* Fonts */
+
+p {margin-bottom: 1em;}
+
+h1, h2, h3, h4, h5, h6 {font-weight:normal;}
+h1 {font-size:2.4em;line-height:1;margin-bottom:0.5em;}
+h2 {font-size:1.8em;margin-bottom:0.75em;}
+h3 {font-size:1.3em;line-height:1;margin-bottom:1em;}
+h4 {font-size:1.2em;line-height:1.25;margin-bottom:1.25em;}
+h5 {font-size:1em;font-weight:bold;margin-bottom:1.5em;}
+h6 {font-size:1em;font-weight:bold;}
+p {margin:0 0 1.5em;}
+
+/* Code */
+pre, tt, code, kbd{ font-size:0.96em;}
+pre {overflow:auto;}
+
+
+/******* Layout ******/
+
 /* Header */
 
 #header{border-bottom : 1px solid gray; padding-top: 1em; position: relative; background-color:white;}
@@ -25,29 +45,30 @@ body {padding-top:0; margin-top:0; background-color: black;}
 
 /* Main content */
 
-#content-wrapper {background-color: white; padding-top: 1em; padding-bottom: 1em;}
+#content-wrapper {background-color: white; padding-top: 1.5em; padding-bottom: 1em;}
 
-
-#navigation-sec {background-color: #DDDDDD;}
+/* Hanging punctation */
+.content-main li{margin-left:0px}
+.content-main li li {margin-left:30px}
 
 
 /* Navigation */
 
+#navigation-sec {background-color: #DDDDDD;}
+
+#header {list-style:none}
+#header ul li {display: inline;padding: 3px;}
 #navigation-main, #navigation-sub {list-style: none;}
-
 #navigation-main li, #navigation-sub li{display: inline;padding: 3px;}
-
-.tikz #nav-tikz a, .community #nav-community a,.articles #nav-articles a{font-weight:bold;}
-
+.nav-sec #navigation-main a {color:gray;}
+.tikz #nav-tikz a, .community #nav-community a,.articles #nav-articles a{color: red;font-weight:bold;}
 #tikz-builds #nav-tikz-builds a, #tikz-resources #nav-tikz-resources a, .tikz-examples #nav-tikz-examples a{color:red;}
 
-.nav-sec #navigation-main a {color:gray;}
 
 /* Sections */
 
-.feedlink, .rss {background: url(img/feed-icon-12x12.png) no-repeat 2px 0.25em;
-	padding-left: 18px;
-}
+.feedlink, .rss {background: url(img/feed-icon-12x12.png) no-repeat 2px 0.25em; padding-left: 18px;}
+
 /****
  PGF Builds
 ****/
@@ -77,37 +98,8 @@ ul {
        margin-left: 0px;
      }
 
-.content-main li{margin-left:0px}
-.content-main li li {margin-left:30px}
-
-h1, h2, h3, h4, h5, h6 {font-weight: bold;}
-h1 {font-size: 218%;}
-h2 {font-size: 164%;}
-h3 {font-size: 120%;}
-h4 {font-size: 100%;}
-
-p {margin-bottom: 1em;}
 
 
-h1, h2, h3, h4, h5, h6 {font-weight:normal;}
-h1 {font-size:2.6em;line-height:1;margin-bottom:0.5em;}
-h2 {font-size:2em;margin-bottom:0.75em;}
-h3 {font-size:1.5em;line-height:1;margin-bottom:1em;}
-h4 {font-size:1.2em;line-height:1.25;margin-bottom:1.25em;}
-h5 {font-size:1em;font-weight:bold;margin-bottom:1.5em;}
-h6 {font-size:1em;font-weight:bold;}
-p {margin:0 0 1.5em;}
-
-pre, tt, code, kbd{
-
-	/*font-family: "Courier New",Courier,Monospace;*/
-
-	font-size:0.96em;
-
-}
-
-
-pre {overflow:auto;}
 
 .cont_16
 {
@@ -187,5 +179,13 @@ pre {overflow:auto;}
 .tag-list span{ position:absolute;right:10px;color: #ACACAC;}
 
 
-
-
+/* Paginator */
+.paginator{clear:both;float:right;padding:1.5em .75em;}
+.paginator .prev-na,.paginator .next-na{border:1px solid #ccc;background-color:#f9f9f9;color:#aaa;font-weight:400;padding:.3em;}
+.paginator .prev a,.paginator .prev a:visited,.paginator .next a,.paginator .next a:visited{border:1px solid silver!important;background-color:#e1e1e1;color:#234f32;font-weight:700;padding:.3em;}
+.paginator a{text-decoration:none;}
+.paginator .prev,.paginator .prev-na{margin-right:.5em;}
+.paginator .next,.paginator .next-na{margin-left:.5em;}
+.paginator .page a,.paginator .page a:visited,.paginator .curr{font-weight:400;border:1px solid silver!important;background-color:#e1e1e1;color:#006000;margin:0 .25em;padding:.25em;}
+.paginator .curr{background-color:#930000;color:#fff;border:1px solid #234f32;font-weight:700;font-size:1em;}
+.paginator .page a:hover,.paginator .curr a:hover,.paginator .prev a:hover,.paginator .next a:hover{background-color:#D3C9C9;border:1px solid #000!important;}
