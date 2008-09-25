@@ -71,7 +71,7 @@ class ExampleEntry(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField()
     created = models.DateTimeField(blank=True, null=True)
-    updated = models.DateTimeField(editable=False)
+    updated = models.DateTimeField(editable=False,blank=True,null=True)
     description = models.TextField(blank=True,
         help_text="Use raw HTML")
     content = models.TextField(blank=True,
