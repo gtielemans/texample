@@ -11,7 +11,7 @@
 
 {% for article in object_list %}
 <div class="articleinfo">
-<h3><a href="{{article.get_absolute_url}}">{{article.title|widont|smartypants|safe}}</a></h3>
+<h2><a href="{{article.get_absolute_url}}">{{article.title|widont|smartypants|safe}}</a></h2>
 {% if article.abstract_html %}
 {{article.abstract_html|safe}}
 {% else %}
