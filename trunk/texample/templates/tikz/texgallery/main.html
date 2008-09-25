@@ -7,108 +7,70 @@
 
 {% block content %}
 <div class="container_12">
+	<div class="grid_6">
+		<h1>TikZ and PGF examples</h1>
+		
+		<p>Welcome to the <a href="http://www.ctan.org/tex-archive/help/Catalogue/entries/pgf.html">PGF and TikZ</a> examples gallery.
+		You can browse the gallery in several ways. Select a tag from the list in the right column, or
+		select an entry point from the list below.
+		</p>
+	</div>
+	<div class="grid_6">
+		{% include "texgallery/menu.html" %}
+	</div>
+	<div class="clear">&nbsp;</div>
 <div class="grid_12">
-
-{% block content-main %}
-
-<div class="grid_6 alpha">
-<h1>TikZ and PGF examples</h1>
-
-<p>Welcome to the <a href="http://www.ctan.org/tex-archive/help/Catalogue/entries/pgf.html">PGF and TikZ</a> examples gallery.
-You can browse the gallery in several ways. Select a tag from the list in the right column, or
-select an entry point from the list below.
-</p>
+	<h2>Recently added examples</h2>
+	<div class="gallery">
+		{% for entry in object_list %}
+		<dl{% if forloop.counter|divisibleby:"4" %} class="omega"{%endif%}>
+			<dt><a href="{{entry.get_absolute_url}}"><img src="{{gallery_url}}thumbs/{{entry.slug}}.jpg" alt="{{entry.title}}" /></a></dt>
+			<dd><a href="{{entry.get_absolute_url}}">{{entry.title}}</a><!--<br />[<a href="{{gallery_url}}PDF/{{entry.slug}}.pdf">PDF</a>]
+		[<a href="{{gallery_url}}TEX/{{entry.slug}}.tex">TEX</a>]--></dd>
+		</dl>
+		{% endfor %}
+	</div>
+		
+	<p><a href="{% url texgallery_all_date %}">Show all examples</a> | <a href="{% url texgallery_all_date %}">Show in chronological order</a></p>
+	
+	{% load list_to_columns %}
+	<div class="tag-table tag-list">
+		<h5>Features</h5>
+		
+		{% list_to_columns features as taglists 4 %}
+		{% include "texgallery/tagtable.html" %}
+	</div>
+	
+	
+	<div class="tag-table tag-list">
+		<h5>Tags</h5>
+		
+		{% list_to_columns tags as taglists 4 %}
+		{% include "texgallery/tagtable.html" %}
+	</div>
+	
+	<div class="tag-table tag-list">
+		<h5>Technical area</h5>
+		
+		{% list_to_columns technical_areas as taglists 4 %}
+		{% include "texgallery/tagtable.html" %}
+	</div>
+	<div class="tag-table tag-list">
+		<h5>Authors</h5>
+		
+		{% list_to_columns authors as taglists 4 %}
+		<table>
+		<tr>
+		{% for taglist in taglists %}
+		<td{%if forloop.last %} class="omega"{% endif %}><ul>
+		{% for tag in taglist %}
+		<li><a href="{{tag.get_absolute_url}}">{{tag.full_name}}<span>{{tag.exampleentry_set.count}}</span></a></li>
+		{% endfor %}
+		</ul></td>
+		{% endfor %}
+		</tr>
+		</table>
+	</div>
+</div><div class="clear">&nbsp;</div>
 </div>
-<div class="grid_6 omega">
-{% include "texgallery/menu.html" %}
-</div>
-<div class="clear">&nbsp;</div>
-<h2>Recently added examples</h2>
-<div class="gallery">
-{% for entry in object_list %}
-<dl{% if forloop.counter|divisibleby:"4" %} class="omega"{%endif%}>
-	<dt><a href="{{entry.get_absolute_url}}"><img src="{{gallery_url}}thumbs/{{entry.slug}}.jpg" alt="{{entry.title}}" /></a></dt>
-	<dd><a href="{{entry.get_absolute_url}}">{{entry.title}}</a><!--<br />[<a href="{{gallery_url}}PDF/{{entry.slug}}.pdf">PDF</a>]
-[<a href="{{gallery_url}}TEX/{{entry.slug}}.tex">TEX</a>]--></dd>
-</dl>
-{% endfor %}
-</div>
-
-<p style="clear:left"><a href="{% url texgallery_all %}">Show all examples in chronological order</a></p>
-{% load list_to_columns %}
-<div class="tag-table tag-list">
-<h5>Features</h5>
-
-{% list_to_columns features as taglists 4 %}
-<table>
-<tr>
-{% for taglist in taglists %}
-<td{%if forloop.last %} class="omega"{% endif %}><ul>
-{% for tag in taglist %}
-<li><a href="{{tag.get_absolute_url}}">{{tag.title}}<span>{{tag.exampleentry_set.count}}</span></a></li>
-{% endfor %}
-</ul></td>
-{% endfor %}
-</tr>
-</table>
-</div>
-
-{% load list_to_columns %}
-<div class="tag-table tag-list">
-<h5>Tags</h5>
-
-{% list_to_columns tags as taglists 4 %}
-<table>
-<tr>
-{% for taglist in taglists %}
-<td{%if forloop.last %} class="omega"{% endif %}><ul>
-{% for tag in taglist %}
-<li><a href="{{tag.get_absolute_url}}">{{tag.title}}<span>{{tag.exampleentry_set.count}}</span></a></li>
-{% endfor %}
-</ul></td>
-{% endfor %}
-</tr>
-</table>
-</div>
-
-{% load list_to_columns %}
-<div class="tag-table tag-list">
-<h5>Authors</h5>
-
-{% list_to_columns authors as taglists 4 %}
-<table>
-<tr>
-{% for taglist in taglists %}
-<td{%if forloop.last %} class="omega"{% endif %}><ul>
-{% for tag in taglist %}
-<li><a href="{{tag.get_absolute_url}}">{{tag.full_name}}<span>{{tag.exampleentry_set.count}}</a></span></li>
-{% endfor %}
-</ul></td>
-{% endfor %}
-</tr>
-</table>
-</div>
-
-
-
-{% for entry in object_list %}
-
-{% endfor %}
-
-<div class="clear">&nbsp;</div>
-
-
-
-
-{% endblock %}
-</div>
-{% block sidebar %}
-{% include "texgallery/menu.html" %}
-
-<div class="colentry">
-<ul class="feedlist">
-<li><a href="/feeds/pgftikzexamples/">Subscribe to the PGF and TikZ examples feed</a></li>
-</ul>
-</div>
-{% endblock %}
 {% endblock %}

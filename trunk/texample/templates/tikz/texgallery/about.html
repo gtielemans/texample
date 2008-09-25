@@ -1,6 +1,8 @@
-{% extends "exgallery/base.html" %}
+{% extends "base_tikz.html" %}
+{% block pageclass %}{{ block.super }} tikz-examples{% endblock%}
+
 {% block title %}About the PGF/TikZ examples gallery{% endblock%}
-{% block content %}
+{% block content-main %}
 <h1>About the PGF and TikZ examples gallery</h1>
 
 <p><a href="http://www.ctan.org/tex-archive/help/Catalogue/entries/pgf.html">PGF and TikZ</a>
@@ -50,7 +52,7 @@ The description of each example is put inside a comment environment, formatted u
 {% endblock %}
 
 {% block sidebar %}
-{% include "exgallery/menu.html" %}
+{% include "texgallery/menu.html" %}
 <div class="colentry">
 <ul class="feedlist">
 <li><a href="/feeds/pgftikzexamples/">Subscribe to the PGF and TikZ examples feed</a></li>
