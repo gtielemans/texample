@@ -1,9 +1,13 @@
 {% extends "base_tikz.html" %}
-
+{% block breadcrumbs %}<a href="/">Home</a> &gt; TikZ{% endblock %}
+{% load generic_content %}
 {% block content-main %}
 <h1>TikZ</h1>
 
 <p>Not much to see here yet...</p>
+{% get_latest_object texgallery.exampleentry as example %}
+
+<p>{{example.title}}</p>
 <p>This section of TeXample.net will contain various TikZ and PGF resources.</p>
 {% endblock %}
 

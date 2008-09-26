@@ -3,6 +3,7 @@
 {% block title %}{{entry.title}} | TikZ example{% endblock %}
 {% block extrahead %}<link rel="stylesheet" type="text/css" media="screen" href="/media/css/pygments_style.css" />{% endblock %}
 
+{% block breadcrumbs %}{{block.super}} &gt; <a href="{% url texgallery_all_alpha %}">All</a> &gt; {{entry.title}}{% endblock %}
 {% block content-main %}
 {% load typogrify %}
 <h1>Example: {{entry.title|widont|smartypants|safe}}</h1>

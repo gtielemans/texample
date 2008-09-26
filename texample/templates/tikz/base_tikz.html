@@ -8,3 +8,5 @@
     <li id="nav-tikz-examples"><a href="{% url texgallery_index %}">Examples</a></li>
 </ul>
 {% endblock %}
+
+{% block breadcrumbs %}{{ block.super }} &gt; <a href="/tikz/">TikZ</a>{% endblock %}

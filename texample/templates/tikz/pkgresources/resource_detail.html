@@ -2,6 +2,8 @@
 {% block pageid %}tikz-resources{% endblock%}
 {% block title %}TikZ and PGF resource: {{resource.title}}{% endblock %}
 
+{% block breadcrumbs %}{{block.super}} &gt; <a href="{% url pkgresources_index %}">Resources</a> &gt; {{resource.title}}{% endblock %}
+
 {% block content-main %}
 <h1>Resource: {{resource.title}}</h1>
 
