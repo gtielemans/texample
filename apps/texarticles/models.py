@@ -36,7 +36,7 @@ class Category(models.Model):
         return ('texarticles_category',(),{'slug':self.slug})
         
 
-class Article(models.Model):
+class CommonArticleInfo(models.Model):
     LIVE_STATUS = 1
     DRAFT_STATUS = 2
     HIDDEN_STATUS = 3
@@ -72,7 +72,6 @@ class Article(models.Model):
     featured = models.BooleanField(default=False)
     enable_comments = models.BooleanField(default=True)
     
-    categories = models.ManyToManyField(Category)
     tags = TagField()
     
     # html version
@@ -84,17 +83,10 @@ class Article(models.Model):
     # Managers
     live = LiveEntryManager()
     objects = models.Manager()
-    class Meta:
-        ordering = ['title']
-        verbose_name_plural = "Articles"
     
     def __unicode__(self):
         return self.title
     
-    @permalink
-    def get_absolute_url(self):
-        return ('texarticles_detail',(),{'slug':self.slug})
-                
     def save(self, force_insert=False, force_update=False):
         if self.markup <> self.NO_MARKUP:
             if self.markup == self.RAW_MARKUP:
@@ -103,7 +95,6 @@ class Article(models.Model):
                 markup_formatter = self.markup
            
             media_url = settings.MEDIA_URL + self.get_absolute_url()[1:]
-           
         
             parts = publish_parts(self.body,markup_formatter,media_url=media_url)
             self.toc = parts['toc']
@@ -115,4 +106,20 @@ class Article(models.Model):
                     self.abstract_html = parts['summary']
             self.body_html = parts['body']
             
-        super(Article,self).save()
+        super(CommonArticleInfo,self).save(force_insert, force_update)
+
+    
+    class Meta:
+        abstract = True
+
+class Article(CommonArticleInfo):
+    categories = models.ManyToManyField(Category)
+    
+    class Meta:
+        ordering = ['title']
+        verbose_name_plural = "Articles"
+    
+    @permalink
+    def get_absolute_url(self):
+        return ('texarticles_detail',(),{'slug':self.slug})
+                
