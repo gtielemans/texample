@@ -4,7 +4,7 @@
 {% block feedtitle %}Latest additions to the PGF/TikZ example gallery{% endblock %}
 {% block feedurl %}/feeds/pgftikzexamples/{% endblock %}
 
-
+{% block breadcrumbs %}<a href="/">Home</a> &gt; <a href="../">TikZ</a> &gt; Examples{% endblock %}
 {% block content %}
 <div class="container_12">
 	<div class="grid_6">
@@ -31,7 +31,7 @@
 		{% endfor %}
 	</div>
 		
-	<p><a href="{% url texgallery_all_date %}">Show all examples</a> | <a href="{% url texgallery_all_date %}">Show in chronological order</a></p>
+	<p><a href="{% url texgallery_all_alpha %}">Show all examples</a> | <a href="{% url texgallery_all_date %}">Show in chronological order</a></p>
 	
 	{% load list_to_columns %}
 	<div class="tag-table tag-list">

@@ -2,6 +2,9 @@
 {% load generic_markup %}
 
 {% block pageid %}pgfbuild-details{% endblock%}
+
+{% block breadcrumbs %}{{block.super}} &gt; <a href="{% url pkgbuilds_index %}">Builds</a> &gt; {{build.build_date|date:"Y-m-d"}} {% endblock %}
+
 {% block title %}PGF {{build.build_date|date:"Y-m-d"}} CVS build details{% endblock %}
 
 {% block content-main %}
