@@ -13,7 +13,8 @@ from models import ExampleEntry,Tag,Feature,Author, TechnicalArea
 
 class ExampleAdmin(admin.ModelAdmin):
     list_display = ('title','created')
-    list_filter = ('features','author','tags','technical_areas')
+    list_filter = ('features','tags','technical_areas','author')
+    ordering = ('title',)
 
 class TagAdmin(admin.ModelAdmin):
     list_display = ('title',)

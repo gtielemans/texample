@@ -62,6 +62,7 @@ tag_dict_base = {
 tag_dict = dict(tag_dict_base, queryset =  Tag.objects.all())
 feature_dict = dict(tag_dict_base, queryset =  Feature.objects.all())
 author_dict = dict(tag_dict_base, queryset =  Author.objects.all())
+area_dict = dict(tag_dict_base, queryset =  TechnicalArea.objects.all())
 
 
 
@@ -76,6 +77,10 @@ urlpatterns = patterns('',
     url(r'^tag/(?P<slug>\w[-\w]+)/','django.views.generic.list_detail.object_detail',
         dict(tag_dict, slug_field="slug", template_object_name="tag",
         template_name="texgallery/tag_detail.html"), name='texgallery_tag_detail'),
+    
+    url(r'^area/(?P<slug>\w[-\w]+)/','django.views.generic.list_detail.object_detail',
+        dict(area_dict, slug_field="slug", template_object_name="tag",
+        template_name="texgallery/area_detail.html"), name='texgallery_area_detail'),
     
     url(r'^all/$','django.views.generic.list_detail.object_list',
         dict(all_dict_alpha, 

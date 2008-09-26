@@ -87,7 +87,7 @@ class ExampleEntry(models.Model):
     technical_areas = models.ManyToManyField(TechnicalArea, blank=True)
     
     class Meta:
-        ordering = ("title",)
+        ordering = ("-created",)
         verbose_name_plural = "Example entries"
     
     #def save(self, force_insert=False, force_update=False):
