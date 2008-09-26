@@ -1,6 +1,9 @@
 {% extends "texgallery/tag_detail_base.html" %}
 
-{% block title %}Examples contributed by {{tag.full_name}}{% endblock %}
+
+{% block title %}TikZ examples contributed by {{tag.full_name}}{% endblock %}
+
+{% block breadcrumbs %}{{ block.super }} &gt; Author: {{tag.full_name}}{% endblock %}
 
 {% block description %}
 <h1>Examples by {{tag.full_name}}</h1>
