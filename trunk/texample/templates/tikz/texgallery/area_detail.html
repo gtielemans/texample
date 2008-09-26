@@ -1,0 +1,5 @@
+{% extends "texgallery/tag_detail_base.html" %}
+
+{% block title %}TikZ examples technical area: {{tag.title}}{% endblock %}
+
+{% block breadcrumbs %}{{ block.super }} &gt; Technical area: {{tag.title}}{% endblock %}

@@ -22,15 +22,21 @@
 {% block sidebar %}
 {% include "texgallery/menu.html" %}
 <div class="tag-list"
-<h5>Features</h5>
+<h5 id="features">Features</h5>
 <ul>
 {% for tag in features %}
 <li><a href="{{tag.get_absolute_url}}">{{tag.title}}<span>{{tag.exampleentry_set.count}}</span></a></li>
 {% endfor %}
 </ul>
-<h5>Tags</h5>
+<h5 id="tags">Tags</h5>
 <ul>
 {% for tag in tags %}
+<li><a href="{{tag.get_absolute_url}}">{{tag.title}}<span>{{tag.exampleentry_set.count}}</span></a></li>
+{% endfor %}
+</ul>
+<h5 id="areas">Technical areas</h5>
+<ul>
+{% for tag in technical_areas %}
 <li><a href="{{tag.get_absolute_url}}">{{tag.title}}<span>{{tag.exampleentry_set.count}}</span></a></li>
 {% endfor %}
 </ul>

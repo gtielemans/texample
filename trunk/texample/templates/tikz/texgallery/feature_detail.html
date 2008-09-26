@@ -1,6 +1,4 @@
 {% extends "texgallery/tag_detail_base.html" %}
-{% block title %}
-PGF/TikZ examples - {{tag.name}}{% endblock %}
-{% block feedtitle %}Latest additions to the PGF/TikZ example gallery{% endblock %}
-{% block feedurl %}/feeds/pgftikzexamples/{% endblock %}
+{% block title %}TikZ examples feature: {{tag.title}}{% endblock %}
 
+{% block breadcrumbs %}{{ block.super }} &gt; Feature: {{tag.title}}{% endblock %}
