@@ -40,5 +40,8 @@ class Entry(CommonArticleInfo):
  
     @permalink
     def get_absolute_url(self):
-        return ('texblog_detail',(),{'slug':self.slug})
+        return ('texblog_entry_detail',(),{ 'year': self.pub_date.strftime('%Y'),
+                                            'month': self.pub_date.strftime('%b').lower(),
+                                            'day': self.pub_date.strftime('%d'),
+                                            'slug': self.slug })
                 

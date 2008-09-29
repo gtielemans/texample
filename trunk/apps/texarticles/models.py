@@ -81,8 +81,9 @@ class CommonArticleInfo(models.Model):
     extra_content = models.TextField(blank=True)
     
     # Managers
-    live = LiveEntryManager()
     objects = models.Manager()
+    live = LiveEntryManager()
+    
     
     def __unicode__(self):
         return self.title
@@ -110,13 +111,13 @@ class CommonArticleInfo(models.Model):
 
     
     class Meta:
+        ordering = ['-pub_date']
         abstract = True
 
 class Article(CommonArticleInfo):
     categories = models.ManyToManyField(Category)
     
     class Meta:
-        ordering = ['title']
         verbose_name_plural = "Articles"
     
     @permalink
