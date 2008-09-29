@@ -4,7 +4,7 @@ from texgallery.models import ExampleEntry, Tag, Feature, Author,TechnicalArea
 from django.conf import settings
 
 latest_dict = {
-    'queryset': ExampleEntry.objects.order_by('-created')[:4],
+    'queryset': ExampleEntry.live.order_by('-created')[:4],
     'extra_context' : {
         'tags' : Tag.objects.all,
         'features' : Feature.objects.all,
@@ -16,7 +16,7 @@ latest_dict = {
 }
 
 all_dict_alpha = {
-    'queryset': ExampleEntry.objects.order_by('title'),
+    'queryset': ExampleEntry.live.order_by('title'),
     'paginate_by': 18,
     'extra_context' : {
         'tags' : Tag.objects.all,
@@ -29,7 +29,7 @@ all_dict_alpha = {
 }
 
 all_dict_date = {
-    'queryset': ExampleEntry.objects.order_by('-created'),
+    'queryset': ExampleEntry.live.order_by('-created'),
     'paginate_by': 18,
     'extra_context' : {
         'tags' : Tag.objects.all,

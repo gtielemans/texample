@@ -4,6 +4,11 @@ import datetime
 from template_utils.markup import formatter
 from django.db.models import permalink
 
+
+class LiveEntryManager(models.Manager):
+    def get_query_set(self):
+        return super(LiveEntryManager,self).get_query_set().filter(is_live=True)
+
 class CommonTagInfo(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField()
@@ -65,7 +70,7 @@ class Author(models.Model):
     def __unicode__(self):
         return "%s %s" % (self.first_name, self.last_name)
     
-    
+
     
 class ExampleEntry(models.Model):
     title = models.CharField(max_length=200)
@@ -80,11 +85,17 @@ class ExampleEntry(models.Model):
         help_text="Use raw HTML")
     
     enable_comments = models.BooleanField(default=True,null=True)
+    is_live = models.BooleanField(default=False)
     author = models.ManyToManyField(Author, blank=True)
     # Categorization
     features = models.ManyToManyField(Feature, blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
     technical_areas = models.ManyToManyField(TechnicalArea, blank=True)
+    
+    # Managers
+    objects = models.Manager()
+    live = LiveEntryManager()
+    
     
     class Meta:
         ordering = ("-created",)
