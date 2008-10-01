@@ -14,12 +14,16 @@ class CommonTagInfo(models.Model):
     slug = models.SlugField()
     description = models.TextField(blank=True,help_text="Optional")
     description_html = models.TextField(blank=True)
+    # Denormalization field to store number of entries assigned to the tag.
+    entry_count = models.IntegerField(blank=True,null=True,default=0)
 
     def __unicode__(self):
         return self.title
     
     def save(self, force_insert=False, force_update=False):
         self.description_html = formatter(self.description)
+        #if self.exampleentry_set:
+        #    self.entry_count= self.exampleentry_set.count()
         super(CommonTagInfo, self).save()
     
     class Meta:
@@ -55,6 +59,8 @@ class Author(models.Model):
     url = models.URLField(verify_exists=False,blank=True)
     email = models.EmailField(blank=True)
     slug = models.SlugField()
+    # Denormalization field to store number of entries assigned to the author.
+    entry_count = models.IntegerField(blank=True,default=0)
     class Meta:
         ordering = ('last_name',)
     
@@ -102,11 +108,21 @@ class ExampleEntry(models.Model):
         verbose_name_plural = "Example entries"
     
     #def save(self, force_insert=False, force_update=False):
-    #    if not self.id:
-    #        self.created = datetime.datetime.now()
-    #    self.updated = datetime.datetime.now()
-    #    super(ExampleEntry, self).save()
-        
+    #    
+    #    ll = self.features.all()
+    #    print "savepre", ll
+    ##    if not self.id:
+    ##        #self.created = datetime.datetime.now()
+    ##        pass
+    ##    else:
+    ##        pass
+    ##
+    ##    #self.updated = datetime.datetime.now()
+    #    super(ExampleEntry, self).save(force_insert, force_update)
+    #    in_db = ExampleEntry.objects.filter(id=self.id)[0]
+    #    
+    #    print "savepost", [e for e in in_db.features.all()]
+    #    
     @permalink    
     def get_absolute_url(self):
         return ('texgallery_detail',(),{'slug':self.slug})
@@ -115,3 +131,31 @@ class ExampleEntry(models.Model):
     def __unicode__(self):
         return self.title
     
+
+#def denormalize_entries(sender, instance, created=False, **kwargs):
+#    """"""
+#    if created:
+#        #self.created = datetime.datetime.now()
+#        dbtags = set()
+#        print "created"
+#        pass
+#    else:
+#        in_db = ExampleEntry.objects.get(pk=instance.id)
+#        dbtags = set(in_db.tags.all()) | set(in_db.features.all()) | \
+#                    set(in_db.technical_areas.all()) | set(in_db.author.all())
+#        
+#    tags = set(instance.tags.all()) | set(instance.features.all()) | \
+#                set(instance.technical_areas.all()) | set(instance.author.all())
+#    print "*********\n"
+#    print "instance",kwargs['raw']
+#    print "tags", tags
+#    print "dbtags", dbtags
+#    new_tags = tags & dbtags
+#    removed_tags = dbtags - tags
+#    print "New tags",new_tags
+#    print "Removed_tags",removed_tags 
+
+#models.signals.pre_save.connect(denormalize_entries, sender=ExampleEntry)
+#models.signals.post_save.connect(denormalize_entries, sender=ExampleEntry)
+#models.signals.post_delete.connect(denormalize_votes, sender=ExampleEntry)
+
