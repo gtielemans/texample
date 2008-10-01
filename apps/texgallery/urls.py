@@ -68,37 +68,37 @@ area_dict = dict(tag_dict_base, queryset =  TechnicalArea.objects.all())
 
 urlpatterns = patterns('',
     url(r'^$','django.views.generic.list_detail.object_list',
-        dict(latest_dict,template_name="texgallery/main.html"),name='texgallery_index'),
+        dict(latest_dict,template_name="texgallery/texgallery_main.html"),name='texgallery_index'),
 
     url(r'^feature/(?P<slug>\w[-\w]+)/','django.views.generic.list_detail.object_detail',
         dict(feature_dict, slug_field="slug", template_object_name="tag",
-        template_name="texgallery/feature_detail.html"), name='texgallery_feature_detail'),
+        template_name="texgallery/texgallery_feature_detail.html"), name='texgallery_feature_detail'),
 
     url(r'^tag/(?P<slug>\w[-\w]+)/','django.views.generic.list_detail.object_detail',
         dict(tag_dict, slug_field="slug", template_object_name="tag",
-        template_name="texgallery/tag_detail.html"), name='texgallery_tag_detail'),
+        template_name="texgallery/texgallery_tag_detail.html"), name='texgallery_tag_detail'),
     
     url(r'^area/(?P<slug>\w[-\w]+)/','django.views.generic.list_detail.object_detail',
         dict(area_dict, slug_field="slug", template_object_name="tag",
-        template_name="texgallery/area_detail.html"), name='texgallery_area_detail'),
+        template_name="texgallery/texgallery_area_detail.html"), name='texgallery_area_detail'),
     
     url(r'^all/$','django.views.generic.list_detail.object_list',
         dict(all_dict_alpha, 
-        template_name="texgallery/examples_all.html"), name='texgallery_all_alpha'),
+        template_name="texgallery/texgallery_examples_all.html"), name='texgallery_all_alpha'),
     url(r'^all/date/$','django.views.generic.list_detail.object_list',
         dict(all_dict_date, 
-        template_name="texgallery/examples_all.html"), name='texgallery_all_date'),
+        template_name="texgallery/texgallery_examples_all.html"), name='texgallery_all_date'),
     
     
     url(r'^author/(?P<slug>\w[-\w]+)/','django.views.generic.list_detail.object_detail',
         dict(author_dict, slug_field="slug", template_object_name="tag",
-        template_name="texgallery/author_detail.html"), name='texgallery_author_detail'),
+        template_name="texgallery/texgallery_author_detail.html"), name='texgallery_author_detail'),
     
     url(r'^about/$','django.views.generic.simple.direct_to_template',
-        {'template': 'texgallery/about.html'},name='texgallery_about'),
+        {'template': 'texgallery/texgallery_about.html'},name='texgallery_about'),
 
     url(r'(?P<slug>\w[-\w]+)/',
         'django.views.generic.list_detail.object_detail',
         dict(entry_dict, slug_field="slug",template_object_name="entry",
-            template_name="texgallery/exgallery_detail.html"),name='texgallery_detail'),
+            template_name="texgallery/texgallery_detail.html"),name='texgallery_detail'),
 )
