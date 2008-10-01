@@ -3,7 +3,7 @@
 {% for taglist in taglists %}
 <td{%if forloop.last %} class="omega"{% endif %}><ul>
 {% for tag in taglist %}
-<li><a href="{{tag.get_absolute_url}}">{{tag.title}}<span>{{tag.exampleentry_set.count}}</span></a></li>
+<li><a href="{{tag.get_absolute_url}}">{{tag.title}}<span>{{tag.entry_count}}</span></a></li>
 {% endfor %}
 </ul></td>
 {% endfor %}

@@ -37,7 +37,7 @@
 	<div class="tag-table tag-list">
 		<h5 id="features">Features</h5>
 		
-		{% list_to_columns features as taglists 4 %}
+		{% qlist_to_columns features as taglists 4 %}
 		{% include "texgallery/tagtable.html" %}
 	</div>
 	
@@ -45,26 +45,26 @@
 	<div class="tag-table tag-list">
 		<h5 id="tags">Tags</h5>
 		
-		{% list_to_columns tags as taglists 4 %}
+		{% qlist_to_columns tags as taglists 4 %}
 		{% include "texgallery/tagtable.html" %}
 	</div>
 	
 	<div class="tag-table tag-list">
 		<h5 id="areas">Technical area</h5>
 		
-		{% list_to_columns technical_areas as taglists 4 %}
+		{% qlist_to_columns technical_areas as taglists 4 %}
 		{% include "texgallery/tagtable.html" %}
 	</div>
 	<div class="tag-table tag-list">
 		<h5 id="authors">Authors</h5>
 		
-		{% list_to_columns authors as taglists 4 %}
+		{% qlist_to_columns authors as taglists 4 %}
 		<table>
 		<tr>
 		{% for taglist in taglists %}
 		<td{%if forloop.last %} class="omega"{% endif %}><ul>
 		{% for tag in taglist %}
-		<li><a href="{{tag.get_absolute_url}}">{{tag.full_name}}<span>{{tag.exampleentry_set.count}}</span></a></li>
+		<li><a href="{{tag.get_absolute_url}}">{{tag.full_name}}<span>{{tag.entry_count}}</span></a></li>
 		{% endfor %}
 		</ul></td>
 		{% endfor %}

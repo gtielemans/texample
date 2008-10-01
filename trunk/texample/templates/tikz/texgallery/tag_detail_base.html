@@ -25,19 +25,19 @@
 <h5 id="features">Features</h5>
 <ul>
 {% for tag in features %}
-<li><a href="{{tag.get_absolute_url}}">{{tag.title}}<span>{{tag.exampleentry_set.count}}</span></a></li>
+<li><a href="{{tag.get_absolute_url}}">{{tag.title}}<span>{{tag.entry_count}}</span></a></li>
 {% endfor %}
 </ul>
 <h5 id="tags">Tags</h5>
 <ul>
 {% for tag in tags %}
-<li><a href="{{tag.get_absolute_url}}">{{tag.title}}<span>{{tag.exampleentry_set.count}}</span></a></li>
+<li><a href="{{tag.get_absolute_url}}">{{tag.title}}<span>{{tag.entry_count}}</span></a></li>
 {% endfor %}
 </ul>
 <h5 id="areas">Technical areas</h5>
 <ul>
 {% for tag in technical_areas %}
-<li><a href="{{tag.get_absolute_url}}">{{tag.title}}<span>{{tag.exampleentry_set.count}}</span></a></li>
+<li><a href="{{tag.get_absolute_url}}">{{tag.title}}<span>{{tag.entry_count}}</span></a></li>
 {% endfor %}
 </ul>
 </div>
