@@ -16,7 +16,7 @@ class ArticleAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('Meta',{'fields': ('title','slug','pub_date','updated_date',
-                            'author','status','featured','enable_comments',
+                            'author','draft','featured','enable_comments',
                             ),
             }
         ),
