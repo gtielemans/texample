@@ -19,7 +19,7 @@ import re
 
 class LiveEntryManager(models.Manager):
     def get_query_set(self):
-        return super(LiveEntryManager,self).get_query_set().filter(status=self.model.LIVE_STATUS)
+        return super(LiveEntryManager,self).get_query_set().filter(draft=False)
 
 class Category(models.Model):
     description = models.TextField()
@@ -71,6 +71,7 @@ class CommonArticleInfo(models.Model):
     
     featured = models.BooleanField(default=False)
     enable_comments = models.BooleanField(default=True)
+    draft = models.BooleanField(default=True)
     
     tags = TagField()
     
@@ -87,6 +88,14 @@ class CommonArticleInfo(models.Model):
     
     def __unicode__(self):
         return self.title
+    
+    def _get_live(self):
+        if self.status == self.LIVE_STATUS:
+            return True
+        else:
+            return False
+        
+    is_live = property(_get_live)
     
     def save(self, force_insert=False, force_update=False):
         if self.markup <> self.NO_MARKUP:

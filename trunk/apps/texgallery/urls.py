@@ -88,7 +88,9 @@ urlpatterns = patterns('',
     url(r'^all/date/$','django.views.generic.list_detail.object_list',
         dict(all_dict_date, 
         template_name="texgallery/texgallery_examples_all.html"), name='texgallery_all_date'),
-    
+    url(r'^all/list/$','django.views.generic.list_detail.object_list',
+        dict(all_dict_alpha, paginate_by=1000,
+        template_name="texgallery/texgallery_examples_list.html"), name='texgallery_all_list'),
     
     url(r'^author/(?P<slug>\w[-\w]+)/','django.views.generic.list_detail.object_detail',
         dict(author_dict, slug_field="slug", template_object_name="tag",

@@ -45,7 +45,7 @@ class Resource(models.Model):
 
     class Meta:
         verbose_name_plural = 'Resources'
-        ordering = ['title']
+        ordering = ['-pub_date']
 
     def __unicode__(self):
         return self.title
