@@ -6,6 +6,8 @@ from os.path import join,basename,splitext,normpath
 from os import path as os_path
 PROJECT_PATH = os_path.abspath(os_path.split(__file__)[0])
 
+
+
 DEBUG = True
 
 ADMINS = (
@@ -71,11 +73,21 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.doc.XViewMiddleware',
+    
 )
 
 ROOT_URLCONF = 'texample.urls'
 
-MARKUP_FILTER = ('markdown', { 'safe_mode': False })
+
+MARKUP_FILTER = ('markdown', {'safe_mode': False,
+                              'extensions' :['headerid(level=3)','codehilite']})
+
+MARKUP_SETTINGS = {
+    'markdown' : {'safe_mode': False,
+                  'extensions' :['codehilite(css_class=highlight)']},
+    'restructuredtext' : {'settings_overrides' : {'initial_header_level': 2}},
+}
+
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -85,6 +97,12 @@ TEMPLATE_DIRS = (
     os_path.join(PROJECT_PATH, 'templates/tikz'),
 )
 
+
+GENERIC_CONTENT_LOOKUP_KWARGS = {
+        'texblog.entry': { 'draft': False }
+    }
+
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -92,23 +110,50 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.admin',
     # Third party apps
+    'django_evolution',
     'template_utils',
     'django_extensions',
     'contact_form',
+    'tagging',
+    'typogrify',
     # Texample apps
+    'texpubutils',
     'texample.tikz',
     'pkgbuilds',
     'pkgresources',
     'texample.aggregator',
-    'analytics',
+    'ganalytics',
+    'texarticles',
+    'texblog',
+    'texgallery',
+    'utils',
         
 )
 
 try:
     # Load database and secret key and debug settings
     from texample.current_settings import *
+    try:
+        MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + dbgMIDDLEWARE_CLASSES
+        INSTALLED_APPS = INSTALLED_APPS + dbgINSTALLED_APPS
+    except:
+        pass
 except:
+    raise
     pass
 
 TEMPLATE_DEBUG = DEBUG
 MANAGERS = ADMINS
+
+# in settings.py
+
+GALLERY_URL = MEDIA_URL + 'tikz/examples/'
+#auth, debug and i18n 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    # defaults
+    "django.core.context_processors.auth",
+    "django.core.context_processors.debug",
+    "django.core.context_processors.media",
+    "utils.context_processors.settings.GALLERY_URL",
+    
+)

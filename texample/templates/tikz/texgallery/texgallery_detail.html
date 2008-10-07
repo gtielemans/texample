@@ -7,12 +7,12 @@
 {% block content-main %}
 {% load typogrify %}
 <h1>Example: {{entry.title|widont|smartypants|safe}}</h1>
-<ul class="pubinfo">
-<li class="published">Created {{entry.created|date:"Y-m-d"}}</li>
-<li>Author{{ entry.author.all|pluralize }}:
+<div class="pubinfo">
+Published {{entry.created|date:"Y-m-d"}} | 
+ Author{{ entry.author.all|pluralize }}:
 {% for author in entry.author.all %}<a href="{{author.get_absolute_url}}">{{author.full_name}}</a>{% if forloop.last %}{%else%}, {%endif%}{% endfor %}
-</li>
-</ul>
+
+</div>
 
 <div class="example-description">
 {{entry.description|safe}}
@@ -27,17 +27,18 @@
 {% endblock %}
 {% block sidebar %}
 {% include "texgallery/menu.html" %}
+
 <div class="tag-list">
 
-<h5>Categorization</h5>
-<h6>Features</h6>
+<h5>Features</h5>
 <ul>
 {% for tag in entry.features.all %}
     <li><a href="{{tag.get_absolute_url}}">{{tag.title}}<span class="count">{{tag.entry_count}}</span></a></li>
 {% endfor %}
 </ul>
 
-<h6>Tags</h6>
+
+<h5>Tags</h5>
 <ul>
 {% for tag in entry.tags.all %}
     <li><a href="{{tag.get_absolute_url}}">{{tag.title}}<span class="count">{{tag.entry_count}}</span></a></li>
@@ -45,7 +46,7 @@
 </ul>
 
 {% if entry.technical_areas.all %}
-<h6>Technical areas</h6>
+<h5>Technical areas</h5>
 <ul>
 {% for tag in entry.technical_areas.all %}
     <li><a href="{{tag.get_absolute_url}}">{{tag.title}}<span class="count">{{tag.entry_count}}</span></a></li>

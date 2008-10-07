@@ -4,7 +4,7 @@
 \usepackage{palatino}
 \usepackage[osf,sc]{mathpazo}
 
-\usetikzlibrary{decorations.pathreplacing,calc}
+\usetikzlibrary{decorations.pathreplacing,calc,decorations.fractals,matrix}
 %%%<
 \usepackage{verbatim}
 \usepackage[active,tightpage]{preview}
@@ -17,10 +17,17 @@
 %  \RequirePackage[scaled=0.85]{beramono}
 
 \begin{document}
+\definecolor{main}{HTML}{4B5255}
+\colorlet{ample}{red!50!black}
+\colorlet{decor}{black!30}
 
 % Logo
 \begin{tikzpicture}
-\node[scale=10,inner sep=0pt] {\textbf{\TeX {\textcolor{red!50!black}{ample}}.net}};
+\node[scale=10,inner sep=0pt,color=main] {\textbf{\TeX {\textcolor{ample}{ample}}\color{main}.net}};
+\end{tikzpicture}
+
+\begin{tikzpicture}[scale=10,color=decor]
+\node[inner sep=0pt,color=main,right delimiter=\}] (logo) {\color{main}\textbf{\TeX {\textcolor{ample}{ample}}\color{main}.net}};
 \end{tikzpicture}
 
 \begin{tikzpicture}[decoration=brace]
@@ -34,6 +41,55 @@
 \end{scope}
 \end{tikzpicture}
 
+
+\begin{tikzpicture}
+\draw[decor] (-10,0) -- (3,0);
+\path (1,0.1);
+\end{tikzpicture}
+
+
+\begin{tikzpicture}[decoration={Koch snowflake,pre length=10cm}]
+\draw[decor] decorate{ decorate{ (-10,0) -- (3,0) }};
+\end{tikzpicture}
+
+\begin{tikzpicture}[decoration={Koch snowflake,pre length=10cm}]
+\draw[decor] decorate{ decorate{ decorate{ (-10,0) -- (3,0) }}};
+\end{tikzpicture}
+
+\begin{tikzpicture}[decoration={Koch snowflake,pre length=10cm}]
+\draw[decor] decorate{ decorate{ decorate{ decorate{ (-10,0) -- (3,0) }}}};
+\end{tikzpicture}
+
+\begin{tikzpicture}[decoration={Koch snowflake,pre length=10cm}]
+\draw[decor] decorate {decorate{ decorate{ decorate{ decorate{ (-10,0) -- (3,0) }}}}};
+\end{tikzpicture}
+
+\begin{tikzpicture}[color=decor]
+\node [right delimiter=\},minimum height=3.8cm,minimum width=0pt] {};
+\end{tikzpicture}
+
+\begin{tikzpicture}[color=decor]
+\node [right delimiter=\},minimum height=4.6cm,minimum width=0pt] {};
+\end{tikzpicture}
+
+\begin{tikzpicture}
+\node[inner sep=0pt] {$\displaystyle\sum_{n}$};
+\end{tikzpicture}
+
+\begin{tikzpicture}
+\node[inner sep=0pt] {\bf Ti\em{k}Z};
+\end{tikzpicture}
+
+
+\begin{tikzpicture}[
+    every node/.style={circle,draw=decor,minimum size=0.5cm}
+]
+\node (c) {};
+\path (c)++(30:2) node (n1) {};
+\path (c)++(180:2) node (n2) {};
+\end{tikzpicture}
+
 \end{document}
+
 
 
