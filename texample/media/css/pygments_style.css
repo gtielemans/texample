@@ -1,4 +1,4 @@
-.highlight { background: #f0f0f0; }
+.highlight { background: #f0f0f0; background:white; }
 .highlight .c { color: #60a0b0; font-style: italic } /* Comment */
 .highlight .err { border: 1px solid #FF0000 } /* Error */
 .highlight .k { color: #007020; font-weight: bold } /* Keyword */
