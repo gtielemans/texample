@@ -1,0 +1,15 @@
+{% extends "texblog/base_texblog.html" %}
+{% block pageclass %}weblog{% endblock %}
+{% block pageid %}weblog{% endblock%}
+{% block nav-level %}level3{% endblock%}
+{% block title %}{{entry.title}}{% endblock %}
+
+{% load typogrify %}
+{% block content-main %}
+
+<h1>{{entry.title|widont|smartypants|safe}}</h1>
+
+{{entry.body_html|safe}}
+
+{% endblock %}
+

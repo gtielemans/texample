@@ -1,12 +1,13 @@
 {% extends "base_section.html" %}
 {% block pageclass %}{{ block.super }} tikz{% endblock %}
+{% block nav-level %}level3{% endblock%}
 {% block navigation-sub %}
 <ul id="navigation-sub">
 <!--    <li id="nav-tikz-gallery"><a href="">gallery</a></li> -->
-    <li id="nav-tikz-builds"><a href="{% url pkgbuilds_index %}">Builds</a></li>
-    <li id="nav-tikz-resources"><a href="{% url pkgresources_index %}">Resources</a></li>
     <li id="nav-tikz-examples"><a href="{% url texgallery_index %}">Examples</a></li>
+    <li id="nav-tikz-resources"><a href="{% url pkgresources_index %}">Resources</a></li>
+    <li id="nav-tikz-builds"><a href="{% url pkgbuilds_index %}">Builds</a></li>
 </ul>
 {% endblock %}
 
-{% block breadcrumbs %}{{ block.super }} &gt; <a href="/tikz/">TikZ</a>{% endblock %}
+{% block breadcrumbs %}{{ block.super }} &gt; <a href="/tikz/">Ti<i>k</i>Z</a>{% endblock %}

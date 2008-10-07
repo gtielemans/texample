@@ -1,13 +1,69 @@
-{% extends "base_tikz.html" %}
-{% block breadcrumbs %}<a href="/">Home</a> &gt; TikZ{% endblock %}
+{% extends "tikz_index_base.html" %}
+{% block title %}TikZ and PGF | TeXample.net{% endblock %}
 {% load generic_content %}
-{% block content-main %}
-<h1>TikZ</h1>
+{% block abouttikz %}
 
-<p>Not much to see here yet...</p>
-{% get_latest_object texgallery.exampleentry as example %}
+<h1>Ti<i>k</i>Z and PGF</h1>
 
-<p>{{example.title}}</p>
-<p>This section of TeXample.net will contain various TikZ and PGF resources.</p>
+<p>
+Ti<i>k</i>Z and PGF are TeX packages for creating graphics programmatically. Ti<i>k</i>Z is
+build on top of PGF and allows you to create sophisticated graphics in a rather
+intuitive and easy manner. 
+</p>
+
+<p><strong>Disclaimer:</strong> This site is <em>not</em> the official home of Ti<i>k</i>Z and PGF. Consult the
+<a href="http://sourceforge.net/projects/pgf/">Sourceforge project page</a> for releases, support and bug reports.</p>
+
+{% endblock abouttikz %}
+
+{% block tikz_resources %}
+
+    <h2><a href="{%url pkgresources_index%}">Resources</a></h2>
+    
+    <p><a href="{% url pkgresources_index %}">Latest Ti<i>k</i>Z resources</a>:</p>
+    {% get_latest_objects pkgresources.resource 4 as resources %}
+    <dl>
+    {% for resource in resources %}
+    <dt id="{{resource.title|slugify}}"><a href="{{resource.url}}">{{resource.title}}</a></dt>
+    <dd>{{resource.description_html|truncatewords_html:100|safe}}</dd>
+    {% endfor %}
+    </dl>
+    </ul>
+    <p><a href="{% url pkgresources_index %}">View all resources...</a></p>
+{% endblock tikz_resources %}
+{% block tikz_examples %}
+    <h2><a href="{% url texgallery_index %}">Examples</a></h2>
+    
+    {% get_latest_objects texgallery.exampleentry 2 as tikzexamples %}
+    
+    <p><a href="{% url texgallery_index %}">Latest Ti<i>k</i>Z examples:</a></p>
+    <div class="gallery">
+        {% for entry in tikzexamples %}
+        <dl{% if forloop.counter|divisibleby:"2" %} class="omega"{%endif%}>
+            <dt><a href="{{entry.get_absolute_url}}"><img src="{{GALLERY_URL}}thumbs/{{entry.slug}}.jpg" alt="{{entry.title}}" /></a></dt>
+            <dd><a href="{{entry.get_absolute_url}}">{{entry.title}}</a></dd>
+        </dl>
+        {% endfor %}
+    </div>
+    <p><a href="{% url texgallery_all_alpha %}">Show all examples</a> |
+    <a href="{% url texgallery_all_date %}">Show in chronological order</a></p>
+{% endblock tikz_examples %}
+    
+{% block tikz_builds %}
+<h4><a href="{% url pkgbuilds_index %}">PGF builds</a></h4>
+    <p>Track the development of TikZ and PGF.</p>
+    
+<div class="builds-latest">
+    {% get_latest_object pkgbuilds.build as build %}
+<p><a href="{{MEDIA_URL}}{{build.zip_path}}">Download latest build<br/>
+Build date {{build.build_date|date:"Y-m-d"}}</a></p>
+<p><a href="{{build.get_absolute_url}}">Build details</a>
+{% if build.doc_path %}
+    | <a class="pdf" href="{{MEDIA_URL}}{{build.doc_path}}">Documentation</a>
+{% endif %} </p>
+</div>
 {% endblock %}
+
+    
+
 

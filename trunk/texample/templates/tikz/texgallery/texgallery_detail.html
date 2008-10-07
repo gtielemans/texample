@@ -27,11 +27,32 @@
 {% endblock %}
 {% block sidebar %}
 {% include "texgallery/menu.html" %}
-<div class='colentry' id='categorylist'>
-<h5>Entry tags</h5>
+<div class="tag-list">
+
+<h5>Categorization</h5>
+<h6>Features</h6>
 <ul>
-{% for category in entry.tags.all %}<li><a href="{{category.get_absolute_url}}">{{category.title}}<span class="count">{{category.exampleentry_set.count}}</span></a></li>{% endfor %}
+{% for tag in entry.features.all %}
+    <li><a href="{{tag.get_absolute_url}}">{{tag.title}}<span class="count">{{tag.entry_count}}</span></a></li>
+{% endfor %}
 </ul>
+
+<h6>Tags</h6>
+<ul>
+{% for tag in entry.tags.all %}
+    <li><a href="{{tag.get_absolute_url}}">{{tag.title}}<span class="count">{{tag.entry_count}}</span></a></li>
+{% endfor %}
+</ul>
+
+{% if entry.technical_areas.all %}
+<h6>Technical areas</h6>
+<ul>
+{% for tag in entry.technical_areas.all %}
+    <li><a href="{{tag.get_absolute_url}}">{{tag.title}}<span class="count">{{tag.entry_count}}</span></a></li>
+{% endfor %}
+</ul>
+{% endif %}
+
 
 </div>
 

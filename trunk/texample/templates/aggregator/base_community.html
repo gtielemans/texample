@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block pageclass %}community{% endblock %}
 {% block title %}The TeX community aggregator{% endblock %}
-
+{% block nav-level %}level2{% endblock%}
 
 
 {% block content %}
@@ -12,7 +12,6 @@
 </div>
 <div class="grid_4">
 {% block sidebar %}
-
 <p class="feedlink"><a href="{% url top_feeds "community" %}">Subscribe to the TeX community RSS feed</a></p>
 <h2>Authors</h2>
 

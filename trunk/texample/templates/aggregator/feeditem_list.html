@@ -9,17 +9,16 @@
 <h1>Community</h1>
 <p>This page aggregates blog entries by people who are
 writing about TeX and related topics.</p>
-
+<div id="aggregator-entrylist">
 {% for item in object_list %}
 <h2><a href="{{ item.link }}">{{ item.title }}</a></h2>
-<p class='date'>Posted on {{ item.date_modified|date:"F j, Y" }} at {{ item.date_modified|date:"H:i" }} by <a href="{{ item.feed.public_url }}">{{ item.feed.title }}</a> <a class="rss" href="{{ item.feed.feed_url }}">Feed</a></p>
-<div>
+<p class="meta">Posted on {{ item.date_modified|date:"F j, Y" }} at {{ item.date_modified|date:"H:i" }} by <a href="{{ item.feed.public_url }}">{{ item.feed.title }}</a> <a class="rss" href="{{ item.feed.feed_url }}">Feed</a></p>
 <p>
 {{ item.summary|safe|striptags|truncatewords:"200" }}
 </p>
-</div>
 <p><a href="{{ item.link }}">Read this post in context &raquo;</a></p>
 {% endfor %}
+</div>
 
 <div>
 {% if has_next %}<a href="?page={{ next }}">Earlier posts</a>{% endif %}</p>

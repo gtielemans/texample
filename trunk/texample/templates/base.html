@@ -5,16 +5,16 @@
     <meta http-equiv="Content-Language" content="en" />
     <title>{% block title %}{% endblock %}</title>
     <!-- Framework CSS -->
-    <link rel="stylesheet" type="text/css" media="all" href="{{MEDIA_URL}}css/reset.css" />
-    <link rel="stylesheet" type="text/css" media="all" href="{{MEDIA_URL}}css/text.css" />
     <link rel="stylesheet" type="text/css" media="all" href="{{MEDIA_URL}}css/960.css" />
 	<link rel="stylesheet" type="text/css" media="all" href="{{MEDIA_URL}}css/pygments_style.css" />
     <!-- Site-specific CSS -->
     <link rel="stylesheet" href="{{MEDIA_URL}}css/base.css" type="text/css" media="screen" />
+    <!--[if IE]><link rel="stylesheet" href="{{MEDIA_URL}}css/ie.css" type="text/css" media="screen, projection"><![endif]-->
+
     {% block extrahead %}{% endblock %}
 </head>
 
-<body id="{% block pageid %}generic{% endblock %}" class="{% block nav-level %}{% endblock%} {% block pageclass %}generic{% endblock %}">
+<body id="{% block pageid %}generic{% endblock %}" class="{% block nav-level %}{% endblock%} {% block pageclass %}{% endblock %}">
 <!-- Start of #header -->
 <div id="header">
     <div class="container_12">
@@ -34,11 +34,11 @@
         <div id="navigation-main" class="grid_12">
             <ul>
                 <!--<li id="nav-home"><a href="/">home</a></li>-->
-                <li id="nav-tikz"><a href="/tikz/">TikZ</a></li>
+                <li id="nav-tikz"><a href="/tikz/">Ti<i>k</i>Z</a></li>
                 <!--<li id="nav-beamer"><a href="/tikz/">Beamer</a></li>-->
                 <li id="nav-community"><a href="/community/">Community</a></li>
-                <li id="nav-articles"><a href="/articles/">Articles</a></li>
-                <li id="nav-weblog"><a href="/">Weblog</a></li>
+                <!--<li id="nav-articles"><a href="/articles/">Articles</a></li>-->
+                <li id="nav-weblog"><a href="/weblog/">Weblog</a></li>
                 <!--li id="nav-tools"><a href="/tools/">Tools</a></li>-->
             </ul>
         </div>
@@ -50,6 +50,7 @@
 </div>
 <!-- END of #header-wrapper -->
 {% block sec-navigation %}{% endblock %}
+{% block breadcrumbs-section %}{% endblock %}
 <div id="content-wrapper">
 {% block content %}
     <div class="container_12">
