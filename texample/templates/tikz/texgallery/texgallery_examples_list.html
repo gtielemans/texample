@@ -1,0 +1,19 @@
+{% extends "texgallery/tag_detail_base.html" %}
+{% block title %}TikZ and PGF examples{% endblock %}
+
+{% block description %}
+<h1>TikZ and PGF examples</h1>
+
+<p>Sort: <a href="{% url texgallery_all_alpha %}">Alphabetical</a> | <a href="{% url texgallery_all_date %}">Chronological</a></p>
+{% endblock %}
+
+{% block gallery %}
+
+<ul>
+{% for entry in object_list %}
+<li><a href="{{entry.get_absolute_url}}">{{entry.title|safe}}</a></li>
+{% endfor %}
+</ul>
+
+
+{% endblock %}

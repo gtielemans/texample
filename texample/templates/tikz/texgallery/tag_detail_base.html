@@ -1,5 +1,5 @@
 {% extends "base_tikz_examples.html" %}
-
+{% load texample_utils %}
 {% block content-main %}
 {% block description %}
 <h1>{{tag.title}} examples</h1>
@@ -7,7 +7,7 @@
 {% endblock %}
 {% block gallery %}
 <div class="gallery">
-{% for entry in tag.exampleentry_set.all %}
+{% for entry in tag.exampleentry_set.all|order_by:"title" %}
 <dl{% if forloop.counter|divisibleby:"3" %} class="omega"{%endif%}>
 	<dt><a href="{{entry.get_absolute_url}}"><img src="{{gallery_url}}thumbs/{{entry.slug}}.jpg" alt="{{entry.title}}" /></a></dt>
 	<dd><a href="{{entry.get_absolute_url}}">{{entry.title}}</a><br />[<a href="{{gallery_url}}PDF/{{entry.slug}}.pdf">PDF</a>]
@@ -21,7 +21,7 @@
 
 {% block sidebar %}
 {% include "texgallery/menu.html" %}
-<div class="tag-list"
+<div class="tag-list">
 <h5 id="features">Features</h5>
 <ul>
 {% for tag in features %}

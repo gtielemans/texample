@@ -1,0 +1,29 @@
+{% extends "texblog/base_texblog.html" %}
+{% block pageclass %}weblog{% endblock %}
+{% block pageid %}weblog{% endblock%}
+
+
+
+{% load typogrify %}
+{% block content-main %}
+
+<h1>Weblog entries</h1>
+
+{% for entry in latest %}
+<div class="articleinfo">
+        <h1><a href="{{entry.get_absolute_url}}">{{entry.title|widont|smartypants|safe}}</a></h1>
+        <p class="meta">by {{entry.author.first_name}} {{entry.author.last_name}}, {{entry.pub_date|date:"l, F j, Y"}}</p>
+        
+{% if entry.abstract_html %}
+{{entry.abstract_html|safe}}
+{% else %}
+{{entry.body_html|truncatewords_html:30|safe}}
+{% endif %}
+
+<p><a href="{{entry.get_absolute_url}}">Continue reading...</a></p>
+</div>
+{% endfor %}
+
+
+{% endblock %}
+

@@ -1,0 +1,38 @@
+{% extends "base_tikz.html" %}
+{% block pageid %}home{% endblock%}
+{% block title %}TeXample.net{% endblock %}
+{% block breadcrumbs %}{% endblock %}
+{% block nav-level %}level2{% endblock%}
+{% block content %}
+
+
+<div class="container_12">
+<div class="grid_6">
+    <div id="tikz-idx-about">
+    {%block abouttikz %}{% endblock %}
+    </div>
+</div>
+<div class="grid_5 prefix_1">
+<div id="tikz-idx-builds">
+    {% block tikz_builds %}dummy{% endblock %}
+</div>
+<div class="clear">&nbsp;</div>
+</div>
+<div class="clear">&nbsp;</div>
+<div class="container_12">
+<div class="grid_6" id="tikz-idx-examples">
+{% block tikz_examples %}dummy{% endblock %}
+</div>
+<div class="grid_5 prefix_1">
+<div id="tikz-idx-resources">
+{% block tikz_resources %}dummy{% endblock %}
+</div>
+</div>
+
+<div class="clear">&nbsp;</div>
+</div>
+</div>
+<div class="clear">&nbsp;</div>
+
+
+{% endblock %}

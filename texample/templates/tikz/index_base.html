@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block pageid %}home{% endblock%}
+{% block title %}TeXample.net{% endblock %}
+
+{% block content %}
+
+
+<div class="container_12">
+<div class="grid_6">
+<div id="recentblogentries">
+    {% block recentblogentries %}{% endblock %}
+</div>
+</div>
+<div class="grid_5 prefix_1">
+    <div id="abouttexample">
+    {%block abouttexample %}{% endblock %}
+    </div>
+</div>
+<div class="clear">&nbsp;</div>
+</div>
+<div class="clear">&nbsp;</div>
+<div class="container_12">
+
+<div class="grid_6" id="idx-tikz">
+{% block tikzsection %}
+{% endblock tikzsection %}
+</div>
+
+<div class="grid_5 prefix_1">
+<div id="idx-community">
+{% block community %}dummy{% endblock %}
+</div>
+</div>
+<div class="clear">&nbsp;</div>
+</div>
+
+<div class="clear">&nbsp;</div>
+
+{% endblock %}

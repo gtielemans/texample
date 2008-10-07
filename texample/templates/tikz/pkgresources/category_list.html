@@ -3,12 +3,12 @@
 {% block title %}TikZ and PGF resources{% endblock %}
 
 {% block breadcrumbs %}{{block.super}} &gt; Resources{% endblock %}
-
+{% load texample_utils %}
 {% block content-main %}
-<h1>TikZ and PGF Resources</h1>
+<h1>Ti<i>k</i>Z and PGF Resources</h1>
 
 <p>
-A growing collection of links to various TikZ and PGF resources.
+A growing collection of links to various Ti<i>k</i>Z and PGF resources.
 </p>
 
 {% for category in category_list %}
@@ -18,7 +18,7 @@ A growing collection of links to various TikZ and PGF resources.
 
 
 <dl>
-{% for resource in category.resource_set.all %}
+{% for resource in category.resource_set.all|order_by:"title" %}
 
 <dt id="{{resource.title|slugify}}"><a href="{{resource.url}}">{{resource.title}}</a></dt>
 <dd>{{resource.description_html|safe}}</dd>

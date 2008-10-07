@@ -1,14 +1,15 @@
 {% extends "base_main.html" %}
 {% block pageid %}contact{% endblock %}
 {% block content-main %}
-<h1>Contact us</h1>
+<h1>Contact</h1>
 
-<p>If you  have comments, questions or suggestions, you are welcome to 
-send an email or use the contact form below. </p>
-<form method="post" action="">
+<p>If you  have comments, questions or suggestions,  
+send an email to <a href="mailto:&#107;&#106;e&#108;&#108;&#109;&#102;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#107;&#106;&#101;&#108;l&#109;&#102;&#64;&#103;ma&#105;&#108;&#46;&#99;&#111;&#109;</a>
+or use the contact form below. </p>
+<form method="post" action="" id="contact-form">
 <fieldset>
 <legend> Contact form </legend>
-<table id="contact-form">{{ form.as_table }}</table>
+<table>{{ form.as_table }}</table>
 <input type="submit" value="Send" />
 </fieldset>
 </form>

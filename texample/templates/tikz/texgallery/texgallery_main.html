@@ -4,23 +4,24 @@
 {% block feedtitle %}Latest additions to the PGF/TikZ example gallery{% endblock %}
 {% block feedurl %}/feeds/pgftikzexamples/{% endblock %}
 
-{% block breadcrumbs %}<a href="/">Home</a> &gt; <a href="../">TikZ</a> &gt; Examples{% endblock %}
+{% block breadcrumbs %}<a href="/">Home</a> &gt; <a href="../">Ti<i>k</i>Z</a> &gt; Examples{% endblock %}
 {% block content %}
 <div class="container_12">
 	<div class="grid_6">
 		<h1>TikZ and PGF examples</h1>
 		
-		<p>Welcome to the <a href="http://www.ctan.org/tex-archive/help/Catalogue/entries/pgf.html">PGF and TikZ</a> examples gallery.
-		You can browse the gallery in several ways. Select a tag from the list in the right column, or
-		select an entry point from the list below.
+		<p>Welcome to the <a href="http://www.ctan.org/tex-archive/help/Catalogue/entries/pgf.html">PGF and Ti<i>k</i>Z</a> examples gallery.
+		
 		</p>
+	<p>Browse by: <a href="#features">Features</a> |
+	<a href="#tags">Tags</a> | <a href="#areas">Technical areas</a> | <a href="#authors">Authors</a></p>
 	</div>
-	<div class="grid_6">
+	<div class="grid_3 prefix_3">
 		{% include "texgallery/menu.html" %}
 	</div>
 	<div class="clear">&nbsp;</div>
 <div class="grid_12">
-	<h2>Recently added examples</h2>
+	<h3>Recently added examples</h3>
 	<div class="gallery">
 		{% for entry in object_list %}
 		<dl{% if forloop.counter|divisibleby:"4" %} class="omega"{%endif%}>

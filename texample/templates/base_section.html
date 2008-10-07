@@ -2,21 +2,26 @@
 {% extends "base.html" %}
 {% block nav-level %}nav-sec{% endblock%}
 {% block sec-navigation %}
-<div id="navigation-sec">
+<div id="navigation-sec-wrapper">
     <div class="container_12">
-        <div class="grid_12">
+        <div id="navigation-sec" class="grid_12">
             {% block navigation-sub %}
-            {% endblock %}
-        </div>
-        <div class="clear">&nbsp;</div>
-        <div class="grid_12 breadcrumbs">
-            {% block breadcrumbs %}
-            <a href="/">Home</a> 
             {% endblock %}
         </div>
         <div class="clear">&nbsp;</div>
     </div>
 </div>
 {% endblock %}
-
+{% block breadcrumbs-section %}
+<div class="wrapper">
+<div class="container_12">
+        <div class="grid_12 breadcrumbs">
+            {% block breadcrumbs %}
+            <a href="/">Home</a> 
+            {% endblock %}
+        </div>
+        <div class="clear">&nbsp;</div>
+</div>
+</div>
+{% endblock breadcrumbs-section %}
 
