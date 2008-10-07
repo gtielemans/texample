@@ -126,7 +126,7 @@ INSTALLED_APPS = (
     'texarticles',
     'texblog',
     'texgallery',
-    'utils',
+    'texample.utils',
         
 )
 
@@ -154,6 +154,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.auth",
     "django.core.context_processors.debug",
     "django.core.context_processors.media",
-    "utils.context_processors.settings.GALLERY_URL",
+    "texample.utils.context_processors.settings.GALLERY_URL",
     
 )
