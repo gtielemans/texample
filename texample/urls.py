@@ -25,11 +25,11 @@ urlpatterns = patterns('',
 # TikZ section
 from pkgbuilds.feeds import LatestBuilds
 from pkgresources.feeds import LatestResources
-
+from texgallery.feeds import LatestExamples
 tikz_feed_dict = {'feed_dict' : {
     'builds' : LatestBuilds,
     'resources' : LatestResources,    
-    'examples' : None}
+    'examples' : LatestExamples}
 }
 
 from texample.aggregator.feeds import CommunityAggregatorFeed
@@ -40,7 +40,6 @@ feed_dict = {'feed_dict' : {
 
 
 # TODO:
-# weblog section
 # beamer section
 
 urlpatterns += patterns('',
