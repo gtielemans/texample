@@ -8,7 +8,7 @@ from texgallery.models import ExampleEntry
 
 class LatestExamples(Feed):
     title = "Latest additions to the TikZ and PGF examples gallery" 
-    link = reverse('texgallery_index')
+    link = "http://www.texample.net/tikz/examples/"
     description = ""
     def items(self):
         return ExampleEntry.live.all()[:10]
