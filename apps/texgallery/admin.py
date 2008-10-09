@@ -31,21 +31,21 @@ class ExampleAdmin(admin.ModelAdmin):
         pass
         obj.save()
         # Get the new set of tags
-    #    tags = set(form.cleaned_data['features']) | \
-    #           set(form.cleaned_data['tags']) | \
-    #           set(form.cleaned_data['technical_areas'])| \
-    #           set(form.cleaned_data['author'])
-    #    # I love sets...
-    #    added_tags = tags - dbtags
-    #    removed_tags = dbtags - tags
-    #    # update entry_count
-    #    for tag in added_tags:
-    #        tag.entry_count += 1
-    #        tag.save()
-    #    for tag in removed_tags:
-    #        tag.entry_count -= 1
-    #        tag.save()
-    #    
+        tags = set(form.cleaned_data['features']) | \
+               set(form.cleaned_data['tags']) | \
+               set(form.cleaned_data['technical_areas'])| \
+               set(form.cleaned_data['author'])
+        # I love sets...
+        added_tags = tags - dbtags
+        removed_tags = dbtags - tags
+        # update entry_count
+        for tag in added_tags:
+            tag.entry_count += 1
+            tag.save()
+        for tag in removed_tags:
+            tag.entry_count -= 1
+            tag.save()
+        
 
         
 
