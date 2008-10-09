@@ -23,25 +23,29 @@ class ExampleAdmin(admin.ModelAdmin):
         # detect changes in the ExampleEntry's save method or in a signal handler.
         
         # Take a snapshot of the existing tags
-        dbtags = set(obj.tags.all()) | set(obj.features.all()) | \
-                set(obj.technical_areas.all()) | set(obj.author.all())
+        try:
+            dbtags = set(obj.tags.all()) | set(obj.features.all()) | \
+                    set(obj.technical_areas.all()) | set(obj.author.all())
+        except:
+            dbtags = set()
+        pass
         obj.save()
         # Get the new set of tags
-        tags = set(form.cleaned_data['features']) | \
-               set(form.cleaned_data['tags']) | \
-               set(form.cleaned_data['technical_areas'])| \
-               set(form.cleaned_data['author'])
-        # I love sets...
-        added_tags = tags - dbtags
-        removed_tags = dbtags - tags
-        # update entry_count
-        for tag in added_tags:
-            tag.entry_count += 1
-            tag.save()
-        for tag in removed_tags:
-            tag.entry_count -= 1
-            tag.save()
-        
+    #    tags = set(form.cleaned_data['features']) | \
+    #           set(form.cleaned_data['tags']) | \
+    #           set(form.cleaned_data['technical_areas'])| \
+    #           set(form.cleaned_data['author'])
+    #    # I love sets...
+    #    added_tags = tags - dbtags
+    #    removed_tags = dbtags - tags
+    #    # update entry_count
+    #    for tag in added_tags:
+    #        tag.entry_count += 1
+    #        tag.save()
+    #    for tag in removed_tags:
+    #        tag.entry_count -= 1
+    #        tag.save()
+    #    
 
         
 
