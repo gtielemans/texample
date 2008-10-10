@@ -18,54 +18,67 @@ def update_feeds(verbose=False):
         if verbose:
             print feed
         parsed_feed = feedparser.parse(feed.feed_url)
+        tags = set()
+        required_tags = set()
         if feed.filter_tags:
-            tags = set([i.lower().strip() for i in feed.filter_tags.split(',') if i.strip()])
-            if len(tags)==0:
-                tags = None
-        else:
-            tags = None
+
+            for tag in feed.filter_tags.split(','):
+                t = tag.strip().lower()
+                if t:
+                    if t.startswith('!'):
+                        required_tags.add(t[1:])
+                        #tags.add(t[1:])
+                    else:
+                        tags.add(t)
             
-        
         for entry in parsed_feed.entries:
-            entry_tags = set([i.term for i in getattr(entry,'tags',[])])
+            entry_tags = set([i.term.lower() for i in getattr(entry,'tags',[])])
+            #entry_tags = set()
             if tags:
-                if len(tags & entry_tags) == 0:
+                if not ((required_tags <= entry_tags ) and (len(tags & entry_tags) > 0)):
                     if verbose:
-                        print "Skipped %s " % entry.title
+                        try:
+                            print "Skipped %s " % entry.title
+                        except:
+                            print "Skipped: error"
                     continue
-            title = entry.title.encode(parsed_feed.encoding, "xmlcharrefreplace")
-            guid = entry.get("id", entry.link).encode(parsed_feed.encoding, "xmlcharrefreplace")
-            link = entry.link.encode(parsed_feed.encoding, "xmlcharrefreplace")
-
-            if not guid:
-                guid = link
-
-            if hasattr(entry, "summary"):
-                content = entry.summary
-            elif hasattr(entry, "content"):
-                content = entry.content[0].value
-            elif hasattr(entry, "description"):
-                content = entry.description
-            else:
-                content = u""
-            content = content.encode(parsed_feed.encoding, "xmlcharrefreplace")
-
             try:
-                if entry.has_key('modified_parsed'):
-                    date_modified = datetime.datetime.fromtimestamp(time.mktime(entry.modified_parsed))
-                elif parsed_feed.feed.has_key('modified_parsed'):
-                    date_modified = datetime.datetime.fromtimestamp(time.mktime(parsed_feed.feed.modified_parsed))
-                elif parsed_feed.has_key('modified'):
-                    date_modified = datetime.datetime.fromtimestamp(time.mktime(parsed_feed.modified))
+                title = entry.title.encode(parsed_feed.encoding, "xmlcharrefreplace")
+                guid = entry.get("id", entry.link).encode(parsed_feed.encoding, "xmlcharrefreplace")
+                link = entry.link.encode(parsed_feed.encoding, "xmlcharrefreplace")
+            
+
+                if not guid:
+                    guid = link
+    
+                if hasattr(entry, "summary"):
+                    content = entry.summary
+                elif hasattr(entry, "content"):
+                    content = entry.content[0].value
+                elif hasattr(entry, "description"):
+                    content = entry.description
                 else:
+                    content = u""
+                content = content.encode(parsed_feed.encoding, "xmlcharrefreplace")
+    
+                try:
+                    if entry.has_key('modified_parsed'):
+                        date_modified = datetime.datetime.fromtimestamp(time.mktime(entry.modified_parsed))
+                    elif parsed_feed.feed.has_key('modified_parsed'):
+                        date_modified = datetime.datetime.fromtimestamp(time.mktime(parsed_feed.feed.modified_parsed))
+                    elif parsed_feed.has_key('modified'):
+                        date_modified = datetime.datetime.fromtimestamp(time.mktime(parsed_feed.modified))
+                    else:
+                        date_modified = datetime.datetime.now()
+                except TypeError:
                     date_modified = datetime.datetime.now()
-            except TypeError:
-                date_modified = datetime.datetime.now()
-
-            try:
-                feed.feeditem_set.get(guid=guid)
-            except FeedItem.DoesNotExist:
-                feed.feeditem_set.create(title=title, link=link, summary=content, guid=guid, date_modified=date_modified)
+    
+                try:
+                    feed.feeditem_set.get(guid=guid)
+                except FeedItem.DoesNotExist:
+                    feed.feeditem_set.create(title=title, link=link, summary=content, guid=guid, date_modified=date_modified)
+            except:
+                continue
 
 def main(argv):
     socket.setdefaulttimeout(15)
