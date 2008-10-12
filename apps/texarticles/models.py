@@ -97,6 +97,11 @@ class CommonArticleInfo(models.Model):
         
     is_live = property(_get_live)
     
+    def get_media_url(self):
+        """Retrun url to entry media"""
+        return settings.MEDIA_URL + self.get_absolute_url()[1:]
+        
+    
     def save(self, force_insert=False, force_update=False):
         if self.markup <> self.NO_MARKUP:
             if self.markup == self.RAW_MARKUP:
@@ -104,7 +109,7 @@ class CommonArticleInfo(models.Model):
             else:
                 markup_formatter = self.markup
            
-            media_url = settings.MEDIA_URL + self.get_absolute_url()[1:]
+            media_url = self.get_media_url()
         
             parts = publish_parts(self.body,markup_formatter,media_url=media_url)
             self.toc = parts['toc']
