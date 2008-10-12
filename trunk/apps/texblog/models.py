@@ -37,6 +37,9 @@ class Entry(CommonArticleInfo):
         ordering = ['title']
         verbose_name_plural = "Entries"
     
+    def get_media_url(self):
+        """Retrun url to entry media"""
+        return settings.MEDIA_URL + 'weblog/'+self.slug+'/'
  
     @permalink
     def get_absolute_url(self):
