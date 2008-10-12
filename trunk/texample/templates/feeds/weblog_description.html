@@ -1,0 +1,8 @@
+<p>by {{obj.author.first_name}} {{obj.author.last_name}}</p>
+       
+{% if obj.abstract_html %}
+{{obj.abstract_html|safe}}
+{% else %}
+{{obj.body_html|truncatewords_html:50|safe}}
+{% endif %}
+
