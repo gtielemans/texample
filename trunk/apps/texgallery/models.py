@@ -3,7 +3,7 @@ from django.db import models
 import datetime
 from template_utils.markup import formatter
 from django.db.models import permalink
-
+from comment_utils.moderation import CommentModerator, moderator
 
 class LiveEntryManager(models.Manager):
     def get_query_set(self):
@@ -131,6 +131,16 @@ class ExampleEntry(models.Model):
     def __unicode__(self):
         return self.title
     
+
+
+class TexgalleryModerator(CommentModerator):
+    akismet = True
+    email_notification = True
+    enable_field = 'enable_comments'
+    
+moderator.register(ExampleEntry,TexgalleryModerator)    
+    
+
 
 #def denormalize_entries(sender, instance, created=False, **kwargs):
 #    """"""
