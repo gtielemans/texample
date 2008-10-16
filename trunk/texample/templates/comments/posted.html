@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block title %}Thanks for commenting.{% endblock %}
+
+{% block content-main %}
+  <h1>Thank you for your comment {{comment.name}}.</h1>
+
+  <p><a href="{{comment.get_absolute_url}}">View comment...</a></p>
+{% endblock %}

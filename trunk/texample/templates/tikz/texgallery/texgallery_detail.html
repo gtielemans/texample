@@ -23,6 +23,8 @@ Published {{entry.created|date:"Y-m-d"}} |
 <a href="{{gallery_url}}PDF/{{entry.slug}}.pdf"><img src="{{gallery_url}}PNG/{{entry.slug}}.png" alt="{{entry.title}}" /></a>
 </div>
 {{entry.content|safe}}
+
+{% include "comments/commentsection.html" %}
 {% endblock %}
 {% block sidebar %}
 {% include "texgallery/menu.html" %}

@@ -79,8 +79,9 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'texample.urls'
 
 
-MARKUP_FILTER = ('markdown', {'safe_mode': False,
-                              'extensions' :['headerid(level=3)','codehilite']})
+MARKUP_FILTER = ('markdown', {'safe_mode': 'remove',
+                              'extensions' :['headerid(level=3)','codehilite(css_class=highlight)']})
+
 
 MARKUP_SETTINGS = {
     'markdown' : {'safe_mode': False,
@@ -109,6 +110,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.admin',
+    'django.contrib.comments',
     # Third party apps
     'django_evolution',
     'template_utils',
@@ -116,6 +118,7 @@ INSTALLED_APPS = (
     'contact_form',
     'tagging',
     'typogrify',
+    'comment_utils',
     # Texample apps
     'texpubutils',
     'texample.tikz',

@@ -17,6 +17,7 @@ urlpatterns = patterns('',
     (r'^contact/', include('contact_form.urls')),
     (r'^community/', include('texample.aggregator.urls')),
     (r'^about/$', 'django.views.generic.simple.direct_to_template', {'template': 'about.html'}),
+    (r'^comments/', include('django.contrib.comments.urls')),
     (r'^admin/(.*)', admin.site.root),    
 )
 
