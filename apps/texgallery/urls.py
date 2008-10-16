@@ -98,9 +98,12 @@ urlpatterns = patterns('',
     
     url(r'^about/$','django.views.generic.simple.direct_to_template',
         {'template': 'texgallery/texgallery_about.html'},name='texgallery_about'),
+    url(r'^contribute/$','django.views.generic.simple.direct_to_template',
+        {'template': 'texgallery/texgallery_contribute.html'},name='texgallery_contriubute'),
 
     url(r'(?P<slug>\w[-\w]+)/',
         'django.views.generic.list_detail.object_detail',
         dict(entry_dict, slug_field="slug",template_object_name="entry",
             template_name="texgallery/texgallery_detail.html"),name='texgallery_detail'),
+    
 )
