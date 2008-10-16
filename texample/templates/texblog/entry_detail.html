@@ -2,7 +2,7 @@
 {% block pageclass %}weblog{% endblock %}
 {% block pageid %}weblog{% endblock%}
 {% block nav-level %}level3{% endblock%}
-{% block title %}{{entry.title}}{% endblock %}
+{% block title %}{{entry.title|striptags}}{% endblock %}
 
 {% load typogrify %}
 {% block content-main %}
@@ -13,6 +13,7 @@
 </div>
 {{entry.body_html|safe}}
 
+{% include "comments/commentsection.html" %}
 {% endblock %}
 
 {% block sidebar %}

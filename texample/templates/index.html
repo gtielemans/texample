@@ -4,8 +4,7 @@
 {% load typogrify %}
 
 {% block recentblogentries %}
-    {% get_latest_objects texblog.entry 2 as weblogentries %}
-    {% for entry in weblogentries %}
+    {% get_latest_object texblog.entry as entry %}
     <div class="articleinfo">
         <h1><a href="{{entry.get_absolute_url}}">{{entry.title|widont|smartypants|safe}}</a></h1>
         <p class="meta">by {{entry.author.first_name}} {{entry.author.last_name}}, {{entry.pub_date|date:"l, F j, Y"}}</p>
@@ -14,9 +13,17 @@
         {% else %}
             {{entry.body_html|truncatewords_html:60|safe}}
         {% endif %}
-        <p class="continu"><a href="{{entry.get_absolute_url}}">Continue reading...</a></p>
+        <p class="continue"><a href="{{entry.get_absolute_url}}">Continue reading...</a></p>
     </div>
+    {% get_latest_objects texblog.entry 5 as weblogentries %}
+    <div class="articleinfo">
+    <p class="meta">Older weblog entries:</p>
+    {% for entry in weblogentries|slice:"1:" %}
+        
+        <h5><a href="{{entry.get_absolute_url}}">{{entry.title|widont|smartypants|safe}}</a></h5>
+        <p class="meta">by {{entry.author.first_name}} {{entry.author.last_name}}, {{entry.pub_date|date:"l, F j, Y"}}</p>
     {% endfor %}
+    </div>
 {% endblock recentblogentries %}
 {% block abouttexample %}
     TeXample.net is a web site dedicated to the wonderful world of TeX and friends.

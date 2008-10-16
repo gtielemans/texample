@@ -1,0 +1,44 @@
+{% load comments %}
+{% load generic_markup %}
+
+<div id="commentsection">
+<h2>Comments</h2>
+
+
+{% get_comment_list for entry as comment_list %}
+<ul id="comments">
+{% for comment in comment_list %}
+<li>
+<dt id="c{{ comment.id }}"><a href="#c{{ comment.id }}">#{{forloop.counter}}</a> {% if comment.url %}<a href="{{comment.url}}">{{ comment.name }}</a>{% else %}{{ comment.name }}{% endif %}, {{ comment.submit_date|date:"F j, Y" }} at {{ comment.submit_date|date:"P" }}</dt>
+    <dd>{{comment.comment|apply_markup}}</dd></li>
+{% endfor %}
+</ul>
+
+{% if entry.enable_comments %}
+<h3>Post a comment</h3>
+<div id="commentform">
+    {% get_comment_form for entry as form %}
+
+<form action="{% comment_form_target %}" method="post">
+  {% for field in form %}
+    {% if field.is_hidden %}
+      {{ field }}
+    {% else %}
+      <p
+        {% if field.errors %} class="error"{% endif %}
+        {% ifequal field.name "honeypot" %} style="display:none;"{% endifequal %}>
+        {% if field.errors %}{{ field.errors }}{% endif %}
+        {{ field.label_tag }} {{ field }}
+      </p>
+    {% endif %}
+  {% endfor %}
+  <p class="submit">
+    <input type="submit" name="post" class="submit-post" value="Post" />
+    <input type="submit" name="preview" class="submit-preview" value="Preview" />
+  </p>
+<p>Markdown syntax supported.</p>
+</form>
+</div>
+{% endif %}
+
+</div>
