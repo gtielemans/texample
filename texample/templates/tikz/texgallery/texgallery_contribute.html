@@ -1,0 +1,37 @@
+{% extends "base_tikz.html" %}
+{% block pageclass %}{{ block.super }} tikz-examples{% endblock%}
+{% block title %}Contribute an example{% endblock%}
+
+{% block breadcrumbs %}{{ block.super }} &gt; <a href="{% url texgallery_index %}">Examples</a> &gt; Contribute{% endblock %}
+
+{% block content-main %}
+
+
+<h1>How to contribute</h1>
+
+<p>Do you have a TikZ example that you want to share? You are more than welcome to contribute 
+examples. See the <a href="/contact/">contact page</a> for details on how to contact me. All contributed examples
+must be released under the <a href="http://creativecommons.org/licenses/by/2.5/">Creative Commons attribution
+license</a>.</p>
+
+<h2>Guidelines</h2>
+
+<p>Publishing the examples is not a fully automated process. Manually editing is necessary
+to ensure that the code conforms to the website format. To make the process easier for the
+maintainers, please follow the guidelines below.</p>
+
+<ul>
+    <li>Limit length of lines to approx. 80 characters to avoid horizontal scrolling.</li>
+    <li>Provide a short summary/description of the example.</li>
+    <li>Suggest appropriate tags for categorization. Feel free to suggest new tags. </li>
+    <li>Try to keep the code clean, focused and easy to follow. Explain tricky parts with comments.</li> 
+    <li>Use indentation where appropriate.</li>
+    <li>Comment your code.</li>
+</ul>
+
+{% endblock %}
+
+{% block sidebar %}
+{% include "texgallery/menu.html" %}
+
+{% endblock %} 
