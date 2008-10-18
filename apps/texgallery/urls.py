@@ -70,15 +70,15 @@ urlpatterns = patterns('',
     url(r'^$','django.views.generic.list_detail.object_list',
         dict(latest_dict,template_name="texgallery/texgallery_main.html"),name='texgallery_index'),
 
-    url(r'^feature/(?P<slug>\w[-\w]+)/','django.views.generic.list_detail.object_detail',
+    url(r'^feature/(?P<slug>\w[-\w]+)/$','django.views.generic.list_detail.object_detail',
         dict(feature_dict, slug_field="slug", template_object_name="tag",
         template_name="texgallery/texgallery_feature_detail.html"), name='texgallery_feature_detail'),
 
-    url(r'^tag/(?P<slug>\w[-\w]+)/','django.views.generic.list_detail.object_detail',
+    url(r'^tag/(?P<slug>\w[-\w]+)/$','django.views.generic.list_detail.object_detail',
         dict(tag_dict, slug_field="slug", template_object_name="tag",
         template_name="texgallery/texgallery_tag_detail.html"), name='texgallery_tag_detail'),
     
-    url(r'^area/(?P<slug>\w[-\w]+)/','django.views.generic.list_detail.object_detail',
+    url(r'^area/(?P<slug>\w[-\w]+)/$','django.views.generic.list_detail.object_detail',
         dict(area_dict, slug_field="slug", template_object_name="tag",
         template_name="texgallery/texgallery_area_detail.html"), name='texgallery_area_detail'),
     
