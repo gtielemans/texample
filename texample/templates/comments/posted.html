@@ -5,5 +5,9 @@
 {% block content-main %}
   <h1>Thank you for your comment {{comment.name}}.</h1>
 
+<p>If you comment does not show up, it is probably because it has been stopped by
+my sometimes too effective spam filter and put in the manual moderation queue. I will review the
+moderation queue as soon as possible.</p>
+
   <p><a href="{{comment.get_absolute_url}}">View comment...</a></p>
 {% endblock %}
