@@ -10,6 +10,7 @@ from django.conf import settings
 from django.db.models import permalink
 
 from texarticles.models import CommonArticleInfo
+from comment_utils.moderation import CommentModerator, moderator
 
 from texpubutils.utils import publish_parts
 from template_utils.markup import formatter
@@ -48,3 +49,9 @@ class Entry(CommonArticleInfo):
                                             'day': self.pub_date.strftime('%d'),
                                             'slug': self.slug })
                 
+class TexblogModerator(CommentModerator):
+    akismet = True
+    email_notification = True
+    enable_field = 'enable_comments'
+    
+moderator.register(Entry,TexblogModerator)    
