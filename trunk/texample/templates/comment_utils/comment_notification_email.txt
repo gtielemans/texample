@@ -1,1 +1,4 @@
+{% if comment.is_public %}{% else %}Marked as spam!{% endif %}
+
 {{comment.get_as_text}}
+
