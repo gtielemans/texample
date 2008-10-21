@@ -15,7 +15,11 @@ class LatestWeblogEntries(Feed):
         return Entry.live.all()[:10]
     
     def item_pubdate(self, item):
-        return datetime.datetime(*item.pub_date.timetuple()[:6])
+        t = list(item.pub_date.timetuple()[:6])
+        # Set hour. 
+        t[3] = 12
+        
+        return datetime.datetime(*t)
     
     def item_categories(self, item):
         """
