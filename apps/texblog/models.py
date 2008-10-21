@@ -35,7 +35,7 @@ class Entry(CommonArticleInfo):
     categories = models.ManyToManyField(Category)
    
     class Meta:
-        ordering = ['title']
+        ordering = ['-pub_date']
         verbose_name_plural = "Entries"
     
     def get_media_url(self):
