@@ -3,6 +3,8 @@
 from django.contrib import admin
 from models import ExampleEntry,Tag,Feature,Author, TechnicalArea
 
+from batchadmin.admin import BatchModelAdmin,CHECKBOX_NAME
+
 #try:
 #    appname = __name__.split('.')[-2]
 #except:
@@ -11,10 +13,12 @@ from models import ExampleEntry,Tag,Feature,Author, TechnicalArea
 #modu = __import__('%s.models' % appname,{}, {}, [''])#, globals(), locals(), ['Example'],-1)
 #admin.site.register(getattr(modu,'Example'))
 
-class ExampleAdmin(admin.ModelAdmin):
-    list_display = ('title','created')
-    list_filter = ('features','tags','technical_areas','author')
+class ExampleAdmin(BatchModelAdmin):
+    list_display = ('title','created','enable_comments')
+    list_filter = ('features','tags','technical_areas','author','enable_comments')
     ordering = ('title',)
+    batch_actions = ['enable_comments','disable_comments']
+
     
     def save_model(self, request, obj, form, change):
         # Code for denormalization of entry_count. Initially I wanted to use
@@ -46,10 +50,23 @@ class ExampleAdmin(admin.ModelAdmin):
             tag.entry_count -= 1
             tag.save()
         
+    def enable_comments(self, request,changelist):
+        selected = request.POST.getlist(CHECKBOX_NAME)
+        objects = changelist.get_query_set().filter(pk__in=selected)
+        for obj in objects:
+            obj.enable_comments = True
+            obj.save()
+        self.message_user(request, "Comments enabled for selected entries.")
 
-        
+    def disable_comments(self, request,changelist):
+        selected = request.POST.getlist(CHECKBOX_NAME)
+        objects = changelist.get_query_set().filter(pk__in=selected)
+        for obj in objects:
+            obj.enable_comments = False
+            obj.save()
+        self.message_user(request, "Comments disabled for selected entries.")    
 
-class TagAdmin(admin.ModelAdmin):
+class TagAdmin(BatchModelAdmin):
     list_display = ('title',)
     prepopulated_fields = {"slug": ("title",)}
    
