@@ -111,6 +111,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.comments',
+    'django.contrib.humanize',
     # Third party apps
     'django_evolution',
     'template_utils',
