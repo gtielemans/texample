@@ -1,4 +1,6 @@
 {% extends "base_tikz_examples.html" %}
+{% load comments %}
+{% load humanize %}
 {% block pageid %}code{% endblock%}
 {% block title %}{{entry.title}} | TikZ example{% endblock %}
 
@@ -28,6 +30,11 @@ Published {{entry.created|date:"Y-m-d"}} |
 {% endblock %}
 {% block sidebar %}
 {% include "texgallery/menu.html" %}
+
+
+{% get_comment_count for entry as comment_count %}
+<p>There are currently <a href="#commentsection">{{comment_count|apnumber}} comments</a> on this entry.</p>
+
 
 <div class="tag-list">
 
