@@ -27,9 +27,9 @@ class CommentsAdmin(BatchModelAdmin):
     ordering = ('-submit_date',)
     search_fields = ('comment', 'user__username', 'user_name', 'user_email', 'user_url', 'ip_address')
     
-    batch_actions = ['delete_selected','disable_public','enable_public']
+    batch_actions = ['set_nonpublic','set_public','delete_selected']
     
-    def disable_public(self, request,changelist):
+    def set_nonpublic(self, request,changelist):
         selected = request.POST.getlist(CHECKBOX_NAME)
         objects = changelist.get_query_set().filter(pk__in=selected)
         for obj in objects:
@@ -37,7 +37,7 @@ class CommentsAdmin(BatchModelAdmin):
             obj.save()
         self.message_user(request, "Comments set non-public.")
 
-    def enable_public(self, request,changelist):
+    def set_public(self, request,changelist):
         selected = request.POST.getlist(CHECKBOX_NAME)
         objects = changelist.get_query_set().filter(pk__in=selected)
         for obj in objects:
