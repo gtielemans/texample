@@ -106,8 +106,8 @@ def publish_parts(text, markup_formatter='markdown',media_url=''):
     # the build_toc output to ensure that the headings have ids
     h1 = soup.h1
     # fix links
-    local_src = soup.findAll(src=re.compile(r'^[^http]'))
-    local_href = soup.findAll(href=re.compile(r'^[^http]'))
+    local_src = soup.findAll(src=re.compile(r'^(?!http:).*?'))
+    local_href = soup.findAll(href=re.compile(r'^(?!http:).*?'))
     
     if media_url:
         for src in local_src:
