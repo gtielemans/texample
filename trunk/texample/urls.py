@@ -35,9 +35,12 @@ tikz_feed_dict = {'feed_dict' : {
 
 from texample.aggregator.feeds import CommunityAggregatorFeed
 from texblog.feeds import LatestWeblogEntries
+from django.contrib.comments.feeds import LatestCommentFeed
+
 feed_dict = {'feed_dict' : {
     'community' : CommunityAggregatorFeed,
     'weblog' : LatestWeblogEntries,
+    'comments' : LatestCommentFeed,
     }
 }
 
