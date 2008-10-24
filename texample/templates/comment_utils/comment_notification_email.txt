@@ -1,4 +1,8 @@
 {% if comment.is_public %}{% else %}Marked as spam!{% endif %}
 
+From: {{comment.name}}
+Email: {{comment.email}}
+Url: {{comment.url}}
+
 {{comment.get_as_text}}
 
