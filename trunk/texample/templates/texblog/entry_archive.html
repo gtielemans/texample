@@ -29,5 +29,7 @@
 
 {% block sidebar %}
 <p class="feedlink"><a href="{% url top_feeds "weblog" %}">Subscribe to the TeXample.net weblog RSS feed</a></p>
+<p>The TeXample.net weblog feed is included in the <a href="/community/">TeX community aggregator</a>:</p>
+<p class="feedlink"><a href="{% url top_feeds "community" %}">Subscribe to the TeX community RSS feed</a></p>
 {% endblock sidebar %}
 
