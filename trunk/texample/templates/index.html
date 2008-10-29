@@ -4,10 +4,12 @@
 {% load typogrify %}
 
 {% block recentblogentries %}
+{% load comments %}
     {% get_latest_object texblog.entry as entry %}
+    {% get_comment_count for entry as comment_count %}
     <div class="articleinfo">
         <h1><a href="{{entry.get_absolute_url}}">{{entry.title|widont|smartypants|safe}}</a></h1>
-        <p class="meta">by {{entry.author.first_name}} {{entry.author.last_name}}, {{entry.pub_date|date:"l, F j, Y"}}</p>
+        <p class="meta">by {{entry.author.first_name}} {{entry.author.last_name}}, {{entry.pub_date|date:"l, F j, Y"}}{% if comment_count %} | Comments: {{comment_count}}{%endif%}</p>
         {% if entry.abstract_html %}
             {{entry.abstract_html|safe}}
         {% else %}
@@ -19,9 +21,9 @@
     <div class="articleinfo">
     <p class="meta">Older weblog entries:</p>
     {% for entry in weblogentries|slice:"1:" %}
-        
+        {% get_comment_count for entry as comment_count %}
         <h5><a href="{{entry.get_absolute_url}}">{{entry.title|widont|smartypants|safe}}</a></h5>
-        <p class="meta">by {{entry.author.first_name}} {{entry.author.last_name}}, {{entry.pub_date|date:"l, F j, Y"}}</p>
+        <p class="meta">by {{entry.author.first_name}} {{entry.author.last_name}}, {{entry.pub_date|date:"l, F j, Y"}}{% if comment_count %} | Comments: {{comment_count}}{%endif%}</p>
     {% endfor %}
     </div>
 {% endblock recentblogentries %}

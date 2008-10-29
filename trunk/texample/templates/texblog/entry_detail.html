@@ -5,11 +5,14 @@
 {% block title %}{{entry.title|striptags}}{% endblock %}
 
 {% load typogrify %}
-{% block content-main %}
 
+
+{% block content-main %}
+{% load comments %}
+{% get_comment_count for entry as comment_count %}
 <div class="articleinfo">
 <h1>{{entry.title|widont|smartypants|safe}}</h1>
-<p class="meta">by {{entry.author.first_name}} {{entry.author.last_name}}, {{entry.pub_date|date:"l, F j, Y"}}</p>
+<p class="meta">by {{entry.author.first_name}} {{entry.author.last_name}}, {{entry.pub_date|date:"l, F j, Y"}}{% if comment_count %} | <a href="#comment">Comments: {{comment_count}}</a>{%endif%}</p>
 </div>
 {{entry.body_html|safe}}
 
