@@ -14,7 +14,7 @@
 {% get_comment_count for entry as comment_count %}
 <div class="articleinfo">
         <h1><a href="{{entry.get_absolute_url}}">{{entry.title|widont|smartypants|safe}}</a></h1>
-        <p class="meta">by {{entry.author.first_name}} {{entry.author.last_name}}, {{entry.pub_date|date:"l, F j, Y"}}{% if comment_count %} | <a href="{{entry.get_absolute_url}}#comment">Comments: {{comment_count}}</a>{%endif%}</p>
+        <p class="meta">by {{entry.author.first_name}} {{entry.author.last_name}}, {{entry.pub_date|date:"l, F j, Y"}}{% if comment_count %} | <a href="{{entry.get_absolute_url}}#comments">Comments: {{comment_count}}</a>{%endif%}</p>
         
 {% if entry.abstract_html %}
 {{entry.abstract_html|safe}}
