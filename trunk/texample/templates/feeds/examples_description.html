@@ -1,3 +1,5 @@
 <p><img src="{{GALLERY_URL}}thumbs/{{obj.slug}}.jpg" alt="{{obj.title}}" 
 /></p>
+<p>Author{{ obj.author.all|pluralize }}:
+{% for author in obj.author.all %}{{author.full_name}}{% if forloop.last %}{%else%}, {%endif%}{% endfor %}</p>
 {{ obj.description|safe }}
