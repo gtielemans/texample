@@ -6,7 +6,9 @@ import logging
 import re
 import codecs
 from django.template.defaultfilters import slugify
-
+from texpub.rest import TeXHTMLWriter
+from django.conf import settings
+import pygments
 
 def build_file_md5s(filelist):
     """Calculates a hash value for each file in filelist
@@ -19,6 +21,16 @@ def build_file_md5s(filelist):
         h = md5.new(d).hexdigest()
         filehash[f] = h
     return filehash
+
+def restructuredtext(text):
+    from docutils.core import publish_parts
+    docutils_settings = getattr(settings, "RESTRUCTUREDTEXT_FILTER_SETTINGS", {})
+    writer = TeXHTMLWriter()
+    docutils_settings['initial_header_level'] = 2
+    parts = publish_parts(source=text, writer=writer,
+        settings_overrides=docutils_settings)
+    return parts["fragment"]
+
 
 class CodeProcessor(object):
     """
@@ -41,10 +53,13 @@ class CodeProcessor(object):
     def remove_extra_markup(self,data):
         """Removes unnecessary markup"""
         d =  re.sub(self.cmnts_re,'\n',data)
-        d = re.sub(self.tags_re,'\n', d)
+        #d = re.sub(self.tags_re,'\n', d)
         d = d.replace('\\begin{preview}','')
         d = d.replace('\\end{preview}','')
         return re.sub(self.crop_re,'\n',d)
+        
+    def remove_extra_comments(self,data):
+        return re.sub(self.tags_re,'\n', data)
         
     def extract_meta_data(self,data):
         """Extracts meta data and returns a key=value dict"""
@@ -53,6 +68,16 @@ class CodeProcessor(object):
         for key, val in m:
             d[key.strip().lower()] = val.strip()
         return d
+    
+    def create_content_html(self,content):
+        """Creates a HTML version of the content/decription"""
+        return restructuredtext(content)
+        
+    def highlight_code(self,code):
+        """Returns a syntax highlighted HTML version of the code"""
+        return pygments.highlight(code, pygments.lexers.TexLexer(),
+            pygments.formatters.HtmlFormatter(encoding='utf-8'))
+        
     
     def process(self,filename):
         """Processes source file and return a dictionary"""
@@ -70,14 +95,12 @@ class CodeProcessor(object):
         info['title'] = metadata.get('title','')
         info['slug'] = metadata.get('slug',None)\
                         or slugify(metadata.get('title',''))
-        info['content_html'] = self.format_content()
-        logging.debug(info)
+        info['content_html'] =\
+            self.create_content_html(self.remove_extra_comments(comments))
+        info['code_html'] = self.highlight_code(data)
+        return info
         
         
-
-    
-                    
-
 class Command(BaseCommand):
     help == "Perform various TeXgallery administration tasks"
     EXAMPLES_DIR = []
@@ -99,9 +122,11 @@ class Command(BaseCommand):
         new_files, changed_files = self.find_changed_files()
         fp = CodeProcessor()
         if new_files:
-            print "New files:\n%s" % "\n".join(new_files)
+            print "New files:\n" 
             for f in new_files:
-                fp.process(f)
+                info = fp.process(f)
+                print "Filename: %s\nTitle: %s\nSlug: %s\n----" % (f,info['title'],info['slug'])
+                
         if changed_files:
             print "Changed files:\n%s" % "\n".join(changed_files)
             
