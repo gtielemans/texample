@@ -18,7 +18,7 @@ class ExampleAdmin(BatchModelAdmin):
     list_filter = ('features','tags','technical_areas','author','enable_comments')
     ordering = ('title',)
     batch_actions = ['enable_comments','disable_comments']
-
+    prepopulated_fields = {"slug": ("title",)}
     
     def save_model(self, request, obj, form, change):
         # Code for denormalization of entry_count. Initially I wanted to use
