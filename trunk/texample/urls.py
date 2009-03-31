@@ -19,7 +19,9 @@ urlpatterns = patterns('',
     (r'^about/$', 'django.views.generic.simple.direct_to_template', {'template': 'about.html'}),
     (r'^comments/', include('django.contrib.comments.urls')),
     url(r'^search/$','texample.views.search',name = 'texample-search'),
-    (r'^admin/(.*)', admin.site.root),    
+    (r'^admin/(.*)', admin.site.root),
+    (r'^tools/', include('tools.urls')),
+    
 )
 
 ### Feed configuration

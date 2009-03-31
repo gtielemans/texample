@@ -13,7 +13,7 @@ urlpatterns = patterns('',
     url(r'^resources/', include('pkgresources.urls')),
     url(r'^builds/', include('pkgbuilds.urls')),
     url(r'^examples/', include('texgallery.urls')),
-    url(r'^about/', 'django.views.generic.simple.direct_to_template',
+    url(r'^about/$', 'django.views.generic.simple.direct_to_template',
         {'template': 'tikz/tikz_about.html'},
         name="tikz_about"),
     
