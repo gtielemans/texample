@@ -1,0 +1,13 @@
+{% extends "base_section.html" %}
+{% block pageclass %}{{ block.super }} tools{% endblock %}
+{% block nav-level %}level3{% endblock%}
+{% block navigation-sub %}
+<ul id="navigation-sub">
+<!--    <li id="nav-tikz-gallery"><a href="">gallery</a></li> -->
+    <!--<li id="nav-tools-dot2tex"><a href="{% url blend2tikz_index %}">Blender2Ti<i>k</i>Z</a></li>-->
+    <li id="nav-tools-blend2tikz"><a href="{% url blend2sketch_index %}">Blender2Sketch</a></li>
+    <li id="nav-tools-blend2tikz"><a href="{% url blend2tikz_index %}">Blender2Ti<i>k</i>Z</a></li>
+</ul>
+{% endblock %}
+
+{% block breadcrumbs %}{{ block.super }} &gt; <a href="/tikz/">Ti<i>k</i>Z</a>{% endblock %}
