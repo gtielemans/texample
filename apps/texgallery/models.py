@@ -90,7 +90,7 @@ class ExampleEntry(models.Model):
     epilog = models.TextField(blank=True,
         help_text="Use raw HTML")
     
-    enable_comments = models.BooleanField(default=True,null=True)
+    enable_comments = models.NullBooleanField(default=True,null=True)
     is_live = models.BooleanField(default=False)
     author = models.ManyToManyField(Author, blank=True)
     # Categorization
