@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.core.management.base import BaseCommand,CommandError
 
 import os, glob,md5,cPickle
@@ -8,7 +9,9 @@ import codecs
 from django.template.defaultfilters import slugify
 from texpub.rest import TeXHTMLWriter
 from django.conf import settings
+from texpub.texwriter import TeXWriter
 import pygments
+from BeautifulSoup import BeautifulSoup
 
 def build_file_md5s(filelist):
     """Calculates a hash value for each file in filelist
@@ -36,11 +39,12 @@ class CodeProcessor(object):
     """
     A class for extracting and processing meta information from source files.
     """
-    def __init__(self):
+    def __init__(self, media_url=''):
         self.cmnts_re = re.compile(r"(\s*\\begin{comment}.*?\\end{comment})\s*",re.DOTALL | re.MULTILINE)
         self.crop_re = re.compile(r"(\s*%%%<.*?%%%>\s*)", re.DOTALL | re.MULTILINE)
         self.tags_re = re.compile(r"^\s*:Tags: (.*?)$", re.MULTILINE)
         self.spes_re =re.compile(r"^\s*:(.*?):(.*?)$", re.MULTILINE)
+        self.media_url = media_url
 
     def extract_comment(self,data):
         """Extracts comment and meta section from source"""
@@ -71,14 +75,33 @@ class CodeProcessor(object):
     
     def create_content_html(self,content):
         """Creates a HTML version of the content/decription"""
-        return restructuredtext(content)
+        content_html = restructuredtext(content)
+        return content_html
         
     def highlight_code(self,code):
         """Returns a syntax highlighted HTML version of the code"""
         return pygments.highlight(code, pygments.lexers.TexLexer(),
             pygments.formatters.HtmlFormatter(encoding='utf-8'))
+     
+    def process_locallinks(self, text_or_tagsoup):
+        if isinstance(text_or_tagsoup,BeautifulSoup):
+            soup = text_or_tagsoup
+        else:
+            soup = BeautifulSoup(text_or_tagsoup)
+        local_src = soup.findAll(src=re.compile(r'^(?!http:).*?'))
+        local_href = soup.findAll(href=re.compile(r'^(?!http:).*?'))
+        local_links = []
+        for src in local_src:
+            src_l = src['src']
+            src['src'] = self.media_url + src_l
+            local_links.append(src_l)
+        for href in local_href:
+            href_l = href['href']
+            href['href'] = self.media_url + href_l
+            local_links.append(href_l)
         
-    
+        return soup, local_links
+        
     def process(self,filename):
         """Processes source file and return a dictionary"""
         try:
@@ -95,16 +118,29 @@ class CodeProcessor(object):
         info['title'] = metadata.get('title','')
         info['slug'] = metadata.get('slug',None)\
                         or slugify(metadata.get('title',''))
-        info['content_html'] =\
-            self.create_content_html(self.remove_extra_comments(comments))
+        content_html = self.create_content_html(self.remove_extra_comments(comments))
+        soup, local_links = self.process_locallinks(content_html)
+        info['content_html'] = str(soup)
         info['code_html'] = self.highlight_code(data)
         return info
-        
+    
+
         
 class Command(BaseCommand):
     help == "Perform various TeXgallery administration tasks"
     EXAMPLES_DIR = []
     MD5FILE = ''
+    FILEPATTERN = '*.tex'
+    option_list = BaseCommand.option_list + (
+        optparse.make_option('--forcehashupdate',
+            action='store_true', dest='force_hashupdate', default=False,
+            help='Update hash db without processing modified files'),
+        optparse.make_option('-a','--add', dest='add_filename',
+            help='Add file'),
+        optparse.make_option('--addall',
+            action='store_true', dest='add_all', default=False,
+            help='Add all new examples')
+    )
     def handle(self, *args, **options):
         from django.conf import settings
         # initialize settings
@@ -120,16 +156,37 @@ class Command(BaseCommand):
         
         # no options. Check for new and changed files
         new_files, changed_files = self.find_changed_files()
+        force_hashupdate = options.get('force_hashupdate')
+        add_all = options.get('add_all')
+        if force_hashupdate:
+            print "Force hash"
+            return
+            pass
+        
+        if add_all:
+            for f in new_files:
+                self.add_example(f)
+            return
+        
         fp = CodeProcessor()
         if new_files:
             print "New files:\n" 
             for f in new_files:
                 info = fp.process(f)
-                print "Filename: %s\nTitle: %s\nSlug: %s\n----" % (f,info['title'],info['slug'])
+                ##pp = TeXWriter(open(f).read())
+                ##pp.process()
+                
+                print "Filename: %s\nTitle: %s\nSlug: %s\n----" %\
+                    (f,info['title'],info['slug'])
+                print info['content_html']
                 
         if changed_files:
             print "Changed files:\n%s" % "\n".join(changed_files)
             
+    def add_example(self, filepath):
+        fp = CodeProcessor()
+        info = fp.process(filepath)
+        print "Processing %s" % info['title']
         
 
     def find_changed_files(self):
@@ -138,7 +195,7 @@ class Command(BaseCommand):
         filelist = []
         for exdir in self.EXAMPLES_DIR:
             os.chdir(exdir)
-            for f in glob.glob("*.tex"):
+            for f in glob.glob(self.FILEPATTERN):
                 filelist.append(os.path.join(exdir,f))
         # generate hash values
         hashes = build_file_md5s(filelist)
