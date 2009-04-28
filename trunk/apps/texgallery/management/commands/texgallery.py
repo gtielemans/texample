@@ -12,6 +12,9 @@ from django.conf import settings
 from texpub.texwriter import TeXWriter
 import pygments
 from BeautifulSoup import BeautifulSoup
+from texpub.texwriter import TeXWriter
+import urlparse
+import shutil
 
 def build_file_md5s(filelist):
     """Calculates a hash value for each file in filelist
@@ -24,6 +27,25 @@ def build_file_md5s(filelist):
         h = md5.new(d).hexdigest()
         filehash[f] = h
     return filehash
+
+def copyifnewer(source, dest):
+    """Copy source to dest if dest is older than source or doesn't exists"""
+    copy = False
+    # Check that dest exists. Create dir if necessary
+    if os.path.exists(dest):
+        # get source's and dest's timpestamps
+        source_ts = os.path.getmtime(source)
+        dest_ts = os.path.getmtime(dest)
+        # compare timestamps
+        if source_ts > dest_ts: copy = True
+    else:
+        copy = True
+        dir = os.path.dirname(dest)
+        if dir != '' and not os.path.exists(dir):
+            os.makedirs(dir)
+    # copy source to dest
+    if copy:
+        shutil.copy2(source, dest)
 
 def restructuredtext(text):
     from docutils.core import publish_parts
@@ -122,6 +144,7 @@ class CodeProcessor(object):
         soup, local_links = self.process_locallinks(content_html)
         info['content_html'] = str(soup)
         info['code_html'] = self.highlight_code(data)
+        info['code_tex'] = data
         return info
     
 
@@ -131,6 +154,10 @@ class Command(BaseCommand):
     EXAMPLES_DIR = []
     MD5FILE = ''
     FILEPATTERN = '*.tex'
+    SOURCE_PREFIX = 'TEX'
+    PDF_PREFIX = 'PDF'
+    PNG_PREFIX = 'PNG'
+    THUMBS_PREFIX = 'thumbs'
     option_list = BaseCommand.option_list + (
         optparse.make_option('--forcehashupdate',
             action='store_true', dest='force_hashupdate', default=False,
@@ -139,10 +166,14 @@ class Command(BaseCommand):
             help='Add file'),
         optparse.make_option('--addall',
             action='store_true', dest='add_all', default=False,
-            help='Add all new examples')
+            help='Add all new examples'),
+        optparse.make_option('--skippdf',
+            action='store_true', dest='skip_pdf', default=False,
+            help='Skip creation of PDF and images')
     )
     def handle(self, *args, **options):
         from django.conf import settings
+        #from texgallery.models import ExampleEntry
         # initialize settings
         if hasattr(settings,'TEXGALLERY_EXAMPLES_DIR'):
             self.EXAMPLES_DIR = settings.TEXGALLERY_EXAMPLES_DIR
@@ -154,10 +185,21 @@ class Command(BaseCommand):
         else:
             raise CommandError('No MD5 file')
         
+        
+        if hasattr(settings,'TEXGALLERY_MEDIA_DIR'):
+            self.MEDIA_DIR = settings.TEXGALLERY_MEDIA_DIR
+        else:
+            raise CommandError('No media dir')
+            #pass
+        
+        self.media_url = urlparse.urljoin(getattr(settings,'MEDIA_URL',''),
+            getattr(settings,'TEXGALLERY_MEDIA_PREFIX',''))
+        
         # no options. Check for new and changed files
         new_files, changed_files = self.find_changed_files()
         force_hashupdate = options.get('force_hashupdate')
         add_all = options.get('add_all')
+        self.skip_pdf = options.get('skip_pdf')
         if force_hashupdate:
             print "Force hash"
             return
@@ -168,7 +210,7 @@ class Command(BaseCommand):
                 self.add_example(f)
             return
         
-        fp = CodeProcessor()
+        fp = CodeProcessor(media_url=self.media_url)
         if new_files:
             print "New files:\n" 
             for f in new_files:
@@ -184,9 +226,52 @@ class Command(BaseCommand):
             print "Changed files:\n%s" % "\n".join(changed_files)
             
     def add_example(self, filepath):
-        fp = CodeProcessor()
+        fp = CodeProcessor(media_url=self.media_url)
+        # get information about example
         info = fp.process(filepath)
+        source_code = open(filepath).read()
         print "Processing %s" % info['title']
+        print "Slug: %s" % info['slug']
+        # create PDF and images
+        if not self.skip_pdf:
+            texwriter = TeXWriter(source_code, slug=info['slug'])
+            err = texwriter.process()
+            if err:
+                logging.error('Failed to compile %s', filepath)
+                return
+            # save tex-file to dest
+            dest_tex_fn = os.path.join(self.MEDIA_DIR,'tex',info['slug']+'.tex')
+            dest_tex_file = open(dest_tex_fn,'w')
+            dest_tex_file.write(source_code)
+            dest_tex_file.close()
+            #print dest_tex_fn
+            #print info['code_tex'][1:1000]
+            # save png
+            dest_png_fn = os.path.join(self.MEDIA_DIR,'PNG',info['slug']+'.png')
+            texwriter.images['fig'].save(dest_png_fn, "PNG", optimize=True)
+            # save pdf
+            dest_pdf_fn = os.path.join(self.MEDIA_DIR,'PDF',info['slug']+'.pdf')
+            copyifnewer(texwriter.pdf_path, dest_pdf_fn)
+            # save thumb
+            dest_thumb_fn = os.path.join(self.MEDIA_DIR,'thumbs',info['slug']+'.jpg')
+            texwriter.images['thumb'].save(dest_thumb_fn, "JPEG", quality=80)
+        self.update_db(info)
+        
+    def update_db(self, info):
+        """Add example to db"""
+        from django.db.models import get_model
+        ExampleEntry = get_model('texgallery','ExampleEntry')
+        #from texgallery.models import ExampleEntry
+        example, created = ExampleEntry.objects.get_or_create(slug=info['slug'])
+        #mediaentry.__dict__.update(entry)
+        example.title = info['title']
+        example.slug = info['slug']
+        
+        example.content = info['code_html']
+        example.description = info['content_html']
+        
+        
+        example.save()
         
 
     def find_changed_files(self):
