@@ -1,0 +1,12 @@
+# External requirements for TeXample.net
+
+# libraries
+Markdown
+
+# Django apps
+tagging
+django-extensions
+http://typogrify.googlecode.com/svn/trunk/
+http://django-evolution.googlecode.com/svn/trunk/
+http://django-contact-form.googlecode.com/svn/trunk/
+http://django-template-utils.googlecode.com/svn/trunk/
