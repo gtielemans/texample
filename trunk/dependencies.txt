@@ -1,5 +1,9 @@
 # External requirements for TeXample.net
 
+# Use Django trunk
+-e svn+http://code.djangoproject.com/svn/django/trunk#egg=Django
+
+
 # libraries
 Markdown
 
