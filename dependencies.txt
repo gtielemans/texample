@@ -6,6 +6,8 @@
 
 # libraries
 Markdown
+Pygments
+psycopg2
 
 # Django apps
 tagging
