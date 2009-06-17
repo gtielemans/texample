@@ -169,7 +169,10 @@ class Command(BaseCommand):
             help='Add all new examples'),
         optparse.make_option('--skippdf',
             action='store_true', dest='skip_pdf', default=False,
-            help='Skip creation of PDF and images')
+            help='Skip creation of PDF and images'),
+        optparse.make_option('--updateall',
+            action='store_true', dest='update_all', default=False,
+            help='Update all modified examples'),
     )
     def handle(self, *args, **options):
         from django.conf import settings
@@ -199,6 +202,7 @@ class Command(BaseCommand):
         new_files, changed_files = self.find_changed_files()
         force_hashupdate = options.get('force_hashupdate')
         add_all = options.get('add_all')
+        update_all = options.get('update_all')
         self.skip_pdf = options.get('skip_pdf')
         if force_hashupdate:
             print "Force hash"
@@ -208,6 +212,13 @@ class Command(BaseCommand):
         if add_all:
             for f in new_files:
                 self.add_example(f)
+            self.write_hashdb()
+            return
+        
+        if update_all:
+            for f in changed_files:
+                self.add_example(f)
+            self.write_hashdb()
             return
         
         fp = CodeProcessor(media_url=self.media_url)
@@ -224,7 +235,14 @@ class Command(BaseCommand):
                 
         if changed_files:
             print "Changed files:\n%s" % "\n".join(changed_files)
-            
+    
+    def write_hashdb(self):
+        if self.stored_hashes:
+            f = open(self.MD5FILE,'w')
+            cPickle.dump(self.stored_hashes, f)
+            f.close()
+            logging.info('Wrote hash db %s',self.MD5FILE)
+         
     def add_example(self, filepath):
         fp = CodeProcessor(media_url=self.media_url)
         # get information about example
@@ -255,7 +273,11 @@ class Command(BaseCommand):
             # save thumb
             dest_thumb_fn = os.path.join(self.MEDIA_DIR,'thumbs',info['slug']+'.jpg')
             texwriter.images['thumb'].save(dest_thumb_fn, "JPEG", quality=80)
+            logging.info('PDF and images created for %s', info['slug'])
         self.update_db(info)
+        # update hash db
+        self.stored_hashes[filepath] = self.hashes[filepath]
+        
         
     def update_db(self, info):
         """Add example to db"""
@@ -270,8 +292,9 @@ class Command(BaseCommand):
         example.content = info['code_html']
         example.description = info['content_html']
         
-        
         example.save()
+        logging.info('%s written to db', info['slug'])
+        
         
 
     def find_changed_files(self):
@@ -307,4 +330,6 @@ class Command(BaseCommand):
         # compare current examples with stored list
         logging.info('New files %s',new_files)
         logging.info('Changed files %s',changed_files)
+        self.hashes = hashes
+        self.stored_hashes = stored_hashes
         return (new_files, changed_files)            
