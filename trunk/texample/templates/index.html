@@ -29,7 +29,6 @@
 {% endblock recentblogentries %}
 {% block abouttexample %}
     TeXample.net is a web site dedicated to the wonderful world of TeX and friends.
-    The site is still under construction. Content and design will be added gradually.
     
     <div><p></p><a href="/tikz/examples/rotated-triangle/"><img src="{{MEDIA_URL}}img/rottriangle.png" /></a></div>
 {% endblock abouttexample %}
@@ -61,7 +60,7 @@
 
 {% block community %}
 <h2><a href="/community">Community</a></h2>
-<p>Latest from the TeX community aggragator:</p>
+<p>Latest from the TeX community aggregator:</p>
 {% get_latest_objects aggregator.feeditem 5 as items %}
 {% for item in items %}
 <p class='meta'>Posted on {{ item.date_modified|date:"F j, Y" }} by <a href="{{ item.feed.public_url }}">{{ item.feed.title }}</a></p>
