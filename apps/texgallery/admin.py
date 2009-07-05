@@ -3,7 +3,6 @@
 from django.contrib import admin
 from models import ExampleEntry,Tag,Feature,Author, TechnicalArea
 
-from batchadmin.admin import BatchModelAdmin,CHECKBOX_NAME
 
 #try:
 #    appname = __name__.split('.')[-2]
@@ -13,11 +12,11 @@ from batchadmin.admin import BatchModelAdmin,CHECKBOX_NAME
 #modu = __import__('%s.models' % appname,{}, {}, [''])#, globals(), locals(), ['Example'],-1)
 #admin.site.register(getattr(modu,'Example'))
 
-class ExampleAdmin(BatchModelAdmin):
+class ExampleAdmin(admin.ModelAdmin):
     list_display = ('title','created','enable_comments')
     list_filter = ('features','tags','technical_areas','author','enable_comments')
     ordering = ('title',)
-    batch_actions = ['enable_comments','disable_comments']
+    actions = ['enable_comments','disable_comments']
     prepopulated_fields = {"slug": ("title",)}
     
     def save_model(self, request, obj, form, change):
@@ -50,23 +49,19 @@ class ExampleAdmin(BatchModelAdmin):
             tag.entry_count -= 1
             tag.save()
         
-    def enable_comments(self, request,changelist):
-        selected = request.POST.getlist(CHECKBOX_NAME)
-        objects = changelist.get_query_set().filter(pk__in=selected)
-        for obj in objects:
+    def enable_comments(self, request,queryset):
+        for obj in queryset:
             obj.enable_comments = True
             obj.save()
         self.message_user(request, "Comments enabled for selected entries.")
 
-    def disable_comments(self, request,changelist):
-        selected = request.POST.getlist(CHECKBOX_NAME)
-        objects = changelist.get_query_set().filter(pk__in=selected)
-        for obj in objects:
+    def disable_comments(self, request,queryset):
+        for obj in queryset:
             obj.enable_comments = False
             obj.save()
         self.message_user(request, "Comments disabled for selected entries.")    
 
-class TagAdmin(BatchModelAdmin):
+class TagAdmin(admin.ModelAdmin):
     list_display = ('title',)
     prepopulated_fields = {"slug": ("title",)}
    
