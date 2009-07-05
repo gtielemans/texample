@@ -9,6 +9,7 @@ Markdown
 Pygments
 psycopg2
 BeautifulSoup
+smartypants
 
 # Django apps
 #tagging
