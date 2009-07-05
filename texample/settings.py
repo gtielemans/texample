@@ -52,6 +52,7 @@ MEDIA_ROOT = ''
 
 if DEBUG:
     MEDIA_URL = '/media/'
+    MEDIA_ROOT = os_path.join(PROJECT_PATH,'media/') 
 else:
     MEDIA_URL = 'http://media.texample.net/'
 
