@@ -105,7 +105,7 @@ GENERIC_CONTENT_LOOKUP_KWARGS = {
 
 
 INSTALLED_APPS = (
-    'batchadmin',
+    #'batchadmin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -145,7 +145,7 @@ try:
     except:
         pass
 except:
-    raise
+    #raise
     pass
 
 TEMPLATE_DEBUG = DEBUG
