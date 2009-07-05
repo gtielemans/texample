@@ -8,9 +8,11 @@
 Markdown
 Pygments
 psycopg2
+BeautifulSoup
 
 # Django apps
-tagging
+#tagging
+http://django-tagging.googlecode.com/svn/trunk/
 django-extensions
 http://typogrify.googlecode.com/svn/trunk/
 http://django-evolution.googlecode.com/svn/trunk/
