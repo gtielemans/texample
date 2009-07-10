@@ -86,9 +86,15 @@ class Command(BaseCommand):
         optparse.make_option('--filter-list', dest='filter_list',
             action='store', default='',
             help="Override default directory and file exclusion filters. (enter as comma seperated line)"),
+        optparse.make_option('--add-filter', dest='add_filter_list',
+            action='store', default='',
+            help="Add directory and file exclusion filters. (enter as comma seperated line)"),
         optparse.make_option('--dry-run', 
             dest='dry_run', default=False, action='store_true',
             help="Show uploaded files without actually uploading them"),
+        optparse.make_option('--upload', 
+            dest='do_upload', default=False, action='store_true',
+            help="Upload files"),
     )
 
     help = 'Syncs the complete MEDIA_ROOT structure and files to S3 into the given bucket name.'
@@ -129,24 +135,33 @@ class Command(BaseCommand):
         self.DIRECTORY = options.get('dir')
         self.FILTER_LIST = getattr(settings, 'FILTER_LIST', self.FILTER_LIST)
         self.do_dry_run = options.get('dry_run')
-        if self.do_dry_run:
-            print "drying"
+        self.do_upload = options.get('do_upload')
+        
         filter_list = options.get('filter_list').split(',')
         
         if filter_list[0]:
             # command line option overrides default filter_list and
             # settings.filter_list
             self.FILTER_LIST = filter_list
+         
+         
+         
+        if options.get('add_filter_list'):
+            self.FILTER_LIST.extend(options.get('add_filter_list').split(','))
 
         if self.do_dry_run:
             print "Doing a dry run. No files will be uploaded."
         # Now call the syncing method to walk the MEDIA_ROOT directory and
         # upload all files found.
-        self.sync_s3()
-
-        print
-        print "%d files uploaded." % (self.upload_count)
-        print "%d files skipped." % (self.skip_count)
+        if self.do_upload or self.do_dry_run:
+            self.sync_s3()
+            print
+            print "%d files uploaded." % (self.upload_count)
+            print "%d files skipped." % (self.skip_count)
+        else:
+            print "Use the --upload option to upload files"
+            print "Settings:"
+            print "  Ignore list: %s" % self.FILTER_LIST 
 
     def sync_s3(self):
         """
@@ -226,9 +241,6 @@ class Command(BaseCommand):
             if self.verbosity > 0:
                 print "Uploading %s..." % (file_key)
 
-            if self.do_dry_run:
-                continue
-
             content_type = mimetypes.guess_type(filename)[0]
             if content_type:
                 headers['Content-Type'] = content_type
@@ -254,11 +266,15 @@ class Command(BaseCommand):
                 if self.verbosity > 1:
                     print "\texpires: %s" % (headers['Expires'])
                     print "\tcache-control: %s" % (headers['Cache-Control'])
-
+            
             try:
-                key.name = file_key
-                key.set_contents_from_string(filedata, headers, replace=True)
-                key.set_acl('public-read')
+                if not self.do_dry_run:
+                    pass
+                    pass
+                    #key.name = file_key
+                    #key.set_contents_from_string(filedata, headers, replace=True)
+                    #key.set_acl('public-read')
+                
             except boto.s3.connection.S3CreateError, e:
                 print "Failed: %s" % e
             except Exception, e:
