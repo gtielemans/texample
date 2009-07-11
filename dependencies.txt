@@ -10,6 +10,9 @@ Pygments
 psycopg2
 BeautifulSoup
 smartypants
+boto
+docutils
+pygments
 
 # Django apps
 #tagging
