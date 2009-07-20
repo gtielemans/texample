@@ -301,10 +301,12 @@ class Command(BaseCommand):
         """Finds new and changed files and return a (new, changed) tuple"""
         # build a list of all available examples
         filelist = []
+        cwd = os.getcwd()
         for exdir in self.EXAMPLES_DIR:
             os.chdir(exdir)
             for f in glob.glob(self.FILEPATTERN):
                 filelist.append(os.path.join(exdir,f))
+        os.chdir(cwd)
         # generate hash values
         hashes = build_file_md5s(filelist)
         
