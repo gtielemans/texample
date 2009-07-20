@@ -3,7 +3,11 @@
 import os
 import sys
 import logging as log
-import Image
+try:
+    import Image
+except:
+    from PIL import Image
+    
 # utiltiy functions
 
 #def resize_image(imgfilename,source_dpi=400.0, dest_dpi=100.0,maxsize = FIGSIZE):
