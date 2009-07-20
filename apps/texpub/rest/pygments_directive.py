@@ -4,8 +4,8 @@ from docutils.parsers.rst.directives import register_directive
 from pygments import highlight
 from pygments.lexers import get_lexer_by_name
 from pygments.formatters import HtmlFormatter
-from fnet.dotlexer import DOTLexer
-from fnet.sketchlexer import SketchLexer
+from texpub.lexers import DOTLexer
+from texpub.lexers import SketchLexer
 
 pygments_formatter = HtmlFormatter()
 # Initialize the Pygments directive
