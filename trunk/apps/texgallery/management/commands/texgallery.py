@@ -145,6 +145,16 @@ class CodeProcessor(object):
         info['content_html'] = str(soup)
         info['code_html'] = self.highlight_code(data)
         info['code_tex'] = data
+        grid = metadata.get('grid')
+        if grid:
+            try:
+                xdim, ydim = map(int,grid.split('x'))
+                info['grid'] = (xdim, ydim)
+            except:
+                log.warning('Failed to parse grid metadata %s', grid)
+                info['grid'] = None
+        else:
+            info['grid'] = None
         return info
     
 
@@ -206,6 +216,8 @@ class Command(BaseCommand):
         self.skip_pdf = options.get('skip_pdf')
         if force_hashupdate:
             print "Force hash"
+            self.stored_hashes = self.hashes
+            self.write_hashdb()
             return
             pass
         
@@ -231,7 +243,7 @@ class Command(BaseCommand):
                 
                 print "Filename: %s\nTitle: %s\nSlug: %s\n----" %\
                     (f,info['title'],info['slug'])
-                print info['content_html']
+                #print info['content_html']
                 
         if changed_files:
             print "Changed files:\n%s" % "\n".join(changed_files)
@@ -252,7 +264,7 @@ class Command(BaseCommand):
         print "Slug: %s" % info['slug']
         # create PDF and images
         if not self.skip_pdf:
-            texwriter = TeXWriter(source_code, slug=info['slug'])
+            texwriter = TeXWriter(source_code, slug=info['slug'], grid=info['grid'])
             err = texwriter.process()
             if err:
                 logging.error('Failed to compile %s', filepath)
