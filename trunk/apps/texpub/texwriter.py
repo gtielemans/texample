@@ -3,6 +3,8 @@
 import os
 import sys
 import logging as log
+import glob
+
 try:
     import Image
 except:
@@ -25,16 +27,16 @@ except:
 #    return dest
 
 
-def make_image_grid(imagelist, xdim, ydim):
+def make_image_grid(imagelist, xdim, ydim, figsize = (500,500)):
     """Place images in a grid"""
-    w, h = FIGSIZE
+    w, h = figsize
     cellw = int(w/xdim)
     cellh = int(h/ydim)
     cellsize = cellw, cellh
-    gridimg = Image.new('RGB',FIGSIZE,(255,255,255))
+    gridimg = Image.new('RGB',figsize,(255,255,255))
     log.debug('Cellsize: %s',cellsize)
     if (xdim*ydim) <> len(imagelist):
-        log.warning('Grid dimension %s,%s does not with number of images: %s',xdim,ydim,len(imagelist))
+        log.warning('Grid dimension %s,%s does not match with number of images: %s',xdim,ydim,len(imagelist))
     x = 0
     y = 0
     for img in imagelist:
@@ -44,7 +46,11 @@ def make_image_grid(imagelist, xdim, ydim):
             yextra = (cellh-nh)/2.0
         else:
             yextra = 0
-        gridimg.paste(img,(x*cellw,y*cellh+int(yextra)))
+        if cellw > nw:
+            xextra = (cellw-nw)/2.0
+        else:
+            xextra = 0
+        gridimg.paste(img,(x*cellw + int(xextra),y*cellh+int(yextra)))
         log.warning('x: %s  y: %s',x,y)
         if x < (xdim-1):
             x +=1
@@ -103,28 +109,57 @@ class TeXWriter(object):
             
     def make_image(self):
         gscmd = "%(cmdname)s -dNOPAUSE -r%(dpi)i -dGraphicsAlphaBits=4 -dTextAlphaBits=4 -sDEVICE=png16m -sOutputFile=%(output)s -dBATCH %(input)s"
-        gsopts = dict(dpi=400)
+        gsopts = dict(dpi=200)
         if sys.platform=='win32':
             gsopts["cmdname"] = "gswin32c"
         else:
-            gsopts = "gs"
+            gsopts["cmdname"] = "gs"
         
+        gsopts['input'] = self.pdf_path
+        basefn = os.path.splitext(self.texfn_path)[0]
         if not (self.page or self.grid):
             img_path = os.path.splitext(self.texfn_path)[0]+'.png'
-            gsopts['input'] = self.pdf_path
             gsopts['output'] = img_path
             err = runcmd(gscmd % gsopts)
             if not err:
                 self.img_path = img_path
+        else:
+            #print "Gridding " + self.grid
+            gsopts['output'] = "%s%%i.png" % basefn
+            err = runcmd(gscmd % gsopts)
+            
+            if not self.page:
+                page = "1"
+            else:
+                page = self.page
+            if not err:
+                self.img_path = basefn + page + '.png'    
+            
+            files = glob.glob('%s[0-9].png' % basefn)
+            files.sort()
+            print basefn, files
+            imlist = [Image.open(f) for f in files]
+            if self.grid:
+                xdim,ydim = self.grid
+                gridimg = make_image_grid(imlist,xdim,ydim,self.FIGSIZE)
+            else:
+                w,h = imlist[0].size
+                panorama = Image.new('RGB',(w*len(imlist),h),(255,255,255))
+                for i in range(len(imlist)):
+                    panorama.paste(imlist[i],(i*w,0))
+                panorama.thumbnail(self.FIGSIZE, Image.ANTIALIAS)
         # generate thumbnail
         if self.grid:
-            #im = gridimg.copy()
+            im = gridimg.copy()
             pass
         else:
             im = Image.open(self.img_path)
         im.thumbnail(self.THUMBSIZE, Image.ANTIALIAS)
         self.images['thumb'] = im
-        im = Image.open(self.img_path)
+        if self.grid:
+            im = gridimg
+        else:
+            im = Image.open(self.img_path)
         im.thumbnail(self.FIGSIZE, Image.ANTIALIAS)
         self.images['fig'] = im
         
@@ -133,6 +168,7 @@ class TeXWriter(object):
     def process(self):
         # create a temporary directory
         self.dest_dir = r'd:\latex\tmp2'
+        self.dest_dir = r'/home/fauske/dev/texample/tmp/'
         self.tex_fn = self.slug + '.tex'
         self.texfn_path = os.path.join(self.dest_dir, self.tex_fn)
         f = open(self.texfn_path,'w')
@@ -140,11 +176,14 @@ class TeXWriter(object):
         f.write(self.tex_source)
         f.close()
         # compile tex source
+        print "making pdf"
         err = self.make_pdf()
         if err:
             return False
         # generate PNGs
+        print "making PNG"
         err = self.make_image()
+        print "done with image"
         # clean up
         
     def clean_up(self):

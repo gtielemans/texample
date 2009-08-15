@@ -155,6 +155,15 @@ class CodeProcessor(object):
                 info['grid'] = None
         else:
             info['grid'] = None
+        page = metadata.get('page')
+        if page:
+            try:
+                info['page'] = page
+            except:
+                log.warning('Invalid page: %s', page)
+                info['page'] = "1"
+        else:
+            info['page'] = "1"
         return info
     
 
@@ -264,13 +273,13 @@ class Command(BaseCommand):
         print "Slug: %s" % info['slug']
         # create PDF and images
         if not self.skip_pdf:
-            texwriter = TeXWriter(source_code, slug=info['slug'], grid=info['grid'])
+            texwriter = TeXWriter(source_code, slug=info['slug'], grid=info['grid'], page=info['page'])
             err = texwriter.process()
             if err:
                 logging.error('Failed to compile %s', filepath)
                 return
             # save tex-file to dest
-            dest_tex_fn = os.path.join(self.MEDIA_DIR,'tex',info['slug']+'.tex')
+            dest_tex_fn = os.path.join(self.MEDIA_DIR,'TEX',info['slug']+'.tex')
             dest_tex_file = open(dest_tex_fn,'w')
             dest_tex_file.write(source_code)
             dest_tex_file.close()
