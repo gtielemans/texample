@@ -128,8 +128,9 @@ class CodeProcessor(object):
         """Processes source file and return a dictionary"""
         try:
             data = codecs.open(filename,encoding='utf8').read()
-        except (IOError, OSError):
+        except:
             logging.exception('Failed to load %s',filename)
+            return {}
             
         comments = self.extract_comment(data)
         data = self.remove_extra_markup(data)
@@ -249,7 +250,8 @@ class Command(BaseCommand):
                 info = fp.process(f)
                 ##pp = TeXWriter(open(f).read())
                 ##pp.process()
-                
+                if len(info.keys()) == 0:
+                    continue
                 print "Filename: %s\nTitle: %s\nSlug: %s\n----" %\
                     (f,info['title'],info['slug'])
                 #print info['content_html']
@@ -273,9 +275,13 @@ class Command(BaseCommand):
         print "Slug: %s" % info['slug']
         # create PDF and images
         if not self.skip_pdf:
-            texwriter = TeXWriter(source_code, slug=info['slug'], grid=info['grid'], page=info['page'])
-            err = texwriter.process()
-            if err:
+            try:
+                texwriter = TeXWriter(source_code, slug=info['slug'], grid=info['grid'], page=info['page'])
+                err = texwriter.process()
+                if err:
+                    logging.error('Failed to compile %s', filepath)
+                    return
+            except:
                 logging.error('Failed to compile %s', filepath)
                 return
             # save tex-file to dest

@@ -59,7 +59,7 @@ def make_image_grid(imagelist, xdim, ydim, figsize = (500,500)):
             y += 1
     return gridimg
 
-def create_pdf(texfile,use_pdftex=True):
+def create_pdf(texfile, use_pdftex=True, do_shell_escape=False):
     dirname, filename = os.path.split(texfile)
     cwd = os.getcwd()
     os.chdir(dirname)
@@ -70,7 +70,10 @@ def create_pdf(texfile,use_pdftex=True):
     if sys.platform=='win32':
         syscmd = 'texify --pdf --clean %s' % (fn)
     else:
-        syscmd = 'pdflatex -halt-on-error -interaction nonstopmode %s' % (fn)
+        if do_shell_escape:
+            syscmd = 'pdflatex -halt-on-error -shell-escape -interaction nonstopmode %s' % (fn)
+        else:
+            syscmd = 'pdflatex -halt-on-error -interaction nonstopmode %s' % (fn)
     err = runcmd(syscmd)
     os.chdir(cwd)
     return err
@@ -103,7 +106,11 @@ class TeXWriter(object):
         self.images = {}
             
     def make_pdf(self):
-        err = create_pdf(self.texfn_path)
+        if 'GNUPLOT' in self.tex_source:
+            do_shell_escape = True
+        else:
+            do_shell_escape = False
+        err = create_pdf(self.texfn_path, do_shell_escape = do_shell_escape)
         if not err:
             self.pdf_path = os.path.splitext(self.texfn_path)[0]+'.pdf'
             
