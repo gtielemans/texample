@@ -88,19 +88,26 @@ def runcmd(syscmd):
         log.debug('Output:\n%s',resdata)
     return err
 
+def extract_filelist(log_data):
+    """Returns a list of opened files from log data"""
+    # locate
+    # extract
+    # remove unnecessary files
+
 class TeXWriter(object):
     """\
     Compiles a TeX source file and creates a PDF, PNGs and thumbnails
     """
     THUMBSIZE = 200,200
     FIGSIZE = 500,500
-    def __init__(self, tex_source, slug='', page=None, grid=None):
+    def __init__(self, tex_source, slug='', page=None, grid=None, listfiles=True):
         pass
         self.tex_source = tex_source
         if slug:
             self.slug = slug
         else:
             self.slug = 'tmp'
+        self.listfiles = listfiles
         self.page = page
         self.grid = grid
         self.images = {}
@@ -178,15 +185,26 @@ class TeXWriter(object):
         self.dest_dir = r'/home/fauske/dev/texample/tmp/'
         self.tex_fn = self.slug + '.tex'
         self.texfn_path = os.path.join(self.dest_dir, self.tex_fn)
+        self.texfn_path_base = os.path.join(self.dest_dir, self.slug)
         f = open(self.texfn_path,'w')
         # write tex file
-        f.write(self.tex_source)
+        if self.listfiles:
+            f.write('\\listfiles\n'+self.tex_source)
+        else:
+            f.write(self.tex_source)
         f.close()
         # compile tex source
         print "making pdf"
         err = self.make_pdf()
         if err:
             return False
+        if self.listfiles:
+            log_file = open(texfn_path_base+'.log', 'r')
+            log_data = log_file.read()
+            log_file.close()
+            
+        file_list = extract_file_list(log_data);    
+            
         # generate PNGs
         print "making PNG"
         err = self.make_image()
