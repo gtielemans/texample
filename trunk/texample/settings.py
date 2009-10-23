@@ -134,7 +134,7 @@ INSTALLED_APPS = (
     'texblog',
     'texgallery',
     'texample.utils',
-        
+     's3sync',   
 )
 
 try:
@@ -146,7 +146,7 @@ try:
     except:
         pass
 except:
-    #raise
+    raise
     pass
 
 TEMPLATE_DEBUG = DEBUG
