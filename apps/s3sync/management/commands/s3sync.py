@@ -95,6 +95,9 @@ class Command(BaseCommand):
         optparse.make_option('--upload', 
             dest='do_upload', default=False, action='store_true',
             help="Upload files"),
+        optparse.make_option('--make-files-old', 
+            dest='make_files_old', default=False, action='store_true',
+            help="Set the modified timestamp to 2001-11-11"),
     )
 
     help = 'Syncs the complete MEDIA_ROOT structure and files to S3 into the given bucket name.'
@@ -136,6 +139,7 @@ class Command(BaseCommand):
         self.FILTER_LIST = getattr(settings, 'FILTER_LIST', self.FILTER_LIST)
         self.do_dry_run = options.get('dry_run')
         self.do_upload = options.get('do_upload')
+        self.make_files_old = options.get('make_files_old')
         
         filter_list = options.get('filter_list').split(',')
         
@@ -148,6 +152,11 @@ class Command(BaseCommand):
          
         if options.get('add_filter_list'):
             self.FILTER_LIST.extend(options.get('add_filter_list').split(','))
+            
+        if self.make_files_old:
+            self.touch_files()
+            print "Files in media dir is now old"
+            return
 
         if self.do_dry_run:
             print "Doing a dry run. No files will be uploaded."
@@ -204,9 +213,11 @@ class Command(BaseCommand):
             return 
 
         # Later we assume the MEDIA_ROOT ends with a trailing slash
-        if not root_dir.endswith(os.path.sep):
-            root_dir = root_dir + os.path.sep
-
+        #if not root_dir.endswith(os.path.sep):
+        #    root_dir = root_dir + os.path.sep
+            
+        if not root_dir.endswith('/'):
+            root_dir = root_dir + '/'
         
         for file in names:
             headers = {}
@@ -214,20 +225,20 @@ class Command(BaseCommand):
             if file in self.FILTER_LIST:
                 continue # Skip files we don't want to sync
 
-            filename = os.path.join(dirname, file)
+            filename = os.path.normpath(os.path.join(dirname, file)).replace('\\','/')
             if os.path.isdir(filename):
                 continue # Don't try to upload directories
 
             file_key = filename[len(root_dir):]
             if self.prefix:
                 file_key = '%s/%s' % (self.prefix, file_key)
-
             # Check if file on S3 is older than local file, if so, upload
             if not self.do_force:
                 s3_key = bucket.get_key(file_key)
                 if s3_key:
                     s3_datetime = datetime.datetime(*time.strptime(
                         s3_key.last_modified, '%a, %d %b %Y %H:%M:%S %Z')[0:6])
+            
                     local_datetime = datetime.datetime.utcfromtimestamp(
                         os.stat(filename).st_mtime)
                     if local_datetime < s3_datetime:
@@ -284,6 +295,48 @@ class Command(BaseCommand):
                 self.upload_count += 1
 
             file_obj.close()
+            
+    def touch_files(self):
+        """
+        Walks the media directory and make the files old
+        """
+        os.path.walk(self.DIRECTORY, self.touch_file,self.DIRECTORY)
+        
+    def touch_file(self, arg, dirname, names):
+        """
+        This is the callback to os.path.walk and where much of the work happens
+        """
+        root_dir = arg # expand arg tuple
+        
+        # Skip directories we don't want to sync
+        if os.path.basename(dirname) in self.FILTER_LIST:
+            # prevent walk from processing subfiles/subdirs below the ignored one
+            del names[:]
+            return 
+
+        # Later we assume the MEDIA_ROOT ends with a trailing slash
+        #if not root_dir.endswith(os.path.sep):
+        #    root_dir = root_dir + os.path.sep
+            
+        if not root_dir.endswith('/'):
+            root_dir = root_dir + '/'
+        
+        for file in names:
+            if file in self.FILTER_LIST:
+                continue # Skip files we don't want to sync
+
+            filename = os.path.normpath(os.path.join(dirname, file))
+            if os.path.isdir(filename):
+                continue # Don't try to upload directories
+
+            old_time = time.mktime((datetime.datetime.now() -
+                    datetime.timedelta(days=365*2)).timetuple())
+            os.utime(filename, (-1, old_time))
+            
+                
+                    
+                
+
 
 # Backwards compatibility for Django r9110
 if not [opt for opt in Command.option_list if opt.dest=='verbosity']:
