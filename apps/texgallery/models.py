@@ -93,6 +93,7 @@ class ExampleEntry(models.Model):
     enable_comments = models.NullBooleanField(default=True,null=True)
     is_live = models.BooleanField(default=False)
     author = models.ManyToManyField(Author, blank=True)
+    is_zipped = models.BooleanField(default=False)
     # Categorization
     features = models.ManyToManyField(Feature, blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
