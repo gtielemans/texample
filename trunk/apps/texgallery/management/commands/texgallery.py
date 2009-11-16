@@ -15,6 +15,7 @@ from BeautifulSoup import BeautifulSoup
 from texpub.texwriter import TeXWriter
 import urlparse
 import shutil
+import zipfile
 
 def build_file_md5s(filelist):
     """Calculates a hash value for each file in filelist
@@ -146,6 +147,7 @@ class CodeProcessor(object):
         info['content_html'] = str(soup)
         info['code_html'] = self.highlight_code(data)
         info['code_tex'] = data
+        info['local_links'] = local_links
         grid = metadata.get('grid')
         if grid:
             try:
@@ -165,6 +167,16 @@ class CodeProcessor(object):
                 info['page'] = "1"
         else:
             info['page'] = "1"
+        
+        if metadata.get('zip'):
+            zip_list = [i.strip() for i in metadata.get('zip', '').split(',') if i.strip()]
+            if len(zip_list) > 0:
+                info['zip_list'] = zip_list
+                print zip_list
+            
+        info['metadata'] = metadata
+        
+        
         return info
     
 
@@ -270,19 +282,30 @@ class Command(BaseCommand):
         fp = CodeProcessor(media_url=self.media_url)
         # get information about example
         info = fp.process(filepath)
+        if not info['slug']:
+            print "Skipping %s" % filepath
+            return
         source_code = open(filepath).read()
+        if (r'\input' in source_code) or (r'\includegraphics' in source_code):
+            compilation_path = os.path.dirname(filepath)
+        else:
+            compilation_path = ''
+        
         print "Processing %s" % info['title']
         print "Slug: %s" % info['slug']
         # create PDF and images
         if not self.skip_pdf:
             try:
-                texwriter = TeXWriter(source_code, slug=info['slug'], grid=info['grid'], page=info['page'])
+                texwriter = TeXWriter(source_code, slug=info['slug'],
+                                      grid=info['grid'], page=info['page'],
+                                      compilation_path=compilation_path)
                 err = texwriter.process()
                 if err:
                     logging.error('Failed to compile %s', filepath)
                     return
             except:
                 logging.error('Failed to compile %s', filepath)
+                raise
                 return
             # save tex-file to dest
             dest_tex_fn = os.path.join(self.MEDIA_DIR,'TEX',info['slug']+'.tex')
@@ -301,6 +324,25 @@ class Command(BaseCommand):
             dest_thumb_fn = os.path.join(self.MEDIA_DIR,'thumbs',info['slug']+'.jpg')
             texwriter.images['thumb'].save(dest_thumb_fn, "JPEG", quality=80)
             logging.info('PDF and images created for %s', info['slug'])
+            # create zip
+            zip_list = info.get('zip_list')
+            if zip_list:
+                dest_zip_fn = os.path.join(self.MEDIA_DIR,'zip',info['slug']+'.zip')
+                zip = zipfile.ZipFile(dest_zip_fn, 'w', zipfile.ZIP_DEFLATED)
+                zip.write(dest_pdf_fn, info['slug'] + '/' + os.path.basename(dest_pdf_fn))
+                zip.write(dest_tex_fn, info['slug'] + '/' + os.path.basename(dest_tex_fn))
+                for filename in zip_list:
+                    fn_full = os.path.join(os.path.dirname(filepath), filename)
+                    if os.path.exists(fn_full):
+                        zip.write(fn_full, info['slug'] + '/' + filename)
+                    else:
+                        print "Could not find %s" % filename
+                    
+                zip.close()
+                print "Zipped"
+                
+                
+            texwriter.clean_up()
         self.update_db(info)
         # update hash db
         self.stored_hashes[filepath] = self.hashes[filepath]
@@ -318,6 +360,10 @@ class Command(BaseCommand):
         
         example.content = info['code_html']
         example.description = info['content_html']
+        if info['zip_list']:
+            example.is_zipped = True
+        else:
+            example.is_zipped = False
         
         example.save()
         logging.info('%s written to db', info['slug'])
