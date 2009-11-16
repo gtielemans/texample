@@ -1,4 +1,5 @@
 {% extends "base_tikz_examples.html" %}
+
 {% load comments %}
 {% load humanize %}
 {% block pageid %}code{% endblock%}
@@ -20,12 +21,15 @@ Published {{entry.created|date:"Y-m-d"}} |
 </div>
 <p>Download as: [<a href="{{gallery_url}}PDF/{{entry.slug}}.pdf">PDF</a>]
 [<a href="{{gallery_url}}TEX/{{entry.slug}}.tex">TEX</a>]
+{% if entry.is_zipped %}[<a href="{{gallery_url}}zip/{{entry.slug}}.zip">ZIP</a>]{% endif %}
 </p>
 <div class="galleryimage">
 <a href="{{gallery_url}}PDF/{{entry.slug}}.pdf"><img src="{{gallery_url}}PNG/{{entry.slug}}.png" alt="{{entry.title}}" /></a>
 </div>
-{{entry.content|safe}}
 
+<div id="example">
+{{entry.content|safe}}
+</div>
 {% include "comments/commentsection.html" %}
 {% endblock %}
 {% block sidebar %}
