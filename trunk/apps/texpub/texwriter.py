@@ -67,13 +67,13 @@ def create_pdf(texfile, use_pdftex=True, do_shell_escape=False):
         fn = os.path.basename(filename)+'.tex'
     else:
         fn = os.path.basename(filename)
-    if sys.platform=='win32':
-        syscmd = 'texify --pdf --clean %s' % (fn)
+    #if sys.platform=='win32':
+    #    syscmd = 'texify --pdf %s' % (fn)
+    #else:
+    if do_shell_escape:
+        syscmd = 'pdflatex -halt-on-error -shell-escape -interaction nonstopmode %s' % (fn)
     else:
-        if do_shell_escape:
-            syscmd = 'pdflatex -halt-on-error -shell-escape -interaction nonstopmode %s' % (fn)
-        else:
-            syscmd = 'pdflatex -halt-on-error -interaction nonstopmode %s' % (fn)
+        syscmd = 'pdflatex -halt-on-error -interaction nonstopmode %s' % (fn)
     err = runcmd(syscmd)
     os.chdir(cwd)
     return err
@@ -100,8 +100,8 @@ class TeXWriter(object):
     """
     THUMBSIZE = 200,200
     FIGSIZE = 500,500
-    def __init__(self, tex_source, slug='', page=None, grid=None, listfiles=True):
-        pass
+    def __init__(self, tex_source, slug='', page=None, grid=None, listfiles=True,
+                 compilation_path=''):
         self.tex_source = tex_source
         if slug:
             self.slug = slug
@@ -111,6 +111,7 @@ class TeXWriter(object):
         self.page = page
         self.grid = grid
         self.images = {}
+        self.compilation_path = compilation_path
             
     def make_pdf(self):
         if 'GNUPLOT' in self.tex_source:
@@ -181,9 +182,9 @@ class TeXWriter(object):
     
     def process(self):
         # create a temporary directory
-        self.dest_dir = r'd:\latex\tmp2'
-        self.dest_dir = r'/home/fauske/dev/texample/tmp/'
-        self.tex_fn = self.slug + '.tex'
+        self.dest_dir = self.compilation_path or r'c:\dev\latex'
+        #self.dest_dir = r'/home/fauske/dev/texample/tmp/'
+        self.tex_fn = self.slug +'xxx'+ '.ptex'
         self.texfn_path = os.path.join(self.dest_dir, self.tex_fn)
         self.texfn_path_base = os.path.join(self.dest_dir, self.slug)
         f = open(self.texfn_path,'w')
@@ -198,12 +199,12 @@ class TeXWriter(object):
         err = self.make_pdf()
         if err:
             return False
-        if self.listfiles:
-            log_file = open(texfn_path_base+'.log', 'r')
-            log_data = log_file.read()
-            log_file.close()
+        #if self.listfiles:
+        #    log_file = open(texfn_path_base+'.log', 'r')
+        #    log_data = log_file.read()
+        #    log_file.close()
             
-        file_list = extract_file_list(log_data);    
+        #file_list = extract_file_list(log_data);    
             
         # generate PNGs
         print "making PNG"
@@ -212,7 +213,12 @@ class TeXWriter(object):
         # clean up
         
     def clean_up(self):
-        pass
+        if not self.compilation_path:
+            return
+        print "Cleaning up"
+        for filename in glob.glob(self.texfn_path_base+'*.*'):
+            os.remove(filename)
+            
         
         
         
