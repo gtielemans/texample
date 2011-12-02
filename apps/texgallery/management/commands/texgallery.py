@@ -286,7 +286,8 @@ class Command(BaseCommand):
             print "Skipping %s" % filepath
             return
         source_code = open(filepath).read()
-        if (r'\input' in source_code) or (r'\includegraphics' in source_code):
+        if (r'\input' in source_code) or (r'\includegraphics' in source_code)\
+            or (':Zip:' in source_code):
             compilation_path = os.path.dirname(filepath)
         else:
             compilation_path = ''
@@ -360,7 +361,7 @@ class Command(BaseCommand):
         
         example.content = info['code_html']
         example.description = info['content_html']
-        if info['zip_list']:
+        if info.get('zip_list'):
             example.is_zipped = True
         else:
             example.is_zipped = False
