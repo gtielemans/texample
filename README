@@ -1,0 +1,8 @@
+To run the site do this:
+
+1. Check out the source like this:
+
+>> svn checkout http://texample.googlecode.com/svn/trunk/ texample
+
+>> cd texample
+>> pip install -r dependencies.txt
