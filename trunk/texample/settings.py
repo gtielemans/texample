@@ -146,7 +146,6 @@ try:
     except:
         pass
 except:
-    raise
     pass
 
 TEMPLATE_DEBUG = DEBUG
