@@ -182,8 +182,7 @@ class TeXWriter(object):
     
     def process(self):
         # create a temporary directory
-        self.dest_dir = self.compilation_path or r'c:\dev\latex'
-        #self.dest_dir = r'/home/fauske/dev/texample/tmp/'
+        self.dest_dir = self.compilation_path
         self.tex_fn = self.slug +'xxx'+ '.ptex'
         self.texfn_path = os.path.join(self.dest_dir, self.tex_fn)
         self.texfn_path_base = os.path.join(self.dest_dir, self.slug)
