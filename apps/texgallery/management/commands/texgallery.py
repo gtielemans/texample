@@ -226,6 +226,13 @@ class Command(BaseCommand):
         else:
             raise CommandError('No media dir')
             #pass
+            
+        if hasattr(settings,'TEXGALLERY_TEX_COMPILE_DIR'):
+            self.COMPILE_DIR = settings.TEXGALLERY_TEX_COMPILE_DIR
+        else:
+            #raise CommandError('No TEXGALLERY_TEX_COMPILE_DIR set')
+            self.COMPILE_DIR = None
+        
         
         self.media_url = urlparse.urljoin(getattr(settings,'MEDIA_URL',''),
             getattr(settings,'TEXGALLERY_MEDIA_PREFIX',''))
@@ -287,10 +294,10 @@ class Command(BaseCommand):
             return
         source_code = open(filepath).read()
         if (r'\input' in source_code) or (r'\includegraphics' in source_code)\
-            or (':Zip:' in source_code):
+            or (':Zip:' in source_code) or self.COMPILE_DIR == None:
             compilation_path = os.path.dirname(filepath)
         else:
-            compilation_path = ''
+            compilation_path = self.COMPILE_DIR
         
         print "Processing %s" % info['title']
         print "Slug: %s" % info['slug']
